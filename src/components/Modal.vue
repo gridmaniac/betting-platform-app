@@ -12,13 +12,14 @@ const modalEvent = (btn) => {
 
 const closeModal = () => {
   emit("closeModal", false)
+  console.log("test");
 }
 </script>
 
 <template>
   <input type="checkbox" :id="modalId" class="modal-toggle" :checked="checked"/>
   <label :for="modalId" class="modal cursor-pointer" @click="closeModal">
-    <label class="modal-box relative" for="">
+    <div class="modal-box relative" for="">
       <header>
         <slot name="header"></slot>
       </header>
@@ -34,7 +35,7 @@ const closeModal = () => {
           </template>
         </div>
       </footer>
-    </label>
+    </div>
   </label>
 </template>
 

@@ -13,7 +13,7 @@ const { isAuth, logout, isModalAuthVisible } = inject("auth");
       </div>
     </div>
   </div>
-  <div class="relative">
+  <div class="relative max-w-6xl">
     <div class="absolute inset-0 w-full h-full flex justify-center items-center z-50" v-if="!isAuth">
       <button class="btn btn-warning modal-button" @click="isLogin = true, isModalAuthVisible = true">
         connect to account
