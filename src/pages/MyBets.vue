@@ -64,7 +64,7 @@ const test = () => {
       </select>
     </div>
   </div>
-  <div class="relative max-w-6xl">
+  <div class="relative">
     <div class="absolute inset-0 w-full h-full flex justify-center items-center z-50" v-if="!isAuth">
       <button class="btn btn-warning modal-button" @click="isModalAuthVisible = true">
         start betting
