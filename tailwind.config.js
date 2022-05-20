@@ -11,6 +11,7 @@ module.exports = {
           ...require("daisyui/src/colors/themes")["[data-theme=luxury]"],
           "neutral-content": "#f8cb48",
           "base-content": "#f8cb48",
+          "warning": "#f8cb48",
         },
       },
     ],

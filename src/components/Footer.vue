@@ -171,32 +171,6 @@ import partner4 from "../assets/partner-4.png";
             ></path></svg
         ></a>
       </div>
-      <!-- <div
-        class="flex flex-col items-center justify-between w-full sm:flex-row"
-      >
-        <a
-          rel="noopener"
-          target="_blank"
-          class="inline-flex items-center justify-center hover:opacity-90"
-          ><div class="mr-3 avatar">
-            <div class="p-px w-14 h-14 mask mask-squircle bg-neutral">
-              <img :src="stan" alt="Stan R." class="mask mask-squircle" />
-            </div>
-          </div>
-          <div class="text-left">
-            <p class="text-xs text-opacity-50 text-base-content">
-              Chief Executive Officer
-            </p>
-            <h2 class="text-lg font-bold text-base-content">Stan R.</h2>
-          </div></a
-        >
-        <div class="flex p-4 pb-0">
-          <img class="inline-block h-20" :src="partner1" />
-          <img class="inline-block h-20" :src="partner2" />
-          <img class="inline-block h-20" :src="partner3" />
-          <img class="inline-block h-20" :src="partner4" />
-        </div>
-      </div> -->
     </footer>
   </div>
 </template>

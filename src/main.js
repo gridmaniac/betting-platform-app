@@ -1,24 +1,10 @@
-import { createApp } from "vue";
-import { createRouter, createWebHistory } from "vue-router";
+import { createApp } from 'vue'
 import Layout from "./components/Layout.vue";
-import Index from "./pages/Index.vue";
-import MyBets from "./pages/MyBets.vue";
-import Wallet from "./pages/Wallet.vue";
-import News from "./pages/News.vue";
+import router from './router'
 import "./index.css";
 
-const routes = [
-  { path: "/", component: Index },
-  { path: "/my-bets", component: MyBets },
-  { path: "/wallet", component: Wallet },
-  { path: "/news", component: News },
-];
+const app = createApp(Layout)
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-});
+app.use(router)
 
-const app = createApp(Layout);
-app.use(router);
-app.mount("#app");
+app.mount('#app')
