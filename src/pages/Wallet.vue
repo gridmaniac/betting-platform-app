@@ -20,14 +20,14 @@ onMounted(() => {
       </div>
     </div>
   </div>
-  <div class="relative">
+  <div class="relative max-w-6xl mx-2 my-6 sm:m-6">
     <div class="absolute inset-0 w-full h-full flex justify-center items-center z-50" v-if="!isAuth">
       <button class="btn btn-warning modal-button" @click="isLogin = true, isModalAuthVisible = true">
         Connect to wallet
       </button>
     </div>
     <div :class="{ 'blur-md': !isAuth }">
-      <div class="flex flex-col xl:flex-row mx-2 my-6 sm:m-6 max-w-6xl">
+      <div class="flex flex-col xl:flex-row w-full">
         <div class="card shadow-lg compact side bg-base-100 p-3 mb-6 xl:mb-0 mr-0 xl:mr-6 flex-1">
           <div>
             <span class="font-bold">Connected:</span>
@@ -69,7 +69,7 @@ onMounted(() => {
         </div>
       </div>
 
-      <div class="card shadow-lg compact side bg-base-100 p-3 mx-2 my-6 sm:m-6 max-w-6xl">
+      <div class="card shadow-lg compact side bg-base-100 p-3 my-6  w-full">
         <div class="flex justify-between items-center">
           <div class="overflow-x-auto w-full">
             <table class="table table-zebra table-compact w-full">

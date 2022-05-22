@@ -1,5 +1,5 @@
 <script setup>
-import { ref, provide } from "vue";
+import { ref, provide, computed } from "vue";
 //modules
 import { useForm, useField } from "vee-validate";
 //src
@@ -18,6 +18,7 @@ const isLogin = ref(true);
 const isAuth = ref(localStorage.getItem("token"));
 const isWallet = ref(localStorage.getItem("isWallet"));
 const isModalAuthVisible = ref(false);
+const myinput = ref(null)
 
 const login = (token) => {
   localStorage.setItem("token", token);
@@ -89,6 +90,14 @@ const onSubmit = handleSubmit(async () => {
   }
 });
 
+const submitData = computed(() => {
+  console.log(isModalAuthVisible);
+  if (isModalAuthVisible) {
+    myinput.value.focus()
+  }
+  return
+})
+
 const changeMode = () => {
   isLogin.value = !isLogin.value;
 };
@@ -107,8 +116,8 @@ const closeModalAuth = () => {
     <template #header>
       <img class="d-block m-auto w-40" :src="token" alt="koa-token" />
       <h2 class="font-bold text-2xl text-primary">
-        <span v-if="!isLogin">Sign up</span>
-        <span v-else>Sign in</span>
+        <span v-if="!isLogin">New account</span>
+        <span v-else>Welcome back</span>
       </h2>
     </template>
     <template #body>
@@ -121,6 +130,7 @@ const closeModalAuth = () => {
           class="input input-bordered w-full"
           required
           v-model="email"
+          ref="myinput"
         />
         <label class="label">
           <span class="label-text-alt">
@@ -160,8 +170,8 @@ const closeModalAuth = () => {
       </div>
       <div class="flex justify-between mt-5">
         <button class="btn btn-warning" @click="onSubmit">
-          <template v-if="isLogin">Sign in</template>
-          <template v-else>Sign up</template>
+          <template v-if="isLogin">Login</template>
+          <template v-else>Create account</template>
         </button>
         <button class="btn btn-ghost" @click="changeMode">
           <template v-if="isLogin">do not have account?</template>

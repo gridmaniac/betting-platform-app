@@ -10,6 +10,7 @@ import Accordion from "../components/Accordion.vue";
 import Table from "../components/Table.vue";
 //composables
 import { fetchEvents, fetchFights } from "../http/events";
+import Loader from "../components/Loader.vue";
 
 const isUpcoming = ref(true);
 const events = ref([]);
@@ -39,11 +40,6 @@ onMounted(async () => {
   getFights(upcomingEvents.value[0]);
 });
 
-onMounted(async () => {
-  const response = await fetchEvents();
-  events.value = response;
-});
-
 onMounted(() => {
   document.querySelector("main").scrollTo(0, 0);
 });
@@ -60,7 +56,7 @@ const changeEventsStatus = () => {
 };
 
 const getFights = async (event) => {
-  event.isChecked = !event.isChecked
+  event.isChecked = !event.isChecked;
   if (event.fights === undefined) {
     event.fights = [];
   }
@@ -68,53 +64,82 @@ const getFights = async (event) => {
     const response = await fetchFights(event.eventId);
     const sortedFilghts = response.filter((x) => {
       if (x.status === null || x.status == "Canceled") {
-        return
+        return;
       }
-      return x
-    })
+      return x;
+    });
     event.fights = sortedFilghts;
   }
 };
 </script>
 
 <template>
-  <div class="card shadow-lg compact side bg-base-100 p-3 mx-2 sm:mx-6 max-w-6xl">
+  <div
+    class="card shadow-lg compact side bg-base-100 p-3 mx-2 sm:mx-6 max-w-6xl"
+  >
     <div class="grid grid-cols-2 sm:grid-cols-3">
       <div class="flex items-center col-span-2 sm:col-span-1 mb-2 sm:mb-0">
-        <component :is="LightningBoltIcon" class="inline-block w-6 h-6 mr-2 stroke-current" />
+        <component
+          :is="LightningBoltIcon"
+          class="inline-block w-6 h-6 mr-2 stroke-current"
+        />
         <h1 class="font-bold text-2xl text-primary">Events</h1>
       </div>
-      <div class="flex justify-start sm:justify-center ">
+      <div class="flex justify-start sm:justify-center">
         <div class="tabs tabs-boxed">
-          <a class="tab tab-sm" :class="{ 'tab-active': isUpcoming }" @click="changeEventsStatus(true)">
+          <a
+            class="tab tab-sm"
+            :class="{ 'tab-active': isUpcoming }"
+            @click="changeEventsStatus(true)"
+          >
             <span class="hidden md:block">Upcoming</span>
-            <component :is="ArrowCircleRightIcon" class="block md:hidden w-6 h-6 stroke-current" />
+            <component
+              :is="ArrowCircleRightIcon"
+              class="block md:hidden w-6 h-6 stroke-current"
+            />
           </a>
-          <a class="tab tab-sm" :class="{ 'tab-active': !isUpcoming }" @click="changeEventsStatus(false)">
+          <a
+            class="tab tab-sm"
+            :class="{ 'tab-active': !isUpcoming }"
+            @click="changeEventsStatus(false)"
+          >
             <span class="hidden md:block">Completed</span>
-            <component :is="CheckCircleIcon" class="block md:hidden w-6 h-6 stroke-current" />
+            <component
+              :is="CheckCircleIcon"
+              class="block md:hidden w-6 h-6 stroke-current"
+            />
           </a>
         </div>
       </div>
       <div class="flex justify-end">
-        <select class="select select-bordered select-sm max-w-xs ml-6" value="UFC">
+        <select
+          class="select select-bordered select-sm max-w-xs ml-6"
+          value="UFC"
+        >
           <option disabled>Choose promotion</option>
           <option selected="selected">UFC</option>
         </select>
       </div>
     </div>
   </div>
-  <Accordion v-if="events !== []" v-for="event in sortedEvents" :key="event.eventId" :event="event"
-    @click="getFights(event)" :checked="event.isChecked">
-    <template #title>{{ event.name }}</template>
-    <template #description>{{
+  <div class="relative max-w-6xl">
+    <Loader v-if="events === []"/>
+    <Accordion
+      v-for="event in sortedEvents"
+      :key="event.eventId"
+      :event="event"
+      @click="getFights(event)"
+      :checked="event.isChecked"
+    >
+      <template #title>{{ event.name }}</template>
+      <template #description>{{
         moment(event.dateTime).format("MMMM DD, YYYY")
-    }}</template>
-    <template #body>
-      <Table v-if="event.fights" :rows="event.fights"></Table>
-    </template>
-  </Accordion>
+      }}</template>
+      <template #body>
+        <Table v-if="event.fights" :rows="event.fights"></Table>
+      </template>
+    </Accordion>
+  </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

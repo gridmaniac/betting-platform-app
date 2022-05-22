@@ -13,7 +13,7 @@ const { isAuth, logout, isModalAuthVisible } = inject("auth");
       </div>
     </div>
   </div>
-  <div class="relative">
+  <div class="relative max-w-6xl my-6 sm:m-6 mx-2">
     <div class="absolute inset-0 w-full h-full flex justify-center items-center z-50" v-if="!isAuth">
       <button class="btn btn-warning modal-button" @click="isLogin = true, isModalAuthVisible = true">
         connect to account
@@ -21,7 +21,7 @@ const { isAuth, logout, isModalAuthVisible } = inject("auth");
     </div>
     <div :class="{ 'blur-md': !isAuth }">
 
-      <div class="card shadow-lg compact side bg-base-100 p-3 mx-2 my-6 sm:m-6 max-w-6xl">
+      <div class="card shadow-lg compact side bg-base-100 p-3 w-full">
         <div>
           <div class="form-control w-full max-w-xs">
             <label class="label">

@@ -1,6 +1,10 @@
 <script setup>
 import { inject } from "vue";
+import token from "../assets/koa-token.png"
 import Logo from "./Logo.vue"
+
+import { useRouter } from "vue-router";
+const router = useRouter()
 
 const { isModalAuthVisible, isAuth, isLogin } = inject("auth")
 
@@ -19,7 +23,7 @@ const loginAccount = () => {
   <div class="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box sticky top-0 z-50">
     <Logo class="flex lg:hidden "/>
     <div class="flex-1 px-2 mx-2 hidden lg:inline-block">
-      <button class="btn btn-sm btn-success btn-outline">
+      <button class="btn btn-sm btn-success btn-outline" @click="router.push({ name: 'wallet'})">
         <img class="flex-0 mr-1 h-4" :src="token" />DEPOSIT
       </button>
     </div>

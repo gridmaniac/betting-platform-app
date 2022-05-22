@@ -27,7 +27,7 @@ const loginAccount = () => {
   <div class="drawer-side">
     <label for="my-drawer-2" class="drawer-overlay"></label>
     <aside class="flex flex-col border-r border-base-200 bg-base-100 text-base-content w-80">
-      <Logo />
+      <Logo  class="border-b border-base-200"/>
 
       <div class="flex-1">
         <ul class="menu flex flex-col p-4 pt-2 compact" v-for="section in authLinks">
