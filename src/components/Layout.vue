@@ -14,17 +14,18 @@ import { signIn, registrarion } from "../http/userApi";
 
 //bet
 const isModalBetVisible = ref(false);
-const currentBet = ref({})
-const userBets = ref([])
-userBets.value = JSON.parse(localStorage.getItem("userBets")) || []
+const currentBet = ref({});
+const userBets = ref([]);
+userBets.value = JSON.parse(localStorage.getItem("userBets")) || [];
 
-const isModalAuthVisible = ref(false)
+const isModalAuthVisible = ref(false);
 const errors = ref({});
+const isAcceptRegiser = ref(false);
 const drawer = ref(false);
 const isLogin = ref(true);
 const isAuth = ref(localStorage.getItem("token"));
 const isWallet = ref(localStorage.getItem("isWallet"));
-const myinput = ref(null)
+const myinput = ref(null);
 
 const login = (token) => {
   localStorage.setItem("token", token);
@@ -41,7 +42,7 @@ provide("bets", {
   currentBet,
   userBets,
   isModalBetVisible,
-})
+});
 
 provide("auth", {
   login,
@@ -99,16 +100,21 @@ const onSubmit = handleSubmit(async () => {
   if (modelErrors) {
     errors.value = modelErrors;
   }
-
-  isModalAuthVisible.value = false
+  email.value = ''
+  password.value = ''
+  if (!isLogin.value) {
+    isAcceptRegiser.value = true;
+    return
+  }
+  isModalAuthVisible.value = false;
 });
 
 const submitData = computed(() => {
   if (isModalAuthVisible) {
-    myinput.value.focus()
+    myinput.value.focus();
   }
-  return
-})
+  return;
+});
 
 const changeMode = () => {
   isLogin.value = !isLogin.value;
@@ -128,71 +134,94 @@ const closeModalAuth = () => {
     <template #header>
       <img class="d-block m-auto w-40" :src="token" alt="koa-token" />
       <h2 class="font-bold text-2xl text-primary">
-        <span v-if="!isLogin">New account</span>
-        <span v-else>Welcome back</span>
+        <template v-if="isAcceptRegiser">
+          <span>Verify your Email</span>
+        </template>
+        <template v-else>
+          <span v-if="!isLogin">New account</span>
+          <span v-else>Welcome back</span>
+        </template>
       </h2>
     </template>
     <template #body>
-      <div class="form-control w-full">
-        <label class="label">
-          <span class="label-text">Email</span>
-        </label>
-        <input
-          type="email"
-          class="input input-bordered w-full"
-          required
-          v-model="email"
-          ref="myinput"
-        />
-        <label class="label">
-          <span class="label-text-alt">
-            {{ emailError || errors["email"] }}
-          </span>
-        </label>
-      </div>
-      <div class="form-control w-full">
-        <label class="label">
-          <span class="label-text">Password</span>
-        </label>
-        <input
-          type="password"
-          class="input input-bordered w-full"
-          v-model="password"
-        />
-        <label class="label">
-          <span class="label-text-alt">
-            {{ passwordError || errors["password"] }}
-          </span>
-        </label>
-      </div>
-      <div class="form-control w-full" v-if="!isLogin">
-        <label class="label">
-          <span class="label-text">Confirm password</span>
-        </label>
-        <input
-          v-model="confirmPassword"
-          type="password"
-          class="input input-bordered w-full"
-        />
-        <label class="label">
-          <span class="label-text-alt">
-            {{ confirmPasswordError || errors["confirmPassword"] }}
-          </span>
-        </label>
-      </div>
-      <div class="flex justify-between mt-5">
-        <button class="btn btn-warning" @click="onSubmit">
-          <template v-if="isLogin">Login</template>
-          <template v-else>Create account</template>
-        </button>
-        <button class="btn btn-ghost" @click="changeMode">
-          <template v-if="isLogin">do not have account?</template>
-          <template v-else>
-            <span class="hidden sm:block">have an account already?</span>
-            <span class="block sm:hidden">i have account</span>
-          </template>
-        </button>
-      </div>
+      <template v-if="isAcceptRegiser">
+        <p class="mb-5">
+          We have sent an email to <span class="text-primary">{{ email }}</span>
+        </p>
+        <p>
+          You need to verify your email to continue. If you have not recevied
+          the varification email, please check your "spam" folder.
+        </p>
+      </template>
+      <template v-else>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Email</span>
+          </label>
+          <input
+            type="email"
+            class="input input-bordered w-full"
+            required
+            v-model="email"
+            ref="myinput"
+          />
+          <label class="label">
+            <span class="label-text-alt">
+              {{ emailError || errors["email"] }}
+            </span>
+          </label>
+        </div>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text">Password</span>
+          </label>
+          <input
+            type="password"
+            class="input input-bordered w-full"
+            v-model="password"
+          />
+          <label class="label">
+            <span class="label-text-alt">
+              {{ passwordError || errors["password"] }}
+            </span>
+          </label>
+        </div>
+        <div class="form-control w-full" v-if="!isLogin">
+          <label class="label">
+            <span class="label-text">Confirm password</span>
+          </label>
+          <input
+            v-model="confirmPassword"
+            type="password"
+            class="input input-bordered w-full"
+          />
+          <label class="label">
+            <span class="label-text-alt">
+              {{ confirmPasswordError || errors["confirmPassword"] }}
+            </span>
+          </label>
+        </div></template
+      >
+    </template>
+    <template #footer>
+      <template v-if="isAcceptRegiser">
+        <button class="btn btn-warning" @click="isModalAuthVisible = false, isAcceptRegiser = false">Close</button>
+      </template>
+      <template v-else>
+        <div class="flex justify-between mt-5">
+          <button class="btn btn-warning" @click="onSubmit">
+            <template v-if="isLogin">Login</template>
+            <template v-else>Create account</template>
+          </button>
+          <button class="btn btn-ghost" @click="changeMode">
+            <template v-if="isLogin">do not have account?</template>
+            <template v-else>
+              <span class="hidden sm:block">have an account already?</span>
+              <span class="block sm:hidden">i have account</span>
+            </template>
+          </button>
+        </div>
+      </template>
     </template>
   </Modal>
   <div class="bg-base-200 drawer drawer-mobile h-screen">
