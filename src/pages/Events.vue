@@ -122,7 +122,7 @@ const getFights = async (event) => {
       </div>
     </div>
   </div>
-  <div class="relative max-w-6xl">
+  <div class="relative max-w-6xl mx-2 sm:m-6">
     <Loader v-if="events === []"/>
     <Accordion
       v-for="event in sortedEvents"

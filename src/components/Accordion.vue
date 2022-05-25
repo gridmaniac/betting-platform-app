@@ -7,7 +7,7 @@ const isChecked = ref(props.checked);
 </script>
 
 <template>
-  <div tabindex="0" class="collapse shadow-xl bg-base-100 mx-2 my-6 sm:m-6 rounded-box collapse-arrow w-full">
+  <div tabindex="0" class="collapse shadow-xl bg-base-100 my-6 rounded-box collapse-arrow w-full">
     <input type="checkbox" :checked="isChecked && 'checked'" />
     <div class="collapse-title" style="background-color: #000">
       <h2 class="text-xl font-medium">
