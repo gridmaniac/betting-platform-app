@@ -87,6 +87,7 @@ const placeBet = () => {
   })
   let newBet = {
     name: event.name,
+    dateTime: event.dateTime,
     status: event.status,
     winner: currentBet.value.winner,
     cash: betValue.value

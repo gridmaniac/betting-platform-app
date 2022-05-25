@@ -1,4 +1,4 @@
-export const bets = [
+export const fakeBets = [
   {
     name: "UFC 275: Teixeira vs. Prochazka",
     dateTime: "June 11, 2022",
