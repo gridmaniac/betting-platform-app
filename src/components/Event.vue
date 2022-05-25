@@ -105,20 +105,18 @@ const openModalAuth = () => {
       <div
         class="flex justify-center space-y-2 sm:space-y-0 space-x-0 sm:space-x-3 flex-col sm:flex-row"
       >
-        <label
-          for="my-modal"
+        <button
           class="btn btn-active"
           @click="isAuth ? openModalFight(item.fighters[0]) : openModalAuth()"
         >
           <img class="flex-0 mr-1 h-4" :src="token" />
-        </label>
-        <label
-          for="my-modal"
+        </button>
+        <button
           class="btn btn-active"
           @click="isAuth ? openModalFight(item.fighters[0]) : openModalAuth()"
         >
           <img class="flex-0 mr-1 h-4" :src="token" />
-        </label>
+        </button>
       </div>
     </td>
   </tr>
