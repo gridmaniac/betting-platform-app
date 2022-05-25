@@ -1,25 +1,34 @@
 <script setup>
-defineProps({
+
+import { computed } from "vue"
+
+const props = defineProps({
   modalId: String,
   btns: Array,
-  checked: Boolean
+  modelValue: Boolean,
 });
-const emit = defineEmits(["modalEvent", "closeModal"])
+
+const emit = defineEmits(["modalEvent", "closeModal"]);
+
+const active = computed({
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
+});
 
 const modalEvent = (btn) => {
   emit("modalEvent", btn);
-}
+};
 
-const closeModal = () => {
-  emit("closeModal", false)
-  console.log("test");
-}
+// const closeModal = () => {
+//   emit("closeModal", false)
+//   console.log("test");
+// }
 </script>
 
 <template>
-  <input type="checkbox" :id="modalId" class="modal-toggle" :checked="checked"/>
-  <label :for="modalId" class="modal cursor-pointer" @click="closeModal">
-    <div class="modal-box relative" for="">
+  <input type="checkbox" :id="modalId" class="modal-toggle" v-model="active" />
+  <label :for="modalId" class="modal cursor-pointer">
+    <label class="modal-box relative">
       <header>
         <slot name="header"></slot>
       </header>
@@ -27,17 +36,10 @@ const closeModal = () => {
         <slot name="body"></slot>
       </main>
       <footer v-if="btns">
-        <div class="modal-action">
-          <template v-for="btn in btns">
-            <label :for="modalId" class="btn" :class="btn.class" @click="modalEvent(btn), closeModal">
-              {{ btn.name }}
-            </label>
-          </template>
-        </div>
+        <slot name="footer"></slot>
       </footer>
-    </div>
+    </label>
   </label>
 </template>
 
-<style>
-</style>
+<style></style>

@@ -12,12 +12,12 @@ import Modal from "./Modal.vue";
 // http
 import { signIn, registrarion } from "../http/userApi";
 
+const isModalAuthVisible = ref(false)
 const errors = ref({});
 const drawer = ref(false);
 const isLogin = ref(true);
 const isAuth = ref(localStorage.getItem("token"));
 const isWallet = ref(localStorage.getItem("isWallet"));
-const isModalAuthVisible = ref(false);
 const myinput = ref(null)
 
 const login = (token) => {
@@ -88,6 +88,8 @@ const onSubmit = handleSubmit(async () => {
   if (modelErrors) {
     errors.value = modelErrors;
   }
+
+  isModalAuthVisible.value = false
 });
 
 const submitData = computed(() => {
@@ -110,8 +112,8 @@ const closeModalAuth = () => {
 <template>
   <Modal
     modalId="modalAuth"
-    :checked="isModalAuthVisible"
     @closeModal="closeModalAuth"
+    v-model="isModalAuthVisible"
   >
     <template #header>
       <img class="d-block m-auto w-40" :src="token" alt="koa-token" />

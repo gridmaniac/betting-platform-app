@@ -1,28 +1,27 @@
 <script setup>
-import { inject } from "vue"
+import { inject } from "vue";
 
-import token from "../assets/koa-token.png"
+import token from "../assets/koa-token.png";
 
 defineProps({
   item: null,
 });
 
-const { isAuth, isModalAuthVisible } = inject("auth")
+const { isAuth, isModalAuthVisible } = inject("auth");
 
 const imgPlaceholder = (e) => {
   e.target.src =
     "https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/silhouette.png";
 };
 
-
 const openModalFight = (fight) => {
   console.log(fight);
   console.log(isAuth.value);
-}
+};
 
 const openModalAuth = () => {
-  isModalAuthVisible.value = true
-}
+  isModalAuthVisible.value = true;
+};
 </script>
 
 <template>
@@ -107,22 +106,18 @@ const openModalAuth = () => {
         class="flex justify-center space-y-2 sm:space-y-0 space-x-0 sm:space-x-3 flex-col sm:flex-row"
       >
         <label
-          v-if="item.status == 'upcoming'"
           for="my-modal"
-          class="btn btn-active modal-button"
-          >2.85</label
+          class="btn btn-active"
+          @click="isAuth ? openModalFight(item.fighters[0]) : openModalAuth()"
         >
-        <label v-else for="my-modal" class="btn btn-active" @click="isAuth ? openModalFight(item.fighters[0]) : openModalAuth()">
-           <img class="flex-0 mr-1 h-4" :src="token" />
+          <img class="flex-0 mr-1 h-4" :src="token" />
         </label>
         <label
-          v-if="item.status == 'upcoming'"
           for="my-modal"
-          class="btn btn-active modal-button"
-          >2.85</label
+          class="btn btn-active"
+          @click="isAuth ? openModalFight(item.fighters[0]) : openModalAuth()"
         >
-        <label v-else for="my-modal" class="btn btn-active" @click="isAuth ? openModalFight(item.fighters[0]) : openModalAuth()">
-           <img class="flex-0 mr-1 h-4" :src="token"/>
+          <img class="flex-0 mr-1 h-4" :src="token" />
         </label>
       </div>
     </td>
