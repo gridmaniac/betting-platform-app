@@ -1,17 +1,25 @@
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, inject } from "vue";
 import moment from "moment";
+//assets
+import token from "../assets/koa-token.png";
 //icon
 import { LightningBoltIcon } from "@heroicons/vue/outline";
 import { ArrowCircleRightIcon } from "@heroicons/vue/outline";
 import { CheckCircleIcon } from "@heroicons/vue/outline";
+import { CashIcon } from "@heroicons/vue/outline";
 //components
 import Accordion from "../components/Accordion.vue";
 import Table from "../components/Table.vue";
+import Modal from "../components/Modal.vue";
 //composables
 import { fetchEvents, fetchFights } from "../http/events";
 import Loader from "../components/Loader.vue";
+import { imgPlaceholder } from "../composables/img";
 
+const { currentBet, userBets, isModalBetVisible } = inject("bets");
+
+const betValue = ref("150 000.00");
 const isUpcoming = ref(true);
 const events = ref([]);
 const upcomingEvents = ref([]);
@@ -71,9 +79,112 @@ const getFights = async (event) => {
     event.fights = sortedFilghts;
   }
 };
+
+const placeBet = () => {
+  const event = sortedEvents.value.find(x => {
+    if(x.eventId === currentBet.value.eventId) return x
+    return
+  })
+  let newBet = {
+    name: event.name,
+    status: event.status,
+    winner: currentBet.value.winner,
+    cash: betValue.value
+  }
+  userBets.value.push(newBet)
+  localStorage.setItem("userBets", JSON.stringify(userBets.value))
+  betValue.value = "150 000.00"
+  newBet = {}
+  isModalBetVisible.value = false;
+};
 </script>
 
 <template>
+  <Modal v-model="isModalBetVisible" v-if="currentBet.fighters">
+    <template #header>
+      <div class="flex items-center">
+        <component
+          :is="CashIcon"
+          class="inline-block w-6 h-6 mr-2 stroke-current"
+        />
+        <h2
+          class="font-bold text-2xl text-primary justify-start sm:justify-center"
+        >
+          New bet
+        </h2>
+      </div>
+      <!-- <p class="text-left sm:text-center">February 27, 2022</p> -->
+    </template>
+    <template #body>
+      <div class="justify-between hidden sm:flex mb-6">
+        <div class="flex items-center space-x-3">
+          <div>
+            <div class="avatar">
+              <div class="rounded-full w-14 h-14 shadow">
+                <img
+                  :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/${currentBet.fighters[0].firstName} ${currentBet.fighters[0].lastName}.png`"
+                  alt="Avatar Tailwind CSS Component"
+                  @error="imgPlaceholder"
+                />
+              </div>
+            </div>
+          </div>
+          <div>
+            <h2 class="card-title">
+              {{ currentBet.fighters[0].firstName }}
+              {{ currentBet.fighters[0].lastName }}
+            </h2>
+            <p class="text-base-content text-opacity-40">
+              {{ currentBet.weightClass}}
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center space-x-3">
+          <div class="text-right">
+            <h2 class="card-title">
+              {{ currentBet.fighters[1].firstName }}
+              {{ currentBet.fighters[1].lastName }}
+            </h2>
+            <p class="text-base-content text-opacity-40">
+              {{ currentBet.weightClass}}
+            </p>
+          </div>
+          <div>
+            <div class="avatar">
+              <div class="rounded-full w-14 h-14 shadow">
+                <img
+                  :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/${currentBet.fighters[1].firstName} ${currentBet.fighters[1].lastName}.png`"
+                  alt="Avatar Tailwind CSS Component"
+                  @error="imgPlaceholder"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="text-base-content text-opacity-40">Winner</p>
+      <p class="text-base-content text-bold flex justify-between items-center">
+        {{ currentBet.winner.firstName }} {{ currentBet.winner.firstName }}
+        <span class="text-sm">9:30 PM</span
+        ><span class="text-white font-bold">3.12</span>
+      </p>
+    </template>
+    <template #footer>
+      <div class="form-control">
+        <label class="input-group input-group-md justify-end"
+          ><input
+            type="text"
+            class="input input-bordered input-lg"
+            v-model="betValue" />
+          <span> <img class="flex-0 mr-1 h-5" :src="token" /> </span
+        ></label>
+      </div>
+      <div class="modal-action">
+        <button class="btn btn-primary" @click="placeBet">Place a bet</button>
+        <button class="btn" @click="isModalBetVisible = false">Close</button>
+      </div>
+    </template>
+  </Modal>
   <div
     class="card shadow-lg compact side bg-base-100 p-3 mx-2 sm:mx-6 max-w-6xl"
   >
@@ -123,7 +234,7 @@ const getFights = async (event) => {
     </div>
   </div>
   <div class="relative max-w-6xl mx-2 sm:m-6">
-    <Loader v-if="events === []"/>
+    <Loader v-if="events === []" />
     <Accordion
       v-for="event in sortedEvents"
       :key="event.eventId"

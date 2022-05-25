@@ -5,7 +5,7 @@ import Logo from "./Logo.vue"
 import { authLinks } from "../composables/Drawer";
 import { inject } from "vue";
 
-const {isModalAuthVisible, isLogin} = inject("auth")
+const {isModalAuthVisible, isLogin, isAuth} = inject("auth")
 
 const emit = defineEmits(["navigate"]);
 const navigate = () => {

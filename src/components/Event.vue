@@ -1,22 +1,28 @@
 <script setup>
 import { inject } from "vue";
-
+//assets
 import token from "../assets/koa-token.png";
+//icon
+import { LockClosedIcon } from "@heroicons/vue/outline";
+//composables
+import { imgPlaceholder } from "../composables/img";
 
 defineProps({
   item: null,
 });
 
 const { isAuth, isModalAuthVisible } = inject("auth");
+const { currentBet, isModalBetVisible } = inject("bets");
 
-const imgPlaceholder = (e) => {
-  e.target.src =
-    "https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/silhouette.png";
-};
-
-const openModalFight = (fight) => {
-  console.log(fight);
-  console.log(isAuth.value);
+const openModalFight = (fight, fighter) => {
+  isModalBetVisible.value = true;
+  currentBet.value = {
+    eventId: fight.eventId,
+    fightId: fight.fightId,
+    weightClass: fight.weightClass,
+    fighters: fight.fighters,
+    winner: fighter,
+  };
 };
 
 const openModalAuth = () => {
@@ -107,15 +113,31 @@ const openModalAuth = () => {
       >
         <button
           class="btn btn-active"
-          @click="isAuth ? openModalFight(item.fighters[0]) : openModalAuth()"
+          @click="
+            isAuth ? openModalFight(item, item.fighters[0]) : openModalAuth()
+          "
+          :disabled="item.status === 'Final'"
         >
-          <img class="flex-0 mr-1 h-4" :src="token" />
+          <component
+            v-if="item.status === 'Final'"
+            :is="LockClosedIcon"
+            class="inline-block w-6 h-6 stroke-current"
+          />
+          <img v-else class="flex-0 mr-1 h-4" :src="token" />
         </button>
         <button
-          class="btn btn-active"
-          @click="isAuth ? openModalFight(item.fighters[0]) : openModalAuth()"
+          class="btn btn-active btn"
+          @click="
+            isAuth ? openModalFight(item, item.fighters[0]) : openModalAuth()
+          "
+          :disabled="item.status === 'Final'"
         >
-          <img class="flex-0 mr-1 h-4" :src="token" />
+          <component
+            v-if="item.status === 'Final'"
+            :is="LockClosedIcon"
+            class="inline-block w-6 h-6 stroke-current"
+          />
+          <img v-else class="flex-0 mr-1 h-4" :src="token" />
         </button>
       </div>
     </td>

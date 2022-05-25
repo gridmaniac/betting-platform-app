@@ -1,12 +1,9 @@
 <script setup>
 import Event from "./Event.vue"
 
-const props = defineProps({
+defineProps({
     rows: Array
 })
-
-console.log(props.rows);
-
 </script>
 
 <template>

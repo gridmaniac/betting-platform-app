@@ -12,6 +12,12 @@ import Modal from "./Modal.vue";
 // http
 import { signIn, registrarion } from "../http/userApi";
 
+//bet
+const isModalBetVisible = ref(false);
+const currentBet = ref({})
+const userBets = ref([])
+userBets.value = JSON.parse(localStorage.getItem("userBets")) || []
+
 const isModalAuthVisible = ref(false)
 const errors = ref({});
 const drawer = ref(false);
@@ -23,7 +29,6 @@ const myinput = ref(null)
 const login = (token) => {
   localStorage.setItem("token", token);
   isAuth.value = true;
-  console.log(isModalAuthVisible.value);
   isModalAuthVisible.value = false;
 };
 
@@ -31,6 +36,12 @@ const logout = () => {
   localStorage.removeItem("token");
   isAuth.value = false;
 };
+
+provide("bets", {
+  currentBet,
+  userBets,
+  isModalBetVisible,
+})
 
 provide("auth", {
   login,
@@ -93,7 +104,6 @@ const onSubmit = handleSubmit(async () => {
 });
 
 const submitData = computed(() => {
-  console.log(isModalAuthVisible);
   if (isModalAuthVisible) {
     myinput.value.focus()
   }
@@ -195,7 +205,7 @@ const closeModalAuth = () => {
     <main class="drawer-content overflow-x-hidden flex flex-col">
       <Header />
       <div class="flex-auto">
-        <router-view class=""></router-view>
+        <router-view></router-view>
       </div>
       <Footer />
     </main>

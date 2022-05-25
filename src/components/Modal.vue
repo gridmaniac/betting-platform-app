@@ -4,7 +4,6 @@ import { computed } from "vue"
 
 const props = defineProps({
   modalId: String,
-  btns: Array,
   modelValue: Boolean,
 });
 
@@ -18,11 +17,6 @@ const active = computed({
 const modalEvent = (btn) => {
   emit("modalEvent", btn);
 };
-
-// const closeModal = () => {
-//   emit("closeModal", false)
-//   console.log("test");
-// }
 </script>
 
 <template>
@@ -32,10 +26,12 @@ const modalEvent = (btn) => {
       <header>
         <slot name="header"></slot>
       </header>
+      <div class="divider"></div>
       <main>
         <slot name="body"></slot>
       </main>
-      <footer v-if="btns">
+      <div class="divider"></div>
+      <footer>
         <slot name="footer"></slot>
       </footer>
     </label>
