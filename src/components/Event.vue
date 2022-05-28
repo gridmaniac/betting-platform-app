@@ -15,6 +15,7 @@ const { isAuth, isModalAuthVisible } = inject("auth");
 const { currentBet, isModalBetVisible } = inject("bets");
 
 const openModalFight = (fight, fighter) => {
+  console.log(fight);
   isModalBetVisible.value = true;
   currentBet.value = {
     eventId: fight.eventId,
@@ -123,7 +124,7 @@ const openModalAuth = () => {
             :is="LockClosedIcon"
             class="inline-block w-6 h-6 stroke-current"
           />
-          <img v-else class="flex-0 mr-1 h-4" :src="token" />
+          <img v-else class="flex-0 h-5" :src="token" />
         </button>
         <button
           class="btn btn-active btn"
@@ -137,7 +138,7 @@ const openModalAuth = () => {
             :is="LockClosedIcon"
             class="inline-block w-6 h-6 stroke-current"
           />
-          <img v-else class="flex-0 mr-1 h-4" :src="token" />
+          <img v-else class="flex-0 h-5" :src="token" />
         </button>
       </div>
     </td>

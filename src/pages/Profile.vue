@@ -35,12 +35,12 @@ const { isAuth, logout, isModalAuthVisible } = inject("auth");
             </label>
             <input type="text" class="input input-bordered w-full max-w-xs" />
           </div>
-          <button class="btn btn-warning mt-6">change password</button>
+          <button class="btn btn-outline mt-6">change password</button>
         </div>
       </div>
       <div class="card shadow-lg compact side bg-base-100 p-3 my-6 w-full" v-if="isAuth">
         <div>
-          <button class="btn btn-warning" @click="logout">
+          <button class="btn btn-outline" @click="logout">
             sign out
           </button>
         </div>

@@ -81,21 +81,21 @@ const getFights = async (event) => {
 };
 
 const placeBet = () => {
-  const event = sortedEvents.value.find(x => {
-    if(x.eventId === currentBet.value.eventId) return x
-    return
-  })
+  const event = sortedEvents.value.find((x) => {
+    if (x.eventId === currentBet.value.eventId) return x;
+    return;
+  });
   let newBet = {
     name: event.name,
     dateTime: event.dateTime,
     status: event.status,
     winner: currentBet.value.winner,
-    cash: betValue.value
-  }
-  userBets.value.push(newBet)
-  localStorage.setItem("userBets", JSON.stringify(userBets.value))
-  betValue.value = "150 000.00"
-  newBet = {}
+    cash: betValue.value,
+  };
+  userBets.value.push(newBet);
+  localStorage.setItem("userBets", JSON.stringify(userBets.value));
+  betValue.value = "150 000.00";
+  newBet = {};
   isModalBetVisible.value = false;
 };
 </script>
@@ -136,7 +136,7 @@ const placeBet = () => {
               {{ currentBet.fighters[0].lastName }}
             </h2>
             <p class="text-base-content text-opacity-40">
-              {{ currentBet.weightClass}}
+              {{ currentBet.weightClass }}
             </p>
           </div>
         </div>
@@ -147,7 +147,7 @@ const placeBet = () => {
               {{ currentBet.fighters[1].lastName }}
             </h2>
             <p class="text-base-content text-opacity-40">
-              {{ currentBet.weightClass}}
+              {{ currentBet.weightClass }}
             </p>
           </div>
           <div>
@@ -189,8 +189,8 @@ const placeBet = () => {
   <div
     class="card shadow-lg compact side bg-base-100 p-3 mx-2 sm:mx-6 max-w-6xl"
   >
-    <div class="grid grid-cols-2 sm:grid-cols-3">
-      <div class="flex items-center col-span-2 sm:col-span-1 mb-2 sm:mb-0">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center col-span-2 sm:col-span-1">
         <component
           :is="LightningBoltIcon"
           class="inline-block w-6 h-6 mr-2 stroke-current"
@@ -228,7 +228,6 @@ const placeBet = () => {
           class="select select-bordered select-sm max-w-xs ml-6"
           value="UFC"
         >
-          <option disabled>Choose promotion</option>
           <option selected="selected">UFC</option>
         </select>
       </div>
@@ -248,7 +247,11 @@ const placeBet = () => {
         moment(event.dateTime).format("MMMM DD, YYYY")
       }}</template>
       <template #body>
-        <Table v-if="event.fights" :rows="event.fights"></Table>
+        <Table
+          v-if="event.fights"
+          :rows="event.fights"
+          :time="event.dateTime"
+        ></Table>
       </template>
     </Accordion>
   </div>

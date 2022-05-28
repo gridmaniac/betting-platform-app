@@ -34,14 +34,14 @@ const loginAccount = () => {
             <button class="btn btn-ghost modal-button mr-2" @click="createAccount">
               Create account
             </button>
-            <button class="btn btn-warning modal-button" @click="loginAccount">
+            <button class="btn btn-outline modal-button" @click="loginAccount">
               Login
             </button>
           </template>
           <template v-else>
-            <label for="modalAuth" class="btn btn-ghost modal-button mr-2" @click="$router.push({name: 'my-bets'})">
-              place a bet
-            </label>
+            <button class="btn btn-ghost modal-button mr-2" @click="$router.push({name: 'wallet'})">
+              connect to wallet
+            </button>
           </template>
         </div>
       </div>

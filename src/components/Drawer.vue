@@ -49,9 +49,9 @@ const loginAccount = () => {
         <button class="btn btn-ghost modal-button mr-2" @click="createAccount">
           Create account
         </button>
-        <label for="modalAuth" class="btn btn-warning modal-button" @click="loginAccount">
+        <button class="btn btn-outline modal-button" @click="loginAccount">
           Login
-        </label>
+        </button>
       </div>
     </aside>
   </div>

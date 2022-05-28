@@ -1,8 +1,9 @@
 <script setup>
 import Event from "./Event.vue"
-
+import moment from "moment"
 defineProps({
-    rows: Array
+    rows: Array,
+    time: Object
 })
 </script>
 
@@ -11,7 +12,7 @@ defineProps({
     <thead>
       <tr>
         <th class="text-left sm:text-center">
-          <div class="badge badge-ghost">7:30 PM</div>
+          <div class="badge badge-ghost">{{ moment(time).format("h:mm a") }}</div>
         </th>
 
         <th align="center">Winner</th>

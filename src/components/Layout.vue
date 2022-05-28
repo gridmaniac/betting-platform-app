@@ -11,6 +11,9 @@ import Footer from "./Footer.vue";
 import Modal from "./Modal.vue";
 // http
 import { signIn, registrarion } from "../http/userApi";
+import { useRouter } from "vue-router";
+
+const router = useRouter()
 
 //bet
 const isModalBetVisible = ref(false);
@@ -36,6 +39,7 @@ const login = (token) => {
 const logout = () => {
   localStorage.removeItem("token");
   isAuth.value = false;
+  router.push({ name: "events" });
 };
 
 provide("bets", {
@@ -100,11 +104,11 @@ const onSubmit = handleSubmit(async () => {
   if (modelErrors) {
     errors.value = modelErrors;
   }
-  email.value = ''
-  password.value = ''
+  email.value = "";
+  password.value = "";
   if (!isLogin.value) {
     isAcceptRegiser.value = true;
-    return
+    return;
   }
   isModalAuthVisible.value = false;
 });
@@ -205,11 +209,16 @@ const closeModalAuth = () => {
     </template>
     <template #footer>
       <template v-if="isAcceptRegiser">
-        <button class="btn btn-warning" @click="isModalAuthVisible = false, isAcceptRegiser = false">Close</button>
+        <button
+          class="btn btn-warning"
+          @click="(isModalAuthVisible = false), (isAcceptRegiser = false)"
+        >
+          Close
+        </button>
       </template>
       <template v-else>
         <div class="flex justify-between mt-5">
-          <button class="btn btn-warning" @click="onSubmit">
+          <button class="btn btn-outline" @click="onSubmit">
             <template v-if="isLogin">Login</template>
             <template v-else>Create account</template>
           </button>
