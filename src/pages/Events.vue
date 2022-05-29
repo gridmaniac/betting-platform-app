@@ -115,7 +115,7 @@ const placeBet = () => {
         </h2>
         <p class="text-primary">{{ moment(currentBet.dateTime).format("MMMM DD, YYYY hh:mm a") }}</p>
       </div>
-      <!-- <p class="text-left sm:text-center">February 27, 2022</p> -->
+      <div class="divider"></div>
     </template>
     <template #body>
       <div class="justify-between hidden sm:flex mb-6">
@@ -164,7 +164,7 @@ const placeBet = () => {
           </div>
         </div>
       </div>
-      <div class="flex">
+      <div class="flex mb-6">
         <p class="text-base-content text-opacity-40">Winner: </p>
         <p
           class="text-base-content text-bold flex justify-between items-center ml-2"
@@ -185,6 +185,7 @@ const placeBet = () => {
           <span> <img class="flex-0 mr-1 h-5" :src="token" /> </span
         ></label>
       </div>
+      <div class="divider"></div>
       <div class="modal-action">
         <button class="btn btn-primary" @click="placeBet">Place a bet</button>
         <button class="btn" @click="isModalBetVisible = false">Close</button>

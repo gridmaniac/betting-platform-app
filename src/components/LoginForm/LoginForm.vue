@@ -57,6 +57,7 @@ const onSubmit = handleSubmit(async () => {
   <div>
     <img class="d-block m-auto w-40" :src="token" alt="koa-token" />
     <h2 class="font-bold text-2xl text-primary">Welcome back</h2>
+    <div class="divider"></div>
     <div class="form-control w-full">
       <label class="label">
         <span class="label-text">Email</span>
@@ -89,10 +90,11 @@ const onSubmit = handleSubmit(async () => {
         </span>
       </label>
     </div>
+    <div class="divider"></div>
     <div class="flex justify-between mt-5">
       <button class="btn btn-outline" @click="onSubmit">Login</button>
       <button class="btn btn-ghost" @click="isLogin = false">
-        do not have account?
+        create account
       </button>
     </div>
   </div>

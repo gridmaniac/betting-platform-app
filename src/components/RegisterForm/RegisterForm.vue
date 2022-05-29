@@ -7,7 +7,7 @@ import { useForm, useField } from "vee-validate";
 // http
 import { registrarion } from "../../http/userApi";
 
-const { isLogin, isModalAuthVisible, isModalRegSuccessVisible } =
+const { isLogin, isModalAuthVisible, isModalRegSuccessVisible, emailSucces } =
   inject("auth");
 
 const myinput = ref(null);
@@ -47,6 +47,7 @@ const onSubmit = handleSubmit(async () => {
     confirmPassword.value
   );
   if (data) {
+    emailSucces.value = email.value;
     isModalAuthVisible.value = false;
     isModalRegSuccessVisible.value = true;
     return;
@@ -54,6 +55,7 @@ const onSubmit = handleSubmit(async () => {
   if (modelErrors) {
     errors.value = modelErrors;
   }
+
   email.value = "";
   password.value = "";
   confirmPassword.value = "";
@@ -66,6 +68,7 @@ const onSubmit = handleSubmit(async () => {
     <h2 class="font-bold text-2xl text-primary">
       <span>New account</span>
     </h2>
+    <div class="divider"></div>
     <div class="form-control w-full">
       <label class="label">
         <span class="label-text">Email</span>
@@ -113,11 +116,10 @@ const onSubmit = handleSubmit(async () => {
         </span>
       </label>
     </div>
+    <div class="divider"></div>
     <div class="flex justify-between mt-5">
       <button class="btn btn-outline" @click="onSubmit">Create account</button>
-      <button class="btn btn-ghost" @click="isLogin = true">
-        have an account already?
-      </button>
+      <button class="btn btn-ghost" @click="isLogin = true">login</button>
     </div>
   </div>
 </template>

@@ -19,9 +19,9 @@ const isModalRegSuccessVisible = ref(false);
 const currentBet = ref({});
 const userBets = ref([]);
 userBets.value = JSON.parse(localStorage.getItem("userBets")) || [];
+const emailSucces = ref("")
 
 const isModalAuthVisible = ref(false);
-
 const drawer = ref(false);
 const isLogin = ref(true);
 const isAuth = ref(localStorage.getItem("token"));
@@ -46,6 +46,7 @@ provide("bets", {
 });
 
 provide("auth", {
+  emailSucces,
   login,
   logout,
   isLogin,
