@@ -124,7 +124,7 @@ const startbetting = () => {
             </thead>
             <tbody>
               <tr v-for="bet in paginateItems">
-                <td>
+                <td data-name="Event: ">
                   <div class="whitespace-normal">
                     <strong>{{ bet.name }}</strong>
                     <p>{{ moment(bet.dateTime).format("MMMM DD, YYYY") }}</p>
@@ -134,14 +134,16 @@ const startbetting = () => {
                     </p>
                   </div>
                 </td>
-                <td class="text-center">
+                <td class="text-center" data-name="amount: ">
                   <!-- <div class="badge badge-outline">
                     
                   </div> -->
-                  <img class="inline-block mr-1 h-4" :src="token" />
+                  <span>
+                    <img class="inline-block mr-1 h-4" :src="token" />
                     {{ bet.cash }}
+                  </span>
                 </td>
-                <td class="text-center">
+                <td class="text-center" data-name="status: ">
                   <div class="badge badge-primary">{{ bet.status }}</div>
                 </td>
               </tr>
@@ -162,3 +164,23 @@ const startbetting = () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+@media screen and (max-width: 576px) {
+  thead {
+    display: none;
+  }
+  td {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* justify-content: space-between; */
+  }
+  td::before {
+    content: attr(data-name);
+    color: white;
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+}
+</style>

@@ -11,7 +11,7 @@ defineProps({
   <table class="table table-zebra table-compact w-full">
     <thead>
       <tr>
-        <th class="text-left sm:text-center">
+        <th class="text-left sm:text-center" style="width: 80%;">
           <div class="badge badge-ghost">{{ moment(eventItem.dateTime).format("h:mm a") }}</div>
         </th>
 
