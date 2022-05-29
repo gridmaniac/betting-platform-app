@@ -3,7 +3,7 @@ import Event from "./Event.vue"
 import moment from "moment"
 defineProps({
     rows: Array,
-    time: Object
+    eventItem: Object
 })
 </script>
 
@@ -12,14 +12,14 @@ defineProps({
     <thead>
       <tr>
         <th class="text-left sm:text-center">
-          <div class="badge badge-ghost">{{ moment(time).format("h:mm a") }}</div>
+          <div class="badge badge-ghost">{{ moment(eventItem.dateTime).format("h:mm a") }}</div>
         </th>
 
         <th align="center">Winner</th>
       </tr>
     </thead>
     <tbody>
-      <Event v-for="item in rows" :key="item.id" :item="item" />
+      <Event v-for="item in rows" :key="item.id" :item="item" :eventName="eventItem"/>
     </tbody>
   </table>
 </template>

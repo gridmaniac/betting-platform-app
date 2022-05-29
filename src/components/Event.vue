@@ -7,17 +7,23 @@ import { LockClosedIcon } from "@heroicons/vue/outline";
 //composables
 import { imgPlaceholder } from "../composables/img";
 
-defineProps({
+const props = defineProps({
   item: null,
+  eventName: Object,
 });
+
+// console.log(props.item);
+// console.log(props.eventName);
 
 const { isAuth, isModalAuthVisible } = inject("auth");
 const { currentBet, isModalBetVisible } = inject("bets");
 
 const openModalFight = (fight, fighter) => {
-  console.log(fight);
+
   isModalBetVisible.value = true;
   currentBet.value = {
+    eventName: props.eventName.name,
+    dateTime: props.eventName.dateTime,
     eventId: fight.eventId,
     fightId: fight.fightId,
     weightClass: fight.weightClass,

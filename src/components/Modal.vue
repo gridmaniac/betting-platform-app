@@ -1,6 +1,5 @@
 <script setup>
-
-import { computed } from "vue"
+import { computed } from "vue";
 
 const props = defineProps({
   modalId: String,
@@ -23,14 +22,15 @@ const modalEvent = (btn) => {
   <input type="checkbox" :id="modalId" class="modal-toggle" v-model="active" />
   <label :for="modalId" class="modal cursor-pointer">
     <label class="modal-box relative">
+      <slot></slot>
       <header>
         <slot name="header"></slot>
       </header>
-      <div class="divider"></div>
+      <!-- <div class="divider"></div> -->
       <main>
         <slot name="body"></slot>
       </main>
-      <div class="divider"></div>
+      <!-- <div class="divider"></div> -->
       <footer>
         <slot name="footer"></slot>
       </footer>

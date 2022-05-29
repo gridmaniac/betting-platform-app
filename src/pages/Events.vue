@@ -103,16 +103,17 @@ const placeBet = () => {
 <template>
   <Modal v-model="isModalBetVisible" v-if="currentBet.fighters">
     <template #header>
-      <div class="flex items-center">
-        <component
+      <div class="flex items-center flex-col mb-6">
+        <!-- <component
           :is="CashIcon"
           class="inline-block w-6 h-6 mr-2 stroke-current"
-        />
+        /> -->
         <h2
           class="font-bold text-2xl text-primary justify-start sm:justify-center"
         >
-          New bet
+          {{ currentBet.eventName }}
         </h2>
+        <p class="text-primary">{{ moment(currentBet.dateTime).format("MMMM DD, YYYY hh:mm a") }}</p>
       </div>
       <!-- <p class="text-left sm:text-center">February 27, 2022</p> -->
     </template>
@@ -163,12 +164,16 @@ const placeBet = () => {
           </div>
         </div>
       </div>
-      <p class="text-base-content text-opacity-40">Winner</p>
-      <p class="text-base-content text-bold flex justify-between items-center">
-        {{ currentBet.winner.firstName }} {{ currentBet.winner.firstName }}
-        <span class="text-sm">9:30 PM</span
-        ><span class="text-white font-bold">3.12</span>
-      </p>
+      <div class="flex">
+        <p class="text-base-content text-opacity-40">Winner: </p>
+        <p
+          class="text-base-content text-bold flex justify-between items-center ml-2"
+        >
+          {{ currentBet.winner.firstName }} {{ currentBet.winner.firstName }}
+          <!-- <span class="text-sm">9:30 PM</span
+        ><span class="text-white font-bold">3.12</span> -->
+        </p>
+      </div>
     </template>
     <template #footer>
       <div class="form-control">
@@ -250,7 +255,7 @@ const placeBet = () => {
         <Table
           v-if="event.fights"
           :rows="event.fights"
-          :time="event.dateTime"
+          :eventItem="event"
         ></Table>
       </template>
     </Accordion>
