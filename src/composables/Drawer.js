@@ -7,21 +7,21 @@ import { UserCircleIcon } from "@heroicons/vue/outline";
 
 export const authLinks = [
   {
-    name: "Tools",
+    name: "Sports",
     items: [
       { value: "events", name: "Events", icon: LightningBoltIcon },
+    ],
+  },
+  {
+    name: "Tools",
+    items: [
       { value: "my-bets", name: "My Bets", icon: TableIcon },
+      { value: "wallet", name: "Wallet", icon: CreditCardIcon },
+      { value: "profile", name: "Profile", icon: UserCircleIcon },
     ],
   },
   {
     name: "Featured",
     items: [{ value: "news", name: "News", icon: RssIcon }],
-  },
-  {
-    name: "Profile",
-    items: [
-      { value: "profile", name: "Profile", icon: UserCircleIcon },
-      { value: "wallet", name: "Wallet", icon: CreditCardIcon },
-    ],
   },
 ];

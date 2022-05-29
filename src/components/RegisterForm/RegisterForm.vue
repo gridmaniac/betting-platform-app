@@ -68,56 +68,60 @@ const onSubmit = handleSubmit(async () => {
     <h2 class="font-bold text-2xl text-primary">
       <span>New account</span>
     </h2>
+    <div>
+      <div class="divider"></div>
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="label-text">Email</span>
+        </label>
+        <input
+          type="email"
+          class="input input-bordered w-full"
+          required
+          v-model="email"
+          ref="myinput"
+        />
+        <label class="label">
+          <span class="label-text-alt">
+            {{ emailError || errors["email"] }}
+          </span>
+        </label>
+      </div>
+      <div class="form-control w-full">
+        <label class="label">
+          <span class="label-text">Password</span>
+        </label>
+        <input
+          type="password"
+          class="input input-bordered w-full"
+          v-model="password"
+          autocomplete="new-password"
+        />
+        <label class="label">
+          <span class="label-text-alt">
+            {{ passwordError || errors["password"] }}
+          </span>
+        </label>
+      </div>
+      <div class="form-control w-full" v-if="!isLogin">
+        <label class="label">
+          <span class="label-text">Confirm password</span>
+        </label>
+        <input
+          v-model="confirmPassword"
+          type="password"
+          class="input input-bordered w-full"
+          autocomplete="off"
+        />
+        <label class="label">
+          <span class="label-text-alt">
+            {{ confirmPasswordError || errors["confirmPassword"] }}
+          </span>
+        </label>
+      </div>
+    </div>
     <div class="divider"></div>
-    <div class="form-control w-full">
-      <label class="label">
-        <span class="label-text">Email</span>
-      </label>
-      <input
-        type="email"
-        class="input input-bordered w-full"
-        required
-        v-model="email"
-        ref="myinput"
-      />
-      <label class="label">
-        <span class="label-text-alt">
-          {{ emailError || errors["email"] }}
-        </span>
-      </label>
-    </div>
-    <div class="form-control w-full">
-      <label class="label">
-        <span class="label-text">Password</span>
-      </label>
-      <input
-        type="password"
-        class="input input-bordered w-full"
-        v-model="password"
-      />
-      <label class="label">
-        <span class="label-text-alt">
-          {{ passwordError || errors["password"] }}
-        </span>
-      </label>
-    </div>
-    <div class="form-control w-full" v-if="!isLogin">
-      <label class="label">
-        <span class="label-text">Confirm password</span>
-      </label>
-      <input
-        v-model="confirmPassword"
-        type="password"
-        class="input input-bordered w-full"
-      />
-      <label class="label">
-        <span class="label-text-alt">
-          {{ confirmPasswordError || errors["confirmPassword"] }}
-        </span>
-      </label>
-    </div>
-    <div class="divider"></div>
-    <div class="flex justify-between mt-5">
+    <div class="flex justify-between">
       <button class="btn btn-outline" @click="onSubmit">Create account</button>
       <button class="btn btn-ghost" @click="isLogin = true">login</button>
     </div>

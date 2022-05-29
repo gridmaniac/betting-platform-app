@@ -132,7 +132,6 @@ const openModalAuth = () => {
           <div v-else class="flex">
             <img class="h-4" :src="token" />
             <img class="h-4 -ml-2" :src="token" />
-            <img class="h-4 -ml-2" :src="token" />
           </div>
         </button>
         <button
@@ -149,7 +148,6 @@ const openModalAuth = () => {
           />
           <div v-else class="flex">
             <img class="h-4" :src="token" />
-            <img class="h-4 -ml-2" :src="token" />
             <img class="h-4 -ml-2" :src="token" />
           </div>
         </button>

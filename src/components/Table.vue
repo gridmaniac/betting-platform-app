@@ -11,7 +11,7 @@ defineProps({
   <table class="table table-zebra table-compact w-full">
     <thead>
       <tr>
-        <th class="text-left sm:text-center" style="width: 80%;">
+        <th class="text-left sm:text-center fix-it-pls">
           <div class="badge badge-ghost">{{ moment(eventItem.dateTime).format("h:mm a") }}</div>
         </th>
 
@@ -23,3 +23,15 @@ defineProps({
     </tbody>
   </table>
 </template>
+
+<style>
+.fix-it-pls {
+  width: 60%;
+}
+
+@media screen and (max-width: 640px) {
+  .fix-it-pls {
+    width: 75%
+  }
+}
+</style>
