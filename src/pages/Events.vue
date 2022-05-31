@@ -101,13 +101,9 @@ const placeBet = () => {
 </script>
 
 <template>
-  <Modal v-model="isModalBetVisible" v-if="currentBet.fighters">
-    <template #header>
+  <Modal v-model="isModalBetVisible">
+    <template v-if="currentBet.fighters">
       <div class="flex items-center flex-col mb-6">
-        <!-- <component
-          :is="CashIcon"
-          class="inline-block w-6 h-6 mr-2 stroke-current"
-        /> -->
         <h2
           class="font-bold text-2xl text-primary justify-start sm:justify-center"
         >
@@ -116,9 +112,7 @@ const placeBet = () => {
         <p class="text-primary">{{ moment(currentBet.dateTime).format("MMMM DD, YYYY hh:mm a") }}</p>
       </div>
       <div class="divider"></div>
-    </template>
-    <template #body>
-      <div class="justify-between hidden sm:flex mb-6">
+            <div class="justify-between hidden sm:flex mb-6">
         <div class="flex items-center space-x-3">
           <div>
             <div class="avatar">
@@ -174,8 +168,6 @@ const placeBet = () => {
         ><span class="text-white font-bold">3.12</span> -->
         </p>
       </div>
-    </template>
-    <template #footer>
       <div class="form-control">
         <label class="input-group input-group-md justify-end"
           ><input

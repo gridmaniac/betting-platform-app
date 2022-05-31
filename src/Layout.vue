@@ -63,7 +63,6 @@ const closeModalAuth = () => {
 
 <template>
   <Modal
-    modalId="modalBetting"
     @closeModal="closeModalAuth"
     v-model="isModalRegSuccessVisible"
   >
