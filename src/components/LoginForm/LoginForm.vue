@@ -1,5 +1,5 @@
 <script setup>
-import { ref, inject } from "vue";
+import { ref, inject, onMounted } from "vue";
 //src
 import token from "../../../src/assets/koa-token.png";
 //modules
@@ -9,9 +9,12 @@ import { signIn, registrarion } from "../../http/userApi";
 
 const { isLogin, login } = inject("auth");
 
-const myinput = ref(null);
+const emailInput = ref(null);
+onMounted(() => {
+  emailInput.value.focus();
+});
+
 const errors = ref({});
-const isAcceptRegiser = ref(false);
 
 const validationSchema = {
   email(value) {
@@ -66,7 +69,7 @@ const onSubmit = handleSubmit(async () => {
         class="input input-bordered w-full"
         required
         v-model="email"
-        ref="myinput"
+        ref="emailInput"
       />
       <label class="label">
         <span class="label-text-alt">

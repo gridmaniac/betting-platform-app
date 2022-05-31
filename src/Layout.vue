@@ -46,6 +46,7 @@ provide("bets", {
 });
 
 provide("auth", {
+  drawer,
   emailSucces,
   login,
   logout,
@@ -89,6 +90,6 @@ const closeModalAuth = () => {
       </div>
       <Footer />
     </main>
-    <Drawer @navigate="drawer = false" />
+    <Drawer v-model="drawer"/>
   </div>
 </template>
