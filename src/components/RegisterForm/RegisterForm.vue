@@ -65,9 +65,6 @@ const onSubmit = handleSubmit(async () => {
 <template>
   <div>
     <img class="d-block m-auto w-40" :src="token" alt="koa-token" />
-    <h2 class="font-bold text-2xl text-primary">
-      <span>New account</span>
-    </h2>
     <div>
       <div class="divider"></div>
       <div class="form-control w-full">

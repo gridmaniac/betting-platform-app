@@ -23,17 +23,6 @@ const modalEvent = (btn) => {
   <label :for="modalId" class="modal cursor-pointer">
     <label class="modal-box relative">
       <slot></slot>
-      <header>
-        <slot name="header"></slot>
-      </header>
-      <!-- <div class="divider"></div> -->
-      <main>
-        <slot name="body"></slot>
-      </main>
-      <!-- <div class="divider"></div> -->
-      <footer>
-        <slot name="footer"></slot>
-      </footer>
     </label>
   </label>
 </template>
