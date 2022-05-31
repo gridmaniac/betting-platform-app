@@ -63,18 +63,18 @@ const closeModalAuth = () => {
 
 <template>
   <Modal
-    v-if="isModalRegSuccessVisible"
+    modalId="modalBetting"
+    @closeModal="closeModalAuth"
     v-model="isModalRegSuccessVisible"
   >
     <component :is="RegisterSuccessForm"></component>
   </Modal>
   <Modal
-    v-if="isModalAuthVisible"
     modalId="modalAuth"
     @closeModal="closeModalAuth"
     v-model="isModalAuthVisible"
   >
-    <component :is="isLogin ? LoginForm : RegisterForm"></component>
+    <component :is="isLogin ? LoginForm : RegisterForm" v-if="isModalAuthVisible"></component>
   </Modal>
   <div class="bg-base-200 drawer drawer-mobile h-screen">
     <input
