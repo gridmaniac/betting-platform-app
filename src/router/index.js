@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Events from "../pages/Events.vue";
+import MMA from "../pages/MMA.vue";
+import Soccer from "../pages/Soccer.vue";
 import Fight from "../pages/Fight.vue";
 import MyBets from "../pages/MyBets.vue";
 import Wallet from "../pages/Wallet.vue";
@@ -17,12 +18,20 @@ const routes = [
     redirect: "events"
   },
   {
-    path: "/events",
-    name: "events",
+    path: "/mma",
+    name: "mma",
     meta: {
       authReq: false,
     },
-    component: Events,
+    component: MMA,
+  },
+  {
+    path: "/soccer",
+    name: "soccer",
+    meta: {
+      authReq: false,
+    },
+    component: Soccer,
   },
   {
     path: "/fight/:id",

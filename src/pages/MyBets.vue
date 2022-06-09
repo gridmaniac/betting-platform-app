@@ -66,7 +66,11 @@ const startbetting = () => {
     isModalAuthVisible.value = true;
     return;
   }
-  router.push({ name: "events" });
+  router.push({ name: "mma" });
+};
+
+const getNormalName = (name) => {
+  return `${name.split(", ")[1]} ${name.split(", ")[0]}`;
 };
 </script>
 
@@ -129,8 +133,7 @@ const startbetting = () => {
                     <strong>{{ bet.name }}</strong>
                     <p>{{ moment(bet.dateTime).format("MMMM DD, YYYY") }}</p>
                     <p class="text-primary">
-                      Winner: {{ bet.winner.firstName }}
-                      {{ bet.winner.lastName }}
+                      Winner: {{ getNormalName(bet.winner.name) }}
                     </p>
                   </div>
                 </td>

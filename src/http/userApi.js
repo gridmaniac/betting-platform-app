@@ -1,7 +1,7 @@
 import { $host } from "./index";
 
 export const registrarion = async (email, password, confirmPassword) => {
-  const { data } = await $host.post("api/v1/signup", {
+  const { data } = await $host.post("api/v2/signup", {
     email,
     password,
     confirmPassword,
@@ -10,7 +10,7 @@ export const registrarion = async (email, password, confirmPassword) => {
 };
 
 export const signIn = async (email, password) => {
-  const { data } = await $host.post("api/v1/login", { email, password });
+  const { data } = await $host.post("api/v2/login", { email, password });
   return data;
 };
 

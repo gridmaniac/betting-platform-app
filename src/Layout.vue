@@ -36,7 +36,7 @@ const login = (token) => {
 const logout = () => {
   localStorage.removeItem("token");
   isAuth.value = false;
-  router.push({ name: "events" });
+  router.push({ name: "mma" });
 };
 
 provide("bets", {

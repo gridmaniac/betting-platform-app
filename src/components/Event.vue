@@ -12,27 +12,33 @@ const props = defineProps({
   eventName: Object,
 });
 
-// console.log(props.item);
-// console.log(props.eventName);
-
 const { isAuth, isModalAuthVisible } = inject("auth");
 const { currentBet, isModalBetVisible } = inject("bets");
 
 const openModalFight = (fight, fighter) => {
+  console.log(fight);
   isModalBetVisible.value = true;
   currentBet.value = {
     eventName: props.eventName.name,
     dateTime: props.eventName.dateTime,
     eventId: fight.eventId,
-    fightId: fight.fightId,
-    weightClass: fight.weightClass,
-    fighters: fight.fighters,
+    fightId: fight._id,
+    weightClass: fight.qualifier,
+    fighters: fight.competitors,
     winner: fighter,
+    dataTime: fight.startTime,
+    status: fight.status,
+    sport: fight.sport,
+    category: fight.category,
   };
 };
 
 const openModalAuth = () => {
   isModalAuthVisible.value = true;
+};
+
+const getNormalName = (name) => {
+  return `${name.split(", ")[1]} ${name.split(", ")[0]}`;
 };
 </script>
 
@@ -48,7 +54,7 @@ const openModalAuth = () => {
           <div class="avatar w-10">
             <div class="w-12 h-12 mask mask-squircle">
               <img
-                :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/${item.fighters[0].firstName} ${item.fighters[0].lastName}.png`"
+                :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/${getNormalName(item.competitors[0].name)}.png`"
                 alt="Avatar Tailwind CSS Component"
                 @error="imgPlaceholder"
               />
@@ -56,10 +62,10 @@ const openModalAuth = () => {
           </div>
           <div class="text-left sm:text-center">
             <div class="font-bold">
-              {{ item.fighters[0].firstName }} {{ item.fighters[0].lastName }}
+              {{ getNormalName(item.competitors[0].name) }}
             </div>
             <div class="text-sm opacity-50">
-              {{ item.weightClass }}
+              {{ item.competitors[0].abbreviation }}
             </div>
           </div>
         </div>
@@ -96,7 +102,7 @@ const openModalAuth = () => {
           <div class="avatar w-10">
             <div class="w-12 h-12 mask mask-squircle">
               <img
-                :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/${item.fighters[1].firstName} ${item.fighters[1].lastName}.png`"
+                :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/${getNormalName(item.competitors[1].name)}.png`"
                 alt="Avatar Tailwind CSS Component"
                 @error="imgPlaceholder"
               />
@@ -104,10 +110,10 @@ const openModalAuth = () => {
           </div>
           <div class="text-left sm:text-center">
             <div class="font-bold">
-              {{ item.fighters[1].firstName }} {{ item.fighters[1].lastName }}
+              {{ getNormalName(item.competitors[1].name) }}
             </div>
             <div class="text-sm opacity-50">
-              {{ item.weightClass }}
+              {{ item.competitors[1].abbreviation }}
             </div>
           </div>
         </div>
@@ -120,7 +126,7 @@ const openModalAuth = () => {
         <button
           class="btn btn-active"
           @click="
-            isAuth ? openModalFight(item, item.fighters[0]) : openModalAuth()
+            isAuth ? openModalFight(item, item.competitors[0]) : openModalAuth()
           "
           :disabled="item.status === 'Final'"
         >
@@ -137,7 +143,7 @@ const openModalAuth = () => {
         <button
           class="btn btn-active btn"
           @click="
-            isAuth ? openModalFight(item, item.fighters[0]) : openModalAuth()
+            isAuth ? openModalFight(item, item.competitors[0]) : openModalAuth()
           "
           :disabled="item.status === 'Final'"
         >

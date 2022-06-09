@@ -13,7 +13,7 @@ import Accordion from "../components/Accordion.vue";
 import Table from "../components/Table.vue";
 import Modal from "../components/Modal.vue";
 //composables
-import { fetchEvents, fetchFights } from "../http/events";
+import { fetchMMA } from "../http/events";
 import Loader from "../components/Loader.vue";
 import { imgPlaceholder } from "../composables/img";
 
@@ -26,26 +26,40 @@ const upcomingEvents = ref([]);
 const completedEvents = ref([]);
 
 onMounted(async () => {
-  events.value = await fetchEvents();
-  events.value.map((event) => {
-    event.isChecked = false;
-    return event;
+  events.value = await fetchMMA();
+
+  const newEvents = [];
+  const map = {};
+  events.value.forEach((event) => {
+    if (map[event.name]) {
+      map[event.name].push(event);
+      newEvents[newEvents.length - 1].fights.push(event);
+    } else {
+      map[event.name] = [event];
+      newEvents.push({
+        name: event.name,
+        id: event._id,
+        dataTime: event.startTime,
+        fights: [event],
+      });
+    }
   });
-  completedEvents.value = events.value
+
+  completedEvents.value = await newEvents
     .filter((x) => {
-      const result = moment(x.dateTime).isBefore(moment());
+      const a = moment().format();
+      const b = moment(x.dataTime).format();
+      const result = moment(b).isBefore(moment(a));
       if (result) return x;
     })
     .reverse();
-  // completedEvents.value[0].isChecked = true;
-  getFights(completedEvents.value[0]);
 
-  upcomingEvents.value = events.value.filter((x) => {
-    const result = moment(x.dateTime).isAfter(moment());
+  upcomingEvents.value = await newEvents.filter((x) => {
+    const a = moment().format();
+    const b = moment(x.dataTime).format();
+    const result = moment(b).isAfter(moment(a));
     if (result) return x;
   });
-  // upcomingEvents.value[0].isChecked = true;
-  getFights(upcomingEvents.value[0]);
 });
 
 onMounted(() => {
@@ -80,23 +94,30 @@ const getFights = async (event) => {
   }
 };
 
-const placeBet = () => {
-  const event = sortedEvents.value.find((x) => {
-    if (x.eventId === currentBet.value.eventId) return x;
-    return;
-  });
+const placeBet = (event) => {
+  // const event = sortedEvents.value.find((x) => {
+  //   console.log(x);
+  //   if (x.eventId === currentBet.value.eventId) return x;
+  //   return;
+  // });
+  console.log(event);
   let newBet = {
-    name: event.name,
-    dateTime: event.dateTime,
+    name: event.eventName,
+    dateTime: event.dataTime,
     status: event.status,
     winner: currentBet.value.winner,
     cash: betValue.value,
   };
+  console.log(newBet);
   userBets.value.push(newBet);
   localStorage.setItem("userBets", JSON.stringify(userBets.value));
   betValue.value = "150 000.00";
   newBet = {};
   isModalBetVisible.value = false;
+};
+
+const getNormalName = (name) => {
+  return `${name.split(", ")[1]} ${name.split(", ")[0]}`;
 };
 </script>
 
@@ -109,16 +130,18 @@ const placeBet = () => {
         >
           {{ currentBet.eventName }}
         </h2>
-        <p class="text-primary">{{ moment(currentBet.dateTime).format("MMMM DD, YYYY hh:mm a") }}</p>
+        <p class="text-primary">
+          {{ moment(currentBet.dateTime).format("MMMM DD, YYYY hh:mm a") }}
+        </p>
       </div>
       <div class="divider"></div>
-            <div class="justify-between hidden sm:flex mb-6">
+      <div class="justify-between hidden sm:flex mb-6">
         <div class="flex items-center space-x-3">
           <div>
             <div class="avatar">
               <div class="rounded-full w-14 h-14 shadow">
                 <img
-                  :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/${currentBet.fighters[0].firstName} ${currentBet.fighters[0].lastName}.png`"
+                  :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/${getNormalName(currentBet.fighters[0].name)}.png`"
                   alt="Avatar Tailwind CSS Component"
                   @error="imgPlaceholder"
                 />
@@ -127,8 +150,7 @@ const placeBet = () => {
           </div>
           <div>
             <h2 class="card-title">
-              {{ currentBet.fighters[0].firstName }}
-              {{ currentBet.fighters[0].lastName }}
+              {{ getNormalName(currentBet.fighters[0].name) }}
             </h2>
             <p class="text-base-content text-opacity-40">
               {{ currentBet.weightClass }}
@@ -138,8 +160,7 @@ const placeBet = () => {
         <div class="flex items-center space-x-3">
           <div class="text-right">
             <h2 class="card-title">
-              {{ currentBet.fighters[1].firstName }}
-              {{ currentBet.fighters[1].lastName }}
+              {{ getNormalName(currentBet.fighters[1].name) }}
             </h2>
             <p class="text-base-content text-opacity-40">
               {{ currentBet.weightClass }}
@@ -149,7 +170,7 @@ const placeBet = () => {
             <div class="avatar">
               <div class="rounded-full w-14 h-14 shadow">
                 <img
-                  :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/${currentBet.fighters[1].firstName} ${currentBet.fighters[1].lastName}.png`"
+                  :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/${getNormalName(currentBet.fighters[1].name)}.png`"
                   alt="Avatar Tailwind CSS Component"
                   @error="imgPlaceholder"
                 />
@@ -159,11 +180,11 @@ const placeBet = () => {
         </div>
       </div>
       <div class="flex mb-6">
-        <p class="text-base-content text-opacity-40">Winner: </p>
+        <p class="text-base-content text-opacity-40">Winner:</p>
         <p
           class="text-base-content text-bold flex justify-between items-center ml-2"
         >
-          {{ currentBet.winner.firstName }} {{ currentBet.winner.firstName }}
+          {{ getNormalName(currentBet.winner.name) }}
           <!-- <span class="text-sm">9:30 PM</span
         ><span class="text-white font-bold">3.12</span> -->
         </p>
@@ -179,7 +200,7 @@ const placeBet = () => {
       </div>
       <div class="divider"></div>
       <div class="modal-action">
-        <button class="btn btn-primary" @click="placeBet">Place a bet</button>
+        <button class="btn btn-primary" @click="placeBet(currentBet)">Place a bet</button>
         <button class="btn" @click="isModalBetVisible = false">Close</button>
       </div>
     </template>
@@ -193,7 +214,7 @@ const placeBet = () => {
           :is="LightningBoltIcon"
           class="inline-block w-6 h-6 mr-2 stroke-current"
         />
-        <h1 class="font-bold text-2xl text-primary">Events</h1>
+        <h1 class="font-bold text-2xl text-primary">MMA</h1>
       </div>
       <div class="flex justify-start sm:justify-center">
         <div class="tabs tabs-boxed">
@@ -235,21 +256,16 @@ const placeBet = () => {
     <Loader v-if="events === []" />
     <Accordion
       v-for="event in sortedEvents"
-      :key="event.eventId"
+      :key="event.id"
       :event="event"
       @click="getFights(event)"
-      :checked="event.isChecked"
     >
       <template #title>{{ event.name }}</template>
       <template #description>{{
         moment(event.dateTime).format("MMMM DD, YYYY")
       }}</template>
       <template #body>
-        <Table
-          v-if="event.fights"
-          :rows="event.fights"
-          :eventItem="event"
-        ></Table>
+        <Table :rows="event.fights" :eventItem="event"></Table>
       </template>
     </Accordion>
   </div>
