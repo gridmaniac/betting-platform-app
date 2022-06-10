@@ -15,7 +15,7 @@ const routes = [
   {
     path: "/",
     name: "home",
-    redirect: "events"
+    redirect: "mma"
   },
   {
     path: "/mma",
@@ -80,14 +80,5 @@ const router = createRouter({
   routes,
   linkActiveClass: "active",
 });
-
-// router.beforeEach(async (to, from) => {
-//   if (
-//     to.meta.authReq === true &&
-//     !isAuthenticated() 
-//   ) {
-//     return { name: 'events' }
-//   }
-// })
 
 export default router;
