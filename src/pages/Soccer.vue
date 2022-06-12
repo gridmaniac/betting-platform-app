@@ -25,15 +25,13 @@ const upcomingEvents = ref([]);
 const completedEvents = ref([]);
 
 onMounted(async () => {
+  document.querySelector("main").scrollTo(0, 0);
   events.value = await fetchSoccer();
   const newEvents = await mapEvents(events.value)
   completedEvents.value = newEvents[0]
   upcomingEvents.value = newEvents[1]
 });
 
-onMounted(() => {
-  document.querySelector("main").scrollTo(0, 0);
-});
 
 const sortedEvents = computed(() => {
   if (isUpcoming.value) {
@@ -44,23 +42,6 @@ const sortedEvents = computed(() => {
 
 const changeEventsStatus = () => {
   isUpcoming.value = !isUpcoming.value;
-};
-
-const getFights = async (event) => {
-  event.isChecked = !event.isChecked;
-  if (event.fights === undefined) {
-    event.fights = [];
-  }
-  if (!event.fights.length) {
-    const response = await fetchFights(event.eventId);
-    const sortedFilghts = response.filter((x) => {
-      if (x.status === null || x.status == "Canceled") {
-        return;
-      }
-      return x;
-    });
-    event.fights = sortedFilghts;
-  }
 };
 
 const placeBet = (event) => {
@@ -220,7 +201,6 @@ const getNormalName = (name) => {
       v-for="event in sortedEvents"
       :key="event.id"
       :event="event"
-      @click="getFights(event)"
     >
       <template #title>{{ event.name }}</template>
       <template #description>{{
