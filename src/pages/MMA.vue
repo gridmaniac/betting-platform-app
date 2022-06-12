@@ -7,7 +7,6 @@ import token from "../assets/koa-token.png";
 import { LightningBoltIcon } from "@heroicons/vue/outline";
 import { ArrowCircleRightIcon } from "@heroicons/vue/outline";
 import { CheckCircleIcon } from "@heroicons/vue/outline";
-import { CashIcon } from "@heroicons/vue/outline";
 //components
 import Accordion from "../components/Accordion.vue";
 import Table from "../components/Table.vue";
@@ -15,8 +14,7 @@ import Modal from "../components/Modal.vue";
 //composables
 import { fetchMMA } from "../http/events";
 import Loader from "../components/Loader.vue";
-import { imgPlaceholder } from "../composables/img";
-
+import { mapEvents } from "../composables/events";
 const { currentBet, userBets, isModalBetVisible } = inject("bets");
 
 const betValue = ref("150 000.00");
@@ -27,39 +25,9 @@ const completedEvents = ref([]);
 
 onMounted(async () => {
   events.value = await fetchMMA();
-
-  const newEvents = [];
-  const map = {};
-  events.value.forEach((event) => {
-    if (map[event.name]) {
-      map[event.name].push(event);
-      newEvents[newEvents.length - 1].fights.push(event);
-    } else {
-      map[event.name] = [event];
-      newEvents.push({
-        name: event.name,
-        id: event._id,
-        dataTime: event.startTime,
-        fights: [event],
-      });
-    }
-  });
-
-  completedEvents.value = await newEvents
-    .filter((x) => {
-      const a = moment().format();
-      const b = moment(x.dataTime).format();
-      const result = moment(b).isBefore(moment(a));
-      if (result) return x;
-    })
-    .reverse();
-
-  upcomingEvents.value = await newEvents.filter((x) => {
-    const a = moment().format();
-    const b = moment(x.dataTime).format();
-    const result = moment(b).isAfter(moment(a));
-    if (result) return x;
-  });
+  const newEvents = await mapEvents(events.value);
+  completedEvents.value = newEvents[0];
+  upcomingEvents.value = newEvents[1];
 });
 
 onMounted(() => {
@@ -95,12 +63,6 @@ const getFights = async (event) => {
 };
 
 const placeBet = (event) => {
-  // const event = sortedEvents.value.find((x) => {
-  //   console.log(x);
-  //   if (x.eventId === currentBet.value.eventId) return x;
-  //   return;
-  // });
-  console.log(event);
   let newBet = {
     name: event.eventName,
     dateTime: event.dataTime,
@@ -108,7 +70,6 @@ const placeBet = (event) => {
     winner: currentBet.value.winner,
     cash: betValue.value,
   };
-  console.log(newBet);
   userBets.value.push(newBet);
   localStorage.setItem("userBets", JSON.stringify(userBets.value));
   betValue.value = "150 000.00";
@@ -140,11 +101,13 @@ const getNormalName = (name) => {
           <div>
             <div class="avatar">
               <div class="rounded-full w-14 h-14 shadow">
-                <img
-                  :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/${getNormalName(currentBet.fighters[0].name)}.png`"
+                <!-- <img
+                  :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/${getNormalName(
+                    currentBet.fighters[0].name
+                  )}.png`"
                   alt="Avatar Tailwind CSS Component"
                   @error="imgPlaceholder"
-                />
+                /> -->
               </div>
             </div>
           </div>
@@ -169,11 +132,13 @@ const getNormalName = (name) => {
           <div>
             <div class="avatar">
               <div class="rounded-full w-14 h-14 shadow">
-                <img
-                  :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/${getNormalName(currentBet.fighters[1].name)}.png`"
+                <!-- <img
+                  :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/${getNormalName(
+                    currentBet.fighters[1].name
+                  )}.png`"
                   alt="Avatar Tailwind CSS Component"
                   @error="imgPlaceholder"
-                />
+                /> -->
               </div>
             </div>
           </div>
@@ -200,7 +165,9 @@ const getNormalName = (name) => {
       </div>
       <div class="divider"></div>
       <div class="modal-action">
-        <button class="btn btn-primary" @click="placeBet(currentBet)">Place a bet</button>
+        <button class="btn btn-primary" @click="placeBet(currentBet)">
+          Place a bet
+        </button>
         <button class="btn" @click="isModalBetVisible = false">Close</button>
       </div>
     </template>
@@ -215,6 +182,7 @@ const getNormalName = (name) => {
           class="inline-block w-6 h-6 mr-2 stroke-current"
         />
         <h1 class="font-bold text-2xl text-primary">MMA</h1>
+        <!-- <img :src="imgPlaceholder" alt="" /> -->
       </div>
       <div class="flex justify-start sm:justify-center">
         <div class="tabs tabs-boxed">

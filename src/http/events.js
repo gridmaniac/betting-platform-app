@@ -1,3 +1,4 @@
+import axios from "axios";
 import { $host, $hostImg } from "./index";
 
 export const fetchMMA = async () => {
@@ -20,10 +21,10 @@ export const fetchSoccer = async () => {
 
 export const fetchFighterImg= async (firstName, lastName) => {
   try {
-    const { data } = await $host.get(`${firstName} ${lastName}.png`);
+    const { data } = await axios.get(`https://koacombat.nyc3.cdn.digitaloceanspaces.com/competitors/MMA/${firstName} ${lastName}.png`);
     return data;
   } catch (error) {
-    const { data } = await $host.get(`silhouette.png`);
+    const { data } = await axios.get(`https://koacombat.nyc3.cdn.digitaloceanspaces.com/competitors/silhouette.png`);
     return data;
   }
 };

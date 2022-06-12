@@ -4,8 +4,6 @@ import { inject } from "vue";
 import token from "../assets/koa-token.png";
 //icon
 import { LockClosedIcon } from "@heroicons/vue/outline";
-//composables
-import { imgPlaceholder } from "../composables/img";
 
 const props = defineProps({
   item: null,
@@ -16,7 +14,6 @@ const { isAuth, isModalAuthVisible } = inject("auth");
 const { currentBet, isModalBetVisible } = inject("bets");
 
 const openModalFight = (fight, fighter) => {
-  console.log(fight);
   isModalBetVisible.value = true;
   currentBet.value = {
     eventName: props.eventName.name,
@@ -54,9 +51,8 @@ const getNormalName = (name) => {
           <div class="avatar w-10">
             <div class="w-12 h-12 mask mask-squircle">
               <img
-                :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/${getNormalName(item.competitors[0].name)}.png`"
+                src="../assets/silhouette.png"
                 alt="Avatar Tailwind CSS Component"
-                @error="imgPlaceholder"
               />
             </div>
           </div>
@@ -102,9 +98,8 @@ const getNormalName = (name) => {
           <div class="avatar w-10">
             <div class="w-12 h-12 mask mask-squircle">
               <img
-                :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/${getNormalName(item.competitors[1].name)}.png`"
+                src="../assets/silhouette.png"
                 alt="Avatar Tailwind CSS Component"
-                @error="imgPlaceholder"
               />
             </div>
           </div>

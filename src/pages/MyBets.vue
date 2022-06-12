@@ -23,7 +23,6 @@ const bets = computed(() => {
   }
   return fakeBets;
 });
-console.log(bets.value);
 
 const currEntries = ref(4);
 const pageNumber = ref(1);

@@ -1,12 +1,10 @@
 <script setup>
 import Event from "./Event.vue"
 import moment from "moment"
-const props = defineProps({
+defineProps({
     rows: Array,
     eventItem: Object
 })
-
-console.log(props.rows);
 </script>
 
 <template>
