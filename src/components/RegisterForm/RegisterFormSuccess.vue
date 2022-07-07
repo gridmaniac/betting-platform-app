@@ -1,18 +1,16 @@
-<script setup>
+<script setup lang="ts">
 import { inject } from "vue";
 //src
 import token from "../../../src/assets/koa-token.png";
 
-const { isModalRegSuccessVisible, emailSucces } = inject("auth");
+const { isModalRegSuccessVisible, emailSucces } = inject<any>("auth");
 
 const closeModal = () => {
   isModalRegSuccessVisible.value = false;
 };
-
 </script>
 
 <template>
-
   <div>
     <img class="d-block m-auto w-40" :src="token" alt="koa-token" />
     <h2 class="font-bold text-2xl text-primary">
@@ -20,7 +18,8 @@ const closeModal = () => {
     </h2>
     <div class="divider"></div>
     <p class="mb-5">
-      We have sent an email to <span class="text-primary">{{ emailSucces }}</span>
+      We have sent an email to
+      <span class="text-primary">{{ emailSucces }}</span>
     </p>
     <p>
       You need to verify your email to continue. If you have not recevied the

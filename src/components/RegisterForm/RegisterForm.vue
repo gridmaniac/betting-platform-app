@@ -1,5 +1,5 @@
-<script setup>
-import { ref, inject, onMounted, nextTick } from "vue";
+<script setup lang="ts">
+import { ref, inject, onMounted } from "vue";
 //src
 import token from "../../../src/assets/koa-token.png";
 //modules
@@ -8,28 +8,31 @@ import { useForm, useField } from "vee-validate";
 import { registrarion } from "../../http/userApi";
 
 const { isLogin, isModalAuthVisible, isModalRegSuccessVisible, emailSucces } =
-  inject("auth");
+  inject<any>("auth");
 
-const errors = ref({});
-const emailInput = ref(null);
+const errors = ref<any>({});
+const emailInput = ref();
 onMounted(() => {
   emailInput.value.focus();
 });
 
 const validationSchema = {
-  email(value) {
+  email(value: string) {
     if (value === "" || value == null) {
       return "E-mail is required";
     }
     return true;
   },
-  password(value) {
+  password(value: string) {
     if (value === "" || value == null) {
       return "Password is required";
     }
     return true;
   },
-  confirmPassword(value) {
+  confirmPassword(value: string) {
+    if (value === "" || value == null) {
+      return "Password is required";
+    }
     return true;
   },
 };
@@ -45,9 +48,9 @@ const { value: confirmPassword, errorMessage: confirmPasswordError } =
 
 const onSubmit = handleSubmit(async () => {
   const { data, modelErrors } = await registrarion(
-    email.value,
-    password.value,
-    confirmPassword.value
+    email.value as string,
+    password.value as string,
+    confirmPassword.value as string
   );
   if (data) {
     emailSucces.value = email.value;

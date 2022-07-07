@@ -1,35 +1,36 @@
-<script setup>
+<script setup lang="ts">
 import { ref, inject, onMounted } from "vue";
 //src
 import token from "../../../src/assets/koa-token.png";
 //modules
 import { useForm, useField } from "vee-validate";
 // http
-import { signIn, registrarion } from "../../http/userApi";
+import { signIn } from "../../http/userApi";
+//store
+import { useAuthStore } from "@/stores/auth";
+//authStore
+const authStore = useAuthStore();
 
-const { isLogin, login } = inject("auth");
+const { isLogin, isModalAuthVisible } = inject<any>("auth");
 
-const emailInput = ref(null);
+const emailInput = ref();
 onMounted(() => {
   emailInput.value.focus();
 });
 
-const errors = ref({});
+const errors = ref<any>({});
 
 const validationSchema = {
-  email(value) {
+  email(value: string) {
     if (value === "" || value == null) {
       return "E-mail is required";
     }
     return true;
   },
-  password(value) {
+  password(value: string) {
     if (value === "" || value == null) {
       return "Password is required";
     }
-    return true;
-  },
-  confirmPassword(value) {
     return true;
   },
 };
@@ -40,17 +41,16 @@ const { handleSubmit } = useForm({
 
 const { value: email, errorMessage: emailError } = useField("email");
 const { value: password, errorMessage: passwordError } = useField("password");
-const { value: confirmPassword, errorMessage: confirmPasswordError } =
-  useField("confirmPassword");
 
 const onSubmit = handleSubmit(async () => {
-  const response = await signIn(email.value, password.value);
+  const response = await signIn(email.value as string, password.value as string);
   const { data, modelErrors } = response;
   if (modelErrors) {
     errors.value = modelErrors;
   }
   if (data) {
-    login(data);
+    authStore.login(data);
+    isModalAuthVisible.value = false;
   }
   return;
 });
