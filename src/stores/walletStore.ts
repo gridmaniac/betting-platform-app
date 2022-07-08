@@ -12,9 +12,6 @@ import { fetchWallet, setMyAddress } from "@/http/walletApi";
 
 declare var window: any;
 
-const addr = "0xf6cda9031f6aae3d4dc4310364699f06f51b989b";
-const TOKEN_CONTRACT_ADDRESS = "0x0101C8291008edd36b42160b6f606eDF2a2A7E41";
-
 export const useWalletStore = defineStore("wallet", () => {
   // modal error
   const isModalWalletError = ref(false);
@@ -23,6 +20,8 @@ export const useWalletStore = defineStore("wallet", () => {
   const address = ref();
   const balance = ref();
   const decimals = ref();
+  const hotAddress = ref();
+  const contractAddress = ref();
   const transactions = ref<ITransaction[]>([]);
   const inBets = ref(0);
   const modalMessageError = ref<IModalErrorMessage>();
@@ -67,6 +66,8 @@ export const useWalletStore = defineStore("wallet", () => {
     
     address.value = response.address;
     decimals.value = response.decimals;
+    hotAddress.value = response.hotAddress;
+    contractAddress.value = response.contractAddress;
     balance.value = response.balance.toString().slice(0, -response.decimals);
     transactions.value = response.tranasctions;    
     transactions.value.forEach(element => {
@@ -110,14 +111,14 @@ export const useWalletStore = defineStore("wallet", () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
-        TOKEN_CONTRACT_ADDRESS,
+        contractAddress.value,
         contractABI,
         signer
       );
 
-      const tx = await contract.transfer(addr, ether + "000000000");
+      const tx = await contract.transfer(hotAddress.value, ether + "000000000");
       // const tx = await signer.sendTransaction({
-      //   to: TOKEN_CONTRACT_ADDRESS,
+      //   to: contractAddress.value,
       //   value: ethers.utils.parseEther(ether.toString()),
       // });
       modalMessageError.value = {
