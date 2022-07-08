@@ -20,7 +20,7 @@ export const useAuthStore = defineStore("auth", () => {
         Authorization: `Bearer ${user.value.token}`,
       },
     };
-    localStorage.setItem("header", header.value);
+    localStorage.setItem("header", JSON.stringify(header.value));
   }
 
   watch(isAuth, (x) => {

@@ -4,9 +4,8 @@ import { GlobeAltIcon } from "@heroicons/vue/outline";
 import { inject, onMounted, ref } from "vue";
 import coin from "../assets/koa-token.png";
 import { balanceFormat } from "@/composables/Bets";
-import { setMyAddress } from "@/http/walletApi";
 //store
-import { useWalletStore } from "@/stores/wallet";
+import { useWalletStore } from "@/stores/walletStore";
 import { useAuthStore } from "@/stores/authStore";
 const walletStore = useWalletStore();
 const authStore = useAuthStore();
@@ -23,11 +22,6 @@ const { isModalAuthVisible } = inject<any>("auth");
 const setMoney = (money: number) => {
   deposit.value = money;
 };
-const disconnectMetamask = async () => {
-  const response = await setMyAddress("")
-  console.log(response);
-  walletStore.testFunction()
-}
 </script>
 
 <template>
@@ -51,68 +45,81 @@ const disconnectMetamask = async () => {
         class="btn btn-warning modal-button"
         @click="isModalAuthVisible = true"
       >
-        Connect to wallet
+        login
       </button>
     </div>
     <div :class="{ 'blur-md': !authStore.isAuth }">
       <div class="flex flex-col w-full">
         <div
-          class="card shadow-lg compact side bg-base-100 p-3 mb-6 mr-0 flex-1"
+          class="relative card shadow-lg compact side bg-base-100 p-3 mb-6 mr-0 flex-1"
         >
-          <div class="flex justify-between">
-            <div>
-              <span class="font-bold">Connected:</span>
-              <p class="text-primary">
-                {{ walletStore.address }}
-              </p>
-            </div>
-            <button class="btn btn-outline" @click="disconnectMetamask">
-              disconnect
+          <div
+            class="absolute inset-0 w-full h-full flex justify-center items-center z-50"
+            v-if="!walletStore.address"
+          >
+            <button
+              class="btn btn-warning modal-button z-100"
+              @click="walletStore.connectWallet"
+            >
+              Connect to wallet
             </button>
           </div>
-          <div class="form-control mt-3">
-            <div class="input-group">
-              <button
-                class="btn btn-ghost btn-lg hidden sm:block"
-                @click="setMoney(100000)"
-              >
-                100K
-              </button>
-              <button
-                class="btn btn-ghost btn-lg hidden sm:block"
-                @click="setMoney(1000000)"
-              >
-                1M
-              </button>
-              <input
-                type="number"
-                placeholder="0.000000"
-                v-model="deposit"
-                class="input input-bordered input-md sm:input-lg flex-1 text-right"
-              />
-              <button
-                class="btn btn-outline btn-md sm:btn-lg w-auto sm:w-56"
-                @click="walletStore.createDeposit(deposit)"
-                :disabled="!deposit"
-              >
-                Deposit
+          <div :class="{ 'blur-md': !walletStore.address }">
+            <div class="flex justify-between">
+              <div>
+                <span class="font-bold">Connected:</span>
+                <p class="text-primary">
+                  {{ walletStore.address }}
+                </p>
+              </div>
+              <button class="btn btn-outline" @click="walletStore.disconnectWallet">
+                disconnect
               </button>
             </div>
-          </div>
-          <div class="form-control mt-3">
-            <div class="input-group">
-              <input
-                type="number"
-                placeholder="0.000000"
-                v-model="withdrawValue"
-                class="input input-bordered flex-1 text-right"
-              />
-              <button
-                class="btn btn-outline w-auto sm:w-56"
-                :disabled="!withdrawValue"
-              >
-                Withdraw
-              </button>
+            <div class="form-control mt-3">
+              <div class="input-group">
+                <button
+                  class="btn btn-ghost btn-lg hidden sm:block"
+                  @click="setMoney(100000)"
+                >
+                  100K
+                </button>
+                <button
+                  class="btn btn-ghost btn-lg hidden sm:block"
+                  @click="setMoney(1000000)"
+                >
+                  1M
+                </button>
+                <input
+                  type="number"
+                  placeholder="0.000000"
+                  v-model="deposit"
+                  class="input input-bordered input-md sm:input-lg flex-1 text-right"
+                />
+                <button
+                  class="btn btn-outline btn-md sm:btn-lg w-auto sm:w-56"
+                  @click="walletStore.createDeposit(deposit)"
+                  :disabled="!deposit"
+                >
+                  Deposit
+                </button>
+              </div>
+            </div>
+            <div class="form-control mt-3">
+              <div class="input-group">
+                <input
+                  type="number"
+                  placeholder="0.000000"
+                  v-model="withdrawValue"
+                  class="input input-bordered flex-1 text-right"
+                />
+                <button
+                  class="btn btn-outline w-auto sm:w-56"
+                  :disabled="!withdrawValue"
+                >
+                  Withdraw
+                </button>
+              </div>
             </div>
           </div>
         </div>

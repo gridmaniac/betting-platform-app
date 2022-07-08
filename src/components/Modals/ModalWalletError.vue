@@ -3,7 +3,7 @@ import TheModal from "@/components/TheModal.vue";
 // icon
 import { ExclamationCircleIcon } from "@heroicons/vue/outline";
 // store
-import { useWalletStore } from "@/stores/wallet";
+import { useWalletStore } from "@/stores/walletStore";
 const walletStore = useWalletStore();
 
 const closeModal = () => {

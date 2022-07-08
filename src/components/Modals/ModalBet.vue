@@ -6,7 +6,7 @@ import token from "@/assets/koa-token.png";
 import TheModal from "@/components/TheModal.vue";
 import CompetitorModal from "../CompetitorModal.vue";
 // store
-import { useWalletStore } from "@/stores/wallet";
+import { useWalletStore } from "@/stores/walletStore";
 import type {IBet} from "@/models/wallet"
 const walletStore = useWalletStore();
 // modal bet

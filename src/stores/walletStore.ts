@@ -4,12 +4,11 @@ import { useAuthStore } from "./authStore";
 import { ref, onBeforeUnmount, watch } from "vue";
 // eth
 import { ethers } from "ethers";
-import contractABI from "./contract";
+import contractABI from "@/composables/contract";
 // models
 import type { ITransaction, IModalErrorMessage, IBet } from "@/models/wallet";
 // http
 import { fetchWallet, setMyAddress } from "@/http/walletApi";
-
 
 declare var window: any;
 
@@ -32,6 +31,7 @@ export const useWalletStore = defineStore("wallet", () => {
   // watch to user auth
   if (isAuth.value) {
     console.log("user already connected");
+    checkUserWallet();
     // testFunction();
     // walletDataInterval.value = setInterval(testFunction, 5000);
   } else {
@@ -60,18 +60,15 @@ export const useWalletStore = defineStore("wallet", () => {
     }
   }
 
-  async function testFunction() {
+  async function checkUserWallet() {
     const response = await fetchWallet();
     address.value = response.address;
-    address.value = response.address;
-    balance.value = response.balance;
+    balance.value = response.balance / 1000000000;
     transactions.value = response.tranasctions;
-    if (response.address) {
-      isConnected.value = true;
-    }
+    isConnected.value = true;
   }
 
-  async function connectWallet () {
+  async function connectWallet() {
     try {
       //check eth wallet in browser
       checkMetamask();
@@ -79,10 +76,10 @@ export const useWalletStore = defineStore("wallet", () => {
       const connection = await window.ethereum.send("eth_requestAccounts");
       const connectionWallet = connection.result[0];
       const etheriumWallet = window.ethereum.selectedAddress;
-      if (connectionWallet !== etheriumWallet) {
-        await setMyAddress(etheriumWallet);
+      const response = await setMyAddress(etheriumWallet);
+      if (response.data) {
+        address.value = etheriumWallet;
       }
-      isConnected.value = true;
     } catch (error: any) {
       modalMessageError.value = {
         title: "Connection error",
@@ -90,9 +87,16 @@ export const useWalletStore = defineStore("wallet", () => {
       };
       isModalWalletError.value = true;
     }
+  }
+
+  async function disconnectWallet () {
+    const response = await setMyAddress("");
+    if (response.data) {
+      address.value = ""
+    }
   };
 
-  async function createDeposit (ether: number) {
+  async function createDeposit(ether: number) {
     try {
       checkMetamask();
       await window.ethereum.send("eth_requestAccounts"); // blockchain provider
@@ -121,9 +125,9 @@ export const useWalletStore = defineStore("wallet", () => {
       };
       isModalWalletError.value = true;
     }
-  };
+  }
 
-  async function createBet (bet: IBet) {
+  async function createBet(bet: IBet) {
     try {
       const { data } = await window.ethereum.send("eth_requestAccounts");
       if (balance.value < bet.amount) {
@@ -133,7 +137,7 @@ export const useWalletStore = defineStore("wallet", () => {
     } catch (error: any) {
       throw new Error(error);
     }
-  };
+  }
 
   return {
     address,
@@ -145,7 +149,7 @@ export const useWalletStore = defineStore("wallet", () => {
     connectWallet,
     createDeposit,
     createBet,
-    testFunction,
+    disconnectWallet,
     //modal
     isModalWalletError,
     modalMessageError,

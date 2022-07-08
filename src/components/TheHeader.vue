@@ -9,7 +9,7 @@ import token from "../assets/koa-token.png";
 import TheLogo from "./TheLogo.vue";
 // store
 import { useAuthStore } from "@/stores/authStore";
-import { useWalletStore } from "@/stores/wallet";
+import { useWalletStore } from "@/stores/walletStore";
 const authStore = useAuthStore();
 const walletStore = useWalletStore();
 // variables
