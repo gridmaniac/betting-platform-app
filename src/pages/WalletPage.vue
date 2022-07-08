@@ -4,10 +4,10 @@ import { GlobeAltIcon } from "@heroicons/vue/outline";
 import { inject, onMounted, ref } from "vue";
 import coin from "../assets/koa-token.png";
 import { balanceFormat } from "@/composables/Bets";
-import { setMyAddress } from "@/http/events";
+import { setMyAddress } from "@/http/walletApi";
 //store
 import { useWalletStore } from "@/stores/wallet";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/stores/authStore";
 const walletStore = useWalletStore();
 const authStore = useAuthStore();
 // variables

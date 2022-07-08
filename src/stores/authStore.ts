@@ -6,6 +6,7 @@ const router = useRouter();
 
 export const useAuthStore = defineStore("auth", () => {
   const isAuth = ref(false);
+  const header = ref();
   const user = ref({
     token: "",
   });
@@ -13,8 +14,18 @@ export const useAuthStore = defineStore("auth", () => {
     const userStorage = localStorage.getItem("user");
     user.value = userStorage !== null ? JSON.parse(userStorage) : null;
     isAuth.value = true;
+
+    header.value = {
+      headers: {
+        Authorization: `Bearer ${user.value.token}`,
+      },
+    };
+    localStorage.setItem("header", header.value);
   }
 
+  watch(isAuth, (x) => {
+    console.log(x);
+  });
   //wath
   watch(
     user,
@@ -42,5 +53,6 @@ export const useAuthStore = defineStore("auth", () => {
     isAuth,
     login,
     logout,
+    header,
   };
 });

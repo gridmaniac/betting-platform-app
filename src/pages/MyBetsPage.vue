@@ -7,7 +7,7 @@ import { CreditCardIcon } from "@heroicons/vue/outline";
 //composables
 import { fakeBets } from "../composables/Bets";
 import router from "../router";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/stores/authStore";
 const authStore = useAuthStore();
 
 onMounted(() => {

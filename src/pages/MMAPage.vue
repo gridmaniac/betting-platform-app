@@ -5,9 +5,9 @@ import { LightningBoltIcon } from "@heroicons/vue/outline";
 import { ArrowCircleRightIcon } from "@heroicons/vue/outline";
 import { CheckCircleIcon } from "@heroicons/vue/outline";
 //components
-import CollapseMMA from "../components/CollapseMMA.vue";
+import CollapseSoccer from "../components/CollapseSoccer.vue";
 //composables
-import { fetchSeasons } from "@/http/events";
+import { fetchSeasons } from "@/http/eventApi";
 import { diffSeasons } from "@/composables/seasons";
 //models
 import type { ISeason } from "@/models/season";
@@ -86,7 +86,7 @@ const changeSeasonStatus = (status: boolean) => {
     </div>
   </div>
   <div class="relative">
-    <CollapseMMA
+    <CollapseSoccer
       v-for="season in sortedSeasons"
       :key="season._id"
       :season="season"

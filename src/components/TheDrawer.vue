@@ -3,7 +3,7 @@
 import { links } from "@/composables/Drawer";
 import { inject } from "vue";
 import TheLogo from "./TheLogo.vue";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/stores/authStore";
 const authStore = useAuthStore();
 const { isModalAuthVisible, isLogin, drawer } = inject<any>("auth");
 

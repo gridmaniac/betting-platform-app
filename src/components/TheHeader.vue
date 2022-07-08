@@ -8,7 +8,7 @@ import token from "../assets/koa-token.png";
 // component
 import TheLogo from "./TheLogo.vue";
 // store
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/stores/authStore";
 import { useWalletStore } from "@/stores/wallet";
 const authStore = useAuthStore();
 const walletStore = useWalletStore();

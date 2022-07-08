@@ -7,7 +7,7 @@ import { useForm, useField } from "vee-validate";
 // http
 import { signIn } from "../../http/userApi";
 //store
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/stores/authStore";
 //authStore
 const authStore = useAuthStore();
 

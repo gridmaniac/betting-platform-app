@@ -7,7 +7,7 @@ import type { ICompetitor, IEvent } from "@/models/season";
 //components
 import TheCompetitor from "./TheCompetitor.vue";
 import EventButton from "./EventButton.vue";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/stores/authStore";
 const authStore = useAuthStore();
 //props
 interface IProps {

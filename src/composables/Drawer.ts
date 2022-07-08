@@ -1,10 +1,12 @@
 // icons
-import { LightningBoltIcon } from "@heroicons/vue/outline";
-import { SupportIcon } from "@heroicons/vue/outline";
-import { TableIcon } from "@heroicons/vue/outline";
-import { CreditCardIcon } from "@heroicons/vue/outline";
-import { RssIcon } from "@heroicons/vue/outline";
-import { UserCircleIcon } from "@heroicons/vue/outline";
+import {
+  UserCircleIcon,
+  LightningBoltIcon,
+  SupportIcon,
+  TableIcon,
+  CreditCardIcon,
+  RssIcon,
+} from "@heroicons/vue/outline";
 
 export const links = [
   {
@@ -22,8 +24,8 @@ export const links = [
       { value: "profile", name: "Profile", icon: UserCircleIcon },
     ],
   },
-  {
-    name: "Featured",
-    items: [{ value: "news", name: "News", icon: RssIcon }],
-  },
+  // {
+  //   name: "Featured",
+  //   items: [{ value: "news", name: "News", icon: RssIcon }],
+  // },
 ];

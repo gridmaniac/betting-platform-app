@@ -4,4 +4,9 @@ const $host = axios.create({
   baseURL: "https://betting-platform-server-staging-asbin.ondigitalocean.app/",
 });
 
-export { $host };
+function getAuth() {
+  const userStorage = localStorage.getItem("header");
+  return userStorage !== null ? JSON.parse(userStorage) : null;
+}
+
+export { $host, getAuth};

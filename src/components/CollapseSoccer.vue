@@ -6,7 +6,7 @@ import EventSoccer from "./EventSoccer.vue";
 import ModalBet from "./Modals/ModalBet.vue";
 import CollapseView from "./CollapseView.vue";
 //composables
-import { fetchEvents } from "@/http/events";
+import { fetchEvents } from "@/http/eventApi";
 //models
 import type { ISeason, IEvent, ICompetitor } from "@/models/season";
 

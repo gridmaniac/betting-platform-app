@@ -7,7 +7,7 @@ import { CheckCircleIcon } from "@heroicons/vue/outline";
 //components
 import CollapseSoccer from "../components/CollapseSoccer.vue";
 //composables
-import { fetchSeasons } from "@/http/events";
+import { fetchSeasons } from "@/http/eventApi";
 import { diffSeasons } from "@/composables/seasons";
 //models
 import type { ISeason } from "@/models/season";

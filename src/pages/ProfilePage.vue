@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { inject } from "vue";
 import { UserCircleIcon } from "@heroicons/vue/outline";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/stores/authStore";
 const authStore = useAuthStore();
 const auth = inject<any>("auth");
 

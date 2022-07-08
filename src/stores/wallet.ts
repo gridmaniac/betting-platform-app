@@ -1,18 +1,20 @@
+import { storeToRefs } from "pinia";
 import { defineStore } from "pinia";
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { useAuthStore } from "./authStore";
+import { ref, onBeforeUnmount, watch } from "vue";
 // eth
 import { ethers } from "ethers";
 import contractABI from "./contract";
 // models
 import type { ITransaction, IModalErrorMessage, IBet } from "@/models/wallet";
 // http
-import { fetchWallet, setMyAddress } from "@/http/events";
+import { fetchWallet, setMyAddress } from "@/http/walletApi";
 
-declare var window: any
+
+declare var window: any;
 
 const addr = "0xf6cda9031f6aae3d4dc4310364699f06f51b989b";
 const TOKEN_CONTRACT_ADDRESS = "0x0101C8291008edd36b42160b6f606eDF2a2A7E41";
-
 
 export const useWalletStore = defineStore("wallet", () => {
   // modal error
@@ -24,6 +26,28 @@ export const useWalletStore = defineStore("wallet", () => {
   const transactions = ref<ITransaction[]>([]);
   const inBets = ref(0);
   const modalMessageError = ref<IModalErrorMessage>();
+  const authStore = useAuthStore();
+  const { isAuth } = storeToRefs(authStore);
+  const walletDataInterval = ref();
+  // watch to user auth
+  if (isAuth.value) {
+    console.log("user already connected");
+    // testFunction();
+    // walletDataInterval.value = setInterval(testFunction, 5000);
+  } else {
+    console.log("user not connected");
+  }
+  watch(isAuth, () => {
+    if (isAuth.value) {
+      console.log("user connected");
+      // testFunction();
+      // walletDataInterval.value = setInterval(testFunction, 5000);
+    } else {
+      console.log("user disconnected");
+      // clearInterval(walletDataInterval.value);
+    }
+  });
+
   //
   function checkMetamask() {
     if (!window.ethereum) {
@@ -46,20 +70,8 @@ export const useWalletStore = defineStore("wallet", () => {
       isConnected.value = true;
     }
   }
-  let dima = setInterval(testFunction, 5000);
-  // fetch wallet
-  onMounted(() => {
-    testFunction();
-    // window.ethereum.on("accountsChanged", async (accounts: [string]) => {
-    //   if (!accounts.length)
-    //   isConnected.value = false;
-    // });
-  });
-  onBeforeUnmount(() => {
-    clearInterval(dima)
-  })
 
-  const connectWallet = async () => {
+  async function connectWallet () {
     try {
       //check eth wallet in browser
       checkMetamask();
@@ -80,7 +92,7 @@ export const useWalletStore = defineStore("wallet", () => {
     }
   };
 
-  const createDeposit = async (ether: number) => {
+  async function createDeposit (ether: number) {
     try {
       checkMetamask();
       await window.ethereum.send("eth_requestAccounts"); // blockchain provider
@@ -111,13 +123,13 @@ export const useWalletStore = defineStore("wallet", () => {
     }
   };
 
-  const createBet = async (bet: IBet) => {
+  async function createBet (bet: IBet) {
     try {
-      const {data} = await window.ethereum.send("eth_requestAccounts");
+      const { data } = await window.ethereum.send("eth_requestAccounts");
       if (balance.value < bet.amount) {
         return { error: "Your balance is insufficient" };
       }
-      return data
+      return data;
     } catch (error: any) {
       throw new Error(error);
     }
