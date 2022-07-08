@@ -22,6 +22,7 @@ export const useWalletStore = defineStore("wallet", () => {
   const isConnected = ref(false);
   const address = ref();
   const balance = ref();
+  const decimals = ref();
   const transactions = ref<ITransaction[]>([]);
   const inBets = ref(0);
   const modalMessageError = ref<IModalErrorMessage>();
@@ -62,9 +63,15 @@ export const useWalletStore = defineStore("wallet", () => {
 
   async function checkUserWallet() {
     const response = await fetchWallet();
+    console.log(response);
+    
     address.value = response.address;
-    balance.value = response.balance / 1000000000;
-    transactions.value = response.tranasctions;
+    decimals.value = response.decimals;
+    balance.value = response.balance.toString().slice(0, -response.decimals);
+    transactions.value = response.tranasctions;    
+    transactions.value.forEach(element => {
+      element.amount = +element.amount.toString().slice(0, -response.decimals)
+    });
     isConnected.value = true;
   }
 

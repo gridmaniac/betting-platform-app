@@ -49,9 +49,9 @@ const setMoney = (money: number) => {
       </button>
     </div>
     <div :class="{ 'blur-md': !authStore.isAuth }">
-      <div class="flex flex-col w-full">
+      <div class="flex flex-col lg:flex-row w-full">
         <div
-          class="relative card shadow-lg compact side bg-base-100 p-3 mb-6 mr-0 flex-1"
+          class="relative card shadow-lg compact side bg-base-100 p-3 mb-6 lg:mb-0 mr-0 lg:mr-6 flex-1"
         >
           <div
             class="absolute inset-0 w-full h-full flex justify-center items-center z-50"
@@ -142,7 +142,7 @@ const setMoney = (money: number) => {
           </div>
         </div>
       </div>
-      <div class="card shadow-lg compact side bg-base-100 p-3 my-6 w-full">
+      <div class="card shadow-lg compact side bg-base-100 p-3 my-6 w-full" v-if="walletStore.transactions.length">
         <div class="flex justify-between items-center">
           <div class="overflow-x-auto w-full">
             <table class="table table-zebra table-compact w-full">
