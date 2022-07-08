@@ -121,8 +121,8 @@ export const useWalletStore = defineStore("wallet", () => {
       //   value: ethers.utils.parseEther(ether.toString()),
       // });
       modalMessageError.value = {
-        title: "success",
-        description: "Await that transaction will be ....",
+        title: "Success",
+        description: "Await for transaction to be processed.",
       };
       isModalWalletError.value = true;
     } catch (error: any) {
