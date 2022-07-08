@@ -91,7 +91,7 @@ export const useWalletStore = defineStore("wallet", () => {
     } catch (error: any) {
       modalMessageError.value = {
         title: "Connection error",
-        description: "Something wrong. Please try again later.",
+        description: "Something went wrong. Please try again.",
       };
       isModalWalletError.value = true;
     }

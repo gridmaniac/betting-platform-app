@@ -10,7 +10,7 @@ export interface IModalErrorMessage {
   description: string;
 }
 
-export interface IBet {
+export interface IUserBet {
   amount: number;
   winnerId: number;
   eventId: string;
@@ -18,3 +18,14 @@ export interface IBet {
 }
 
 export type TBetType = "winner";
+
+export interface IBet extends IUserBet {
+  date: string;
+  season: string;
+  startTime: string;
+  status: string;
+  userId: string;
+  winner: string;
+  __v: number;
+  _id: string;
+}

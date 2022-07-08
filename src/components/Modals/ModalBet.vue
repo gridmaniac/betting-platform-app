@@ -6,26 +6,26 @@ import token from "@/assets/koa-token.png";
 import TheModal from "@/components/TheModal.vue";
 import CompetitorModal from "../CompetitorModal.vue";
 // store
-import { useWalletStore } from "@/stores/walletStore";
-import type {IBet} from "@/models/wallet"
-const walletStore = useWalletStore();
+import { useBetsStore } from "@/stores/betStore";
+import type {IUserBet} from "@/models/wallet"
+const betsStore = useBetsStore();
 // modal bet
 const { isModalBetVisible, winner, modalEvent, modalSeason } =
   inject<any>("modalBet");
 // variables
-const amount = ref(15000000);
+const amount = ref(1500);
 const errorMessage = ref("");
 
 type TBetType = "winner"
 
 const placeBet = async () => {
-  const usersBet:IBet = {
+  const usersBet:IUserBet = {
     amount: amount.value,
     winnerId: winner.value.id,
     eventId: modalEvent.value.id,
     type: 'winner',
   }
-  const response = await walletStore.createBet(usersBet);
+  const response = await betsStore.createBet(usersBet);
   if (response.error) {
     errorMessage.value = response?.error;
     return

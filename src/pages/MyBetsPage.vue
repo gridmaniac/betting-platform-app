@@ -8,7 +8,9 @@ import { CreditCardIcon } from "@heroicons/vue/outline";
 import { fakeBets } from "../composables/Bets";
 import router from "../router";
 import { useAuthStore } from "@/stores/authStore";
+import { useBetsStore } from "@/stores/betStore";
 const authStore = useAuthStore();
+const betsStore = useBetsStore();
 
 onMounted(() => {
   document.querySelector("main")?.scrollTo(0, 0);
@@ -38,10 +40,14 @@ const currPage = (number: number) => {
   pageNumber.value = number;
 };
 
+const betsForTable = computed(() => {
+  return betsStore.bets
+})
+
 const paginateItems = computed(() => {
   const from = (pageNumber.value - 1) * currEntries.value;
   const to = from + currEntries.value;
-  return bets.value.slice(from, to);
+  return betsForTable.value.slice(from, to);
 });
 
 const test = () => {
@@ -110,12 +116,12 @@ const startbetting = () => {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="bet in paginateItems" :key="bet.id">
+              <tr v-for="bet in paginateItems" :key="bet._id">
                 <td data-name="Event: ">
                   <div class="whitespace-normal">
-                    <strong>{{ bet.name }}</strong>
-                    <p>{{ moment(bet.dateTime).format("MMMM DD, YYYY") }}</p>
-                    <p class="text-primary">Winner: {{ bet.winner.name }}</p>
+                    <strong>{{ bet.season }}</strong>
+                    <p>{{ moment(bet.startTime).format("MMMM DD, YYYY") }}</p>
+                    <p class="text-primary">Winner: {{ bet.winner }}</p>
                   </div>
                 </td>
                 <td class="text-center" data-name="amount: ">
@@ -124,7 +130,7 @@ const startbetting = () => {
                   </div> -->
                   <span>
                     <img class="inline-block mr-1 h-4" :src="token" />
-                    {{ bet.cash }}
+                    {{ bet.amount }}
                   </span>
                 </td>
                 <td class="text-center" data-name="status: ">
