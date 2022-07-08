@@ -11,7 +11,7 @@ const walletStore = useWalletStore();
 const authStore = useAuthStore();
 // variables
 const deposit = ref();
-const withdrawValue = ref();
+const withdrawAmount = ref();
 const potentialWin = ref(0);
 
 onMounted(() => {
@@ -110,12 +110,13 @@ const setMoney = (money: number) => {
                 <input
                   type="number"
                   placeholder="0.000000"
-                  v-model="withdrawValue"
+                  v-model="withdrawAmount"
                   class="input input-bordered flex-1 text-right"
                 />
                 <button
                   class="btn btn-outline w-auto sm:w-56"
-                  :disabled="!withdrawValue"
+                  :disabled="!withdrawAmount"
+                  @click="walletStore.withdrawAmount(withdrawAmount)"
                 >
                   Withdraw
                 </button>

@@ -8,7 +8,7 @@ import contractABI from "@/composables/contract";
 // models
 import type { ITransaction, IModalErrorMessage, IBet } from "@/models/wallet";
 // http
-import { fetchWallet, setMyAddress } from "@/http/walletApi";
+import { fetchWallet, setMyAddress, withdraw } from "@/http/walletApi";
 
 declare var window: any;
 
@@ -63,15 +63,15 @@ export const useWalletStore = defineStore("wallet", () => {
   async function checkUserWallet() {
     const response = await fetchWallet();
     console.log(response);
-    
+
     address.value = response.address;
     decimals.value = response.decimals;
     hotAddress.value = response.hotAddress;
     contractAddress.value = response.contractAddress;
     balance.value = response.balance.toString().slice(0, -response.decimals);
-    transactions.value = response.tranasctions;    
-    transactions.value.forEach(element => {
-      element.amount = +element.amount.toString().slice(0, -response.decimals)
+    transactions.value = response.tranasctions;
+    transactions.value.forEach((element) => {
+      element.amount = +element.amount.toString().slice(0, -response.decimals);
     });
     isConnected.value = true;
   }
@@ -97,12 +97,12 @@ export const useWalletStore = defineStore("wallet", () => {
     }
   }
 
-  async function disconnectWallet () {
+  async function disconnectWallet() {
     const response = await setMyAddress("");
     if (response.data) {
-      address.value = ""
+      address.value = "";
     }
-  };
+  }
 
   async function createDeposit(ether: number) {
     try {
@@ -147,6 +147,11 @@ export const useWalletStore = defineStore("wallet", () => {
     }
   }
 
+  async function withdrawAmount(amount: number) {
+    const response = await withdraw(amount * 1000000000);
+    console.log(response);
+  }
+
   return {
     address,
     balance,
@@ -158,6 +163,7 @@ export const useWalletStore = defineStore("wallet", () => {
     createDeposit,
     createBet,
     disconnectWallet,
+    withdrawAmount,
     //modal
     isModalWalletError,
     modalMessageError,

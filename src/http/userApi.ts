@@ -1,11 +1,12 @@
 import { $host } from "./index";
 
-export const signIn = async (email: string, password: string) => {
+// login
+export const fetchUser = async (email: string, password: string) => {
   const { data } = await $host.post("api/v1/login", { email, password });
   return data;
 };
 
-export const registrarion = async (
+export const createUser = async (
   email: string,
   password: string,
   confirmPassword: string

@@ -5,7 +5,7 @@ import token from "../../../src/assets/koa-token.png";
 //modules
 import { useForm, useField } from "vee-validate";
 // http
-import { signIn } from "../../http/userApi";
+import { fetchUser } from "../../http/userApi";
 //store
 import { useAuthStore } from "@/stores/authStore";
 //authStore
@@ -43,7 +43,7 @@ const { value: email, errorMessage: emailError } = useField("email");
 const { value: password, errorMessage: passwordError } = useField("password");
 
 const onSubmit = handleSubmit(async () => {
-  const response = await signIn(email.value as string, password.value as string);
+  const response = await fetchUser(email.value as string, password.value as string);
   const { data, modelErrors } = response;
   if (modelErrors) {
     errors.value = modelErrors;

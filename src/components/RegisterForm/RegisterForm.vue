@@ -5,7 +5,7 @@ import token from "../../../src/assets/koa-token.png";
 //modules
 import { useForm, useField } from "vee-validate";
 // http
-import { registrarion } from "../../http/userApi";
+import { createUser } from "../../http/userApi";
 
 const { isLogin, isModalAuthVisible, isModalRegSuccessVisible, emailSucces } =
   inject<any>("auth");
@@ -47,7 +47,7 @@ const { value: confirmPassword, errorMessage: confirmPasswordError } =
   useField("confirmPassword");
 
 const onSubmit = handleSubmit(async () => {
-  const { data, modelErrors } = await registrarion(
+  const { data, modelErrors } = await createUser(
     email.value as string,
     password.value as string,
     confirmPassword.value as string
