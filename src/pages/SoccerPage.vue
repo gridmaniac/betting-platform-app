@@ -75,6 +75,14 @@ const changeSeasonStatus = (status: boolean) => {
           </a>
         </div>
       </div>
+      <div class="flex justify-end">
+        <select
+          class="select select-bordered select-sm max-w-xs ml-6"
+          value="ALL"
+        >
+          <option>ALL</option>
+        </select>
+      </div>
     </div>
   </div>
   <div class="relative">

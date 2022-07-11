@@ -58,10 +58,10 @@ const setMoney = (money: number) => {
             v-if="!walletStore.address"
           >
             <button
-              class="btn btn-warning modal-button z-100"
+              class="btn glass modal-button z-100"
               @click="walletStore.connectWallet"
             >
-              Connect to wallet
+              Connect wallet
             </button>
           </div>
           <div :class="{ 'blur-md': !walletStore.address }">

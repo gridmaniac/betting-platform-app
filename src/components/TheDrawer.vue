@@ -50,7 +50,7 @@ const loginAccount = () => {
             :to="{ name: link.value }"
             @click="drawer = false"
             class="capitalize"
-          >
+          > 
             <component
               :is="link.icon"
               class="inline-block w-6 h-6 mr-2 stroke-current"

@@ -47,7 +47,7 @@ const closeModal = () => {
           {{ modalSeason.name }}
         </h2>
         <p class="text-primary">
-          {{ moment(modalEvent.startTime).format("D MMMM, YYYY H:mm a") }}
+          {{ moment(modalEvent.startTime).format("D MMMM, YYYY h:mm a") }}
         </p>
       </div>
       <div class="divider"></div>

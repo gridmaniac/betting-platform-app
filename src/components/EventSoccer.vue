@@ -84,7 +84,7 @@ const openModal = (competitor: ICompetitor) => {
     </td>
     <td>
       <div class="flex flex-col items-center">
-        <p class="mb-2 text-white hidden sm:inline-flex">
+        <p class="hidden sm:inline-flex">
           {{ moment(event.startTime).format("D MMM") }}
         </p>
         <p class="mb-2 text-white hidden sm:inline-flex">

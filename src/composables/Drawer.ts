@@ -24,8 +24,8 @@ export const links = [
       { value: "profile", name: "Profile", icon: UserCircleIcon },
     ],
   },
-  // {
-  //   name: "Featured",
-  //   items: [{ value: "news", name: "News", icon: RssIcon }],
-  // },
+  {
+    name: "Featured",
+    items: [{ value: "news", name: "News", icon: RssIcon }],
+  },
 ];
