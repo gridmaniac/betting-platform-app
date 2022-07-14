@@ -3,7 +3,7 @@ import token from "../assets/koa-token.png";
 </script>
 
 <template>
-  <div class="mx-auto navbar max-w-none">
+  <div class="mx-auto navbar max-w-none border-b border-base-200">
     <div class="flex items-center flex-none">
       <a
         href="/"
