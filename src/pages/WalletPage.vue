@@ -1,26 +1,34 @@
 <script setup lang="ts">
+import { onMounted, ref } from "vue";
+// icons
 import { CreditCardIcon } from "@heroicons/vue/outline";
-import { GlobeAltIcon } from "@heroicons/vue/outline";
-import { inject, onMounted, ref } from "vue";
-import coin from "../assets/koa-token.png";
-import { balanceFormat } from "@/composables/Bets";
-//store
+// composables
+import { WithdrawMoney } from "@/composables/ModalNotifications";
+// components
+import TableWallet from "@/components/Tables/TableWallet.vue";
+// store
 import { useWalletStore } from "@/stores/walletStore";
-import { useAuthStore } from "@/stores/authStore";
+import WalletDropdown from "../components/WalletDropdown.vue";
+import TheSpinner from "../components/TheSpinner.vue";
+import { useModalStore } from "@/stores/modalStore";
+const modalStore = useModalStore();
 const walletStore = useWalletStore();
-const authStore = useAuthStore();
 // variables
 const deposit = ref();
 const withdrawAmount = ref();
-const potentialWin = ref(0);
 
 onMounted(() => {
   document.querySelector("main")?.scrollTo(0, 0);
 });
-const { isModalAuthVisible } = inject<any>("auth");
 
 const setMoney = (money: number) => {
   deposit.value = money;
+};
+
+const withdraw = () => {
+  modalStore.modalNotificationContent = WithdrawMoney;
+  walletStore.withdrawAmount = withdrawAmount.value;
+  modalStore.isModalWithdraw = true;
 };
 </script>
 
@@ -36,19 +44,8 @@ const setMoney = (money: number) => {
       </div>
     </div>
   </div>
-  <div class="relative my-6">
-    <div
-      class="absolute inset-0 w-full h-full flex justify-center items-center z-50"
-      v-if="!authStore.isAuth"
-    >
-      <button
-        class="btn btn-warning modal-button"
-        @click="isModalAuthVisible = true"
-      >
-        login
-      </button>
-    </div>
-    <div :class="{ 'blur-md': !authStore.isAuth }">
+  <div class="my-6" v-if="walletStore.isWalletPage">
+    <div>
       <div class="flex flex-col lg:flex-row w-full">
         <div
           class="relative card shadow-lg compact side bg-base-100 p-3 mb-6 lg:mb-0 mr-0 lg:mr-6 flex-1"
@@ -57,12 +54,7 @@ const setMoney = (money: number) => {
             class="absolute inset-0 w-full h-full flex justify-center items-center z-50"
             v-if="!walletStore.address"
           >
-            <button
-              class="btn glass modal-button z-100"
-              @click="walletStore.connectWallet"
-            >
-              Connect wallet
-            </button>
+            <WalletDropdown :is-glass="true" />
           </div>
           <div :class="{ 'blur-md': !walletStore.address }">
             <div class="flex justify-between">
@@ -72,7 +64,10 @@ const setMoney = (money: number) => {
                   {{ walletStore.address }}
                 </p>
               </div>
-              <button class="btn btn-outline" @click="walletStore.disconnectWallet">
+              <button
+                class="btn btn-outline"
+                @click="walletStore.disconnectWallet"
+              >
                 disconnect
               </button>
             </div>
@@ -92,7 +87,7 @@ const setMoney = (money: number) => {
                 </button>
                 <input
                   type="number"
-                  placeholder="0.000000"
+                  placeholder="0"
                   v-model="deposit"
                   class="input input-bordered input-md sm:input-lg flex-1 text-right"
                 />
@@ -109,14 +104,15 @@ const setMoney = (money: number) => {
               <div class="input-group">
                 <input
                   type="number"
-                  placeholder="0.000000"
+                  placeholder="0"
                   v-model="withdrawAmount"
                   class="input input-bordered flex-1 text-right"
+                  autocomplete="off"
                 />
                 <button
                   class="btn btn-outline w-auto sm:w-56"
                   :disabled="!withdrawAmount"
-                  @click="walletStore.withdrawAmount(withdrawAmount)"
+                  @click="withdraw()"
                 >
                   Withdraw
                 </button>
@@ -128,7 +124,7 @@ const setMoney = (money: number) => {
           <div class="stat">
             <div class="stat-title">Balance</div>
             <div class="stat-value">
-              {{ balanceFormat(walletStore.balance) }}
+              {{ walletStore.balance }}
               <span class="text-primary">KOA</span>
             </div>
           </div>
@@ -139,47 +135,18 @@ const setMoney = (money: number) => {
               {{ walletStore.inBets }}
               <span class="text-primary">KOA</span>
             </div>
-            <div class="stat-desc">Potential win: {{ potentialWin }} KOA</div>
+            <!-- <div class="stat-desc">Potential win: {{ potentialWin }} KOA</div> -->
           </div>
         </div>
       </div>
-      <div class="card shadow-lg compact side bg-base-100 p-3 my-6 w-full" v-if="walletStore.transactions.length">
+      <div class="card shadow-lg compact side bg-base-100 p-3 my-6 w-full">
         <div class="flex justify-between items-center">
-          <div class="overflow-x-auto w-full">
-            <table class="table table-zebra table-compact w-full">
-              <thead>
-                <tr>
-                  <th>Type</th>
-                  <th>Amount</th>
-                  <th align="center">Tx</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="transaction in walletStore.transactions"
-                  :key="transaction.date"
-                >
-                  <td>{{ transaction.type }}</td>
-                  <td>
-                    <div class="flex items-center">
-                      <img class="inline-block mr-2 h-4" :src="coin" />
-                      {{ balanceFormat(transaction.amount) }}
-                    </div>
-                  </td>
-                  <td class="text-center">
-                    <div class="btn btn-ghost btn-sm">
-                      <component
-                        :is="GlobeAltIcon"
-                        class="inline-block w-4 h-4 stroke-current"
-                      ></component>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <TableWallet />
         </div>
       </div>
     </div>
+  </div>
+  <div v-else class="mt-10 relative w-full">
+    <TheSpinner />
   </div>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 //icon
 import { LockClosedIcon } from "@heroicons/vue/outline";
-import token from "../assets/koa-token.png";
+import token from "@/assets/koa-token.png";
 
 defineProps({
   status: Boolean,
@@ -9,7 +9,7 @@ defineProps({
 </script>
 
 <template>
-  <button class="btn btn-active">
+  <button class="btn btn-active" :disabled="status">
     <component
       v-if="status"
       :is="LockClosedIcon"

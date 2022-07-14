@@ -1,20 +1,27 @@
-import { $host } from "./index";
+import { $host, getAuth } from ".";
+import { ERoutes } from "@/models/apiModels";
+import type { IUserLogin, IUserRegister } from "@/models/userModel";
 
-// login
-export const fetchUser = async (email: string, password: string) => {
-  const { data } = await $host.post("api/v1/login", { email, password });
+export const fetchUser = async (user: IUserLogin) => {
+  const { data } = await $host.post(ERoutes.Login, user);
   return data;
 };
 
-export const createUser = async (
-  email: string,
-  password: string,
-  confirmPassword: string
-) => {
-  const { data } = await $host.post("api/v1/signup", {
-    email,
-    password,
-    confirmPassword,
-  });
+export const createUser = async (user: IUserRegister) => {
+  const { data } = await $host.post(ERoutes.Signup, user);
+  return data;
+};
+
+export const resetUserPassword = async (email: string) => {
+  const { data } = await $host.post(ERoutes.ForgotPassword, { email });
+  return data;
+};
+
+export const changeUserPassword = async (password: string) => {
+  const { data } = await $host.put(
+    ERoutes.ChangePassword,
+    { password },
+    getAuth()
+  );
   return data;
 };

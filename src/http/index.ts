@@ -1,12 +1,15 @@
 import axios from "axios";
+import { useAuthStore } from "@/stores/authStore";
 
-const $host = axios.create({
+export const $host = axios.create({
   baseURL: "https://betting-platform-server-staging-asbin.ondigitalocean.app/",
 });
 
-function getAuth() {
-  const userStorage = localStorage.getItem("header");
-  return userStorage !== null ? JSON.parse(userStorage) : null;
-}
-
-export { $host, getAuth};
+export const getAuth = () => {
+  const authStore = useAuthStore();
+  return {
+    headers: {
+      Authorization: `Bearer ${authStore.token}`,
+    },
+  };
+};

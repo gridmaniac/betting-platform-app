@@ -1,58 +1,74 @@
 import { defineStore } from "pinia";
-import { ref, watch } from "vue";
-import { useRouter } from "vue-router";
+import { ref } from "vue";
+import {
+  fetchUser,
+  changeUserPassword,
+  resetUserPassword,
+  createUser,
+} from "@/http/userApi";
 
-const router = useRouter();
-
-export const useAuthStore = defineStore("auth", () => {
+export const useAuthStore = defineStore("authStore", () => {
   const isAuth = ref(false);
-  const header = ref();
-  const user = ref({
-    token: "",
-  });
-  if (localStorage.getItem("user")) {
-    const userStorage = localStorage.getItem("user");
-    user.value = userStorage !== null ? JSON.parse(userStorage) : null;
-    isAuth.value = true;
+  const token = ref<string | null>();
 
-    header.value = {
-      headers: {
-        Authorization: `Bearer ${user.value.token}`,
-      },
-    };
-    localStorage.setItem("header", JSON.stringify(header.value));
+  token.value = localStorage.getItem("token");
+  if (token.value) {
+    isAuth.value = true;
   }
 
-  watch(isAuth, (x) => {
-    console.log(x);
-  });
-  //wath
-  watch(
-    user,
-    (userVal) => {
-      localStorage.setItem("user", JSON.stringify(userVal));
-    },
-    {
-      deep: true,
+  async function login(email: string, password: string) {
+    const user = {
+      email,
+      password,
+    };
+    const response = await fetchUser(user);
+    if (response.modelErrors) {
+      return response;
     }
-  );
-  // func
-  const login = (token: string) => {
-    user.value.token = token;
-    isAuth.value = true;
-  };
 
-  const logout = () => {
-    localStorage.removeItem("user");
+    localStorage.setItem("token", response.data);
+    token.value = response.data;
+    isAuth.value = true;
+    return response;
+  }
+
+  async function register(
+    email: string,
+    password: string,
+    confirmPassword: string
+  ) {
+    const user = {
+      email,
+      password,
+      confirmPassword,
+    };
+    const response = await createUser(user);
+    return response;
+  }
+
+  function logout() {
     isAuth.value = false;
-    router.push({ name: "mma" });
-  };
+    token.value = null;
+    localStorage.removeItem("token");
+  }
+
+  async function changePassword(password: string) {
+    const response = await changeUserPassword(password);
+    return response;
+  }
+
+  async function resetPassword(email: string) {
+    const response = await resetUserPassword(email);
+    return response;
+  }
 
   return {
-    user,
+    token,
     isAuth,
     login,
+    register,
     logout,
-    header,
+    changePassword,
+    resetPassword,
   };
 });

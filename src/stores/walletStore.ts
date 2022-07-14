@@ -1,106 +1,120 @@
-import { storeToRefs } from "pinia";
-import { defineStore } from "pinia";
+import { defineStore, storeToRefs } from "pinia";
+import { ref, watch } from "vue";
+// api
+import { fetchWallet, setUserAddress, withdrawForUser } from "@/http/walletApi";
+// composables
+import {
+  WalletError,
+  WalletConnectError,
+  DepositSuccess,
+  DepositError,
+} from "@/composables/ModalNotifications";
+import { ToastTransaction } from "@/composables/toastNotification";
+// store
 import { useAuthStore } from "./authStore";
-import { ref, onBeforeUnmount, watch } from "vue";
+import { useModalStore } from "./modalStore";
+import { useToastStore } from "./toastStore";
 // eth
 import { ethers } from "ethers";
 import contractABI from "@/composables/contract";
+declare let window: any;
 // models
-import type { ITransaction, IModalErrorMessage, IBet } from "@/models/wallet";
-// http
-import { fetchWallet, setMyAddress, withdraw } from "@/http/walletApi";
+import type { ITransaction } from "@/models/walletModels";
 
-declare var window: any;
-
-export const useWalletStore = defineStore("wallet", () => {
-  // modal error
-  const isModalWalletError = ref(false);
-  // variables
-  const isConnected = ref(false);
-  const address = ref();
-  const balance = ref();
-  const decimals = ref();
-  const hotAddress = ref();
+export const useWalletStore = defineStore("walletStore", () => {
+  // var withdraws
   const contractAddress = ref();
+  const hotAddress = ref();
+  const withdrawError = ref();
+  //
+  const isWalletPage = ref(false);
+  const address = ref<string | null>();
+  const balance = ref<number>(0);
+  const inBets = ref<number>(0);
+  const withdrawAmount = ref<number>(0);
   const transactions = ref<ITransaction[]>([]);
-  const inBets = ref(0);
-  const modalMessageError = ref<IModalErrorMessage>();
+  const decimals = ref<string>("9");
+  // store
+  const modalStore = useModalStore();
+  const toastStore = useToastStore();
+  // check auth
   const authStore = useAuthStore();
   const { isAuth } = storeToRefs(authStore);
-  const walletDataInterval = ref();
-  // watch to user auth
+  const userInterval = ref();
   if (isAuth.value) {
-    console.log("user already connected");
-    checkUserWallet();
-    // testFunction();
-    // walletDataInterval.value = setInterval(testFunction, 5000);
-  } else {
-    console.log("user not connected");
+    getWallet();
+    userInterval.value = setInterval(() => {
+      getWallet();
+    }, 5000);
   }
   watch(isAuth, () => {
     if (isAuth.value) {
-      console.log("user connected");
-      // testFunction();
+      getWallet();
       // walletDataInterval.value = setInterval(testFunction, 5000);
     } else {
-      console.log("user disconnected");
-      // clearInterval(walletDataInterval.value);
+      clearInterval(userInterval.value);
+      isWalletPage.value = false;
+      address.value = null;
+      balance.value = 0;
+      inBets.value = 0;
+      transactions.value = [];
+      decimals.value = "9";
     }
   });
 
-  //
   function checkMetamask() {
     if (!window.ethereum) {
-      modalMessageError.value = {
-        title: "No crypto wallet",
-        description: "No crypto wallet found. Please install it.",
-      };
-      isModalWalletError.value = true;
+      modalStore.modalNotificationContent = WalletError;
+      modalStore.isModalNotification = true;
       throw new Error("No crypto wallet found. Please install it.");
     }
   }
 
-  async function checkUserWallet() {
+  async function getWallet() {
     const response = await fetchWallet();
-    console.log(response);
 
     address.value = response.address;
     decimals.value = response.decimals;
-    hotAddress.value = response.hotAddress;
-    contractAddress.value = response.contractAddress;
+    if (balance.value) {
+      if (
+        balance.value !==
+        response.balance.toString().slice(0, -response.decimals)
+      ) {
+        toastStore.push(ToastTransaction);
+      }
+    }
     balance.value = response.balance.toString().slice(0, -response.decimals);
-    transactions.value = response.tranasctions;
-    transactions.value.forEach((element) => {
-      element.amount = +element.amount.toString().slice(0, -response.decimals);
-    });
-    isConnected.value = true;
+    inBets.value = response.inBets.slice(0, -response.decimals);
+    // for deposit
+    contractAddress.value = response.contractAddress;
+    hotAddress.value = response.hotAddress;
+    // transaction
+    transactions.value = response.transactions;
+    transactions.value.map(
+      (x) => (x.amount = x.amount.toString().slice(0, -response.decimals))
+    );
+    isWalletPage.value = true;
+  }
+
+  async function disconnectWallet() {
+    const response = await setUserAddress("");
+    if (response.data) {
+      address.value = null;
+    }
   }
 
   async function connectWallet() {
     try {
-      //check eth wallet in browser
       checkMetamask();
-      // check wallet
-      const connection = await window.ethereum.send("eth_requestAccounts");
-      const connectionWallet = connection.result[0];
+      await window.ethereum.send("eth_requestAccounts");
       const etheriumWallet = window.ethereum.selectedAddress;
-      const response = await setMyAddress(etheriumWallet);
+      const response = await setUserAddress(etheriumWallet);
       if (response.data) {
         address.value = etheriumWallet;
       }
-    } catch (error: any) {
-      modalMessageError.value = {
-        title: "Connection error",
-        description: "Something went wrong. Please try again.",
-      };
-      isModalWalletError.value = true;
-    }
-  }
-
-  async function disconnectWallet() {
-    const response = await setMyAddress("");
-    if (response.data) {
-      address.value = "";
+    } catch (error) {
+      modalStore.modalNotificationContent = WalletConnectError;
+      modalStore.isModalNotification = true;
     }
   }
 
@@ -116,56 +130,40 @@ export const useWalletStore = defineStore("wallet", () => {
         signer
       );
 
-      const tx = await contract.transfer(hotAddress.value, ether + "000000000");
-      // const tx = await signer.sendTransaction({
-      //   to: contractAddress.value,
-      //   value: ethers.utils.parseEther(ether.toString()),
-      // });
-      modalMessageError.value = {
-        title: "Success",
-        description: "Await for transaction to be processed.",
-      };
-      isModalWalletError.value = true;
+      await contract.transfer(hotAddress.value, ether + "000000000");
+      modalStore.modalNotificationContent = DepositSuccess;
+      modalStore.isModalNotification = true;
     } catch (error: any) {
-      modalMessageError.value = {
-        title: "Wallet error",
-        description: "Something went wrong. Please try again.",
-      };
-      isModalWalletError.value = true;
+      modalStore.modalNotificationContent = DepositError;
+      modalStore.isModalNotification = true;
     }
   }
 
-  async function createBet(bet: IBet) {
-    try {
-      const { data } = await window.ethereum.send("eth_requestAccounts");
-      if (balance.value < bet.amount) {
-        return { error: "Your balance is insufficient" };
-      }
-      return data;
-    } catch (error: any) {
-      throw new Error(error);
+  async function withdraw() {
+    const { data, err } = await withdrawForUser(
+      withdrawAmount.value * 1000000000
+    );
+    if (err) {
+      withdrawError.value = err;
+      return;
     }
-  }
-
-  async function withdrawAmount(amount: number) {
-    const response = await withdraw(amount * 1000000000);
-    console.log(response);
+    withdrawError.value = null;
+    modalStore.isModalWithdraw = false;
+    return data;
   }
 
   return {
     address,
+    inBets,
     balance,
     transactions,
-    inBets,
-    isConnected,
-    //function
-    connectWallet,
+    isWalletPage,
+    // function
     createDeposit,
-    createBet,
     disconnectWallet,
+    connectWallet,
+    withdraw,
     withdrawAmount,
-    //modal
-    isModalWalletError,
-    modalMessageError,
+    withdrawError,
   };
 });

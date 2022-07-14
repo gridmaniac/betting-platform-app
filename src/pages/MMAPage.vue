@@ -1,97 +1,47 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
-//icon
-import { LightningBoltIcon } from "@heroicons/vue/outline";
-import { ArrowCircleRightIcon } from "@heroicons/vue/outline";
-import { CheckCircleIcon } from "@heroicons/vue/outline";
-//components
-import CollapseSoccer from "../components/CollapseSoccer.vue";
-//composables
-import { fetchSeasons } from "@/http/eventApi";
-import { diffSeasons } from "@/composables/seasons";
-//models
-import type { ISeason } from "@/models/season";
-//variables
+import { fetchSeasons } from "@/http/sportsApi";
+import { onMounted, ref, computed } from "vue";
+// components
+import TitleMMA from "../components/Titles/TitleMMA.vue";
+import CollapsesSeason from "@/components/Collapses/CollapsesSeason.vue";
+import TheSpinner from "@/components/TheSpinner.vue";
+// composables
+import { checkData } from "@/composables/functions";
+// models
+import type { ISeason } from "@/models/sportModel";
+
+const seasonsResponse = ref<ISeason[]>([]);
+const seasonsUpcoming = ref<ISeason[]>([]);
+const seasonsCompleted = ref<ISeason[]>([]);
+//
 const isUpcoming = ref(true);
-const seasons = ref<ISeason[]>();
-const upcomingSeasons = ref<ISeason[]>();
-const completedSeasons = ref<ISeason[]>();
+const isReady = ref(false);
 
 onMounted(async () => {
-  document.querySelector("main")?.scrollTo(0, 0);
-  const response = await fetchSeasons("mma");
-  seasons.value = response;
-  if (seasons.value !== undefined) {
-    const { completed, upcoming } = diffSeasons(seasons.value);
-    upcomingSeasons.value = upcoming;
-    completedSeasons.value = completed;
-  }
+  const { data } = await fetchSeasons("mma");
+  seasonsResponse.value = data;
+  const { upcoming, completed } = checkData(data);
+  seasonsCompleted.value = completed;
+  seasonsUpcoming.value = upcoming;
+  isReady.value = true;
 });
-const sortedSeasons = computed<ISeason[] | undefined>(() => {
+
+const seasons = computed(() => {
   if (isUpcoming.value) {
-    return upcomingSeasons.value;
+    return seasonsUpcoming.value;
   }
-  return completedSeasons.value;
+  return seasonsCompleted.value;
 });
-// func
-const changeSeasonStatus = (status: boolean) => {
+
+const changeTab = (status: boolean) => {
   isUpcoming.value = status;
 };
 </script>
 
 <template>
-  <div class="card shadow-lg compact side bg-base-100 p-3">
-    <div class="flex items-center justify-between">
-      <div class="flex items-center col-span-2 sm:col-span-1">
-        <component
-          :is="LightningBoltIcon"
-          class="inline-block w-6 h-6 mr-2 stroke-current"
-        />
-        <h1 class="font-bold text-2xl text-primary">MMA</h1>
-      </div>
-      <div class="flex justify-start sm:justify-center">
-        <div class="tabs tabs-boxed">
-          <a
-            class="tab tab-sm"
-            :class="{ 'tab-active': isUpcoming }"
-            @click="changeSeasonStatus(true)"
-          >
-            <span class="hidden md:block">Upcoming</span>
-            <component
-              :is="ArrowCircleRightIcon"
-              class="block md:hidden w-6 h-6 stroke-current"
-            />
-          </a>
-          <a
-            class="tab tab-sm"
-            :class="{ 'tab-active': !isUpcoming }"
-            @click="changeSeasonStatus(false)"
-          >
-            <span class="hidden md:block">Completed</span>
-            <component
-              :is="CheckCircleIcon"
-              class="block md:hidden w-6 h-6 stroke-current"
-            />
-          </a>
-        </div>
-      </div>
-      <div class="flex justify-end">
-        <select
-          class="select select-bordered select-sm max-w-xs ml-6"
-          value="UFC"
-        >
-          <option>UFC</option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <div class="relative">
-    <CollapseSoccer
-      v-for="season in sortedSeasons"
-      :key="season._id"
-      :season="season"
-    />
+  <TitleMMA @change-tab="changeTab" :active-tab="isUpcoming" />
+  <CollapsesSeason v-if="isReady" :seasons="seasons" />
+  <div class="mt-6" v-else>
+    <TheSpinner />
   </div>
 </template>
-
-<style scoped></style>

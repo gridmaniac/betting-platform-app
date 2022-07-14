@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { inject } from "vue";
 import { UserCircleIcon } from "@heroicons/vue/outline";
 import { useAuthStore } from "@/stores/authStore";
+import router from "@/router";
+import FormChangePassword from "../components/Forms/FormChangePassword.vue";
 const authStore = useAuthStore();
-const auth = inject<any>("auth");
 
-const connectToAccount = () => {
-  auth.isModalAuthVisible.value = true
-}
+const signout = () => {
+  authStore.logout();
+  router.push({ name: "mma" });
+};
 </script>
 
 <template>
@@ -23,47 +24,15 @@ const connectToAccount = () => {
     </div>
   </div>
   <div class="relative my-6">
-    <div
-      class="absolute inset-0 w-full h-full flex justify-center items-center z-50"
-      v-if="!authStore.isAuth"
-    >
-      <button
-        class="btn btn-warning modal-button"
-        @click="connectToAccount()"
-      >
-        connect to account
-      </button>
-    </div>
-    <div :class="{ 'blur-md': !authStore.isAuth }">
+    <div>
       <div class="card shadow-lg compact side bg-base-100 p-3 w-full">
-        <div>
-          <div class="form-control w-full max-w-xs">
-            <label class="label">
-              <span class="label-text">Password</span>
-            </label>
-            <input type="text" class="input input-bordered w-full max-w-xs" />
-          </div>
-          <div class="form-control w-full max-w-xs">
-            <label class="label">
-              <span class="label-text">Repeat password</span>
-            </label>
-            <input type="text" class="input input-bordered w-full max-w-xs" />
-          </div>
-          <button class="btn btn-outline mt-6">change password</button>
-        </div>
+        <FormChangePassword />
       </div>
-      <div
-        class="card shadow-lg compact side bg-base-100 p-3 my-6 w-full"
-        v-if="authStore.isAuth"
-      >
+      <div class="card shadow-lg compact side bg-base-100 p-3 my-6 w-full">
         <div>
-          <button class="btn btn-outline" @click="authStore.logout()">
-            sign out
-          </button>
+          <button class="btn btn-outline" @click="signout()">log out</button>
         </div>
       </div>
     </div>
   </div>
 </template>
-
-<style scoped></style>

@@ -1,22 +1,33 @@
 <script setup lang="ts">
-//composables
-import { links } from "@/composables/Drawer";
-import { inject } from "vue";
-import TheLogo from "./TheLogo.vue";
+import { useRouter } from "vue-router";
+import { menu } from "@/composables/links";
+// store
 import { useAuthStore } from "@/stores/authStore";
+import { useModalStore } from "@/stores/modalStore";
+import TheLogo from "./TheLogo.vue";
+import AuthControl from "./AuthControl.vue";
 const authStore = useAuthStore();
-const { isModalAuthVisible, isLogin, drawer } = inject<any>("auth");
+const modalStore = useModalStore();
 
-const createAccount = () => {
-  isLogin.value = false;
-  isModalAuthVisible.value = true;
-  drawer.value = false;
-};
+const router = useRouter();
 
-const loginAccount = () => {
-  isLogin.value = true;
-  isModalAuthVisible.value = true;
-  drawer.value = false;
+interface ILink {
+  icon: any;
+  isAuth: boolean;
+  name: string;
+  value: string;
+}
+
+const goToPage = (link: ILink) => {
+  if (!link.isAuth) {
+    router.push({ name: link.value });
+  }
+  if (!authStore.isAuth && link.isAuth) {
+    modalStore.isModalAuthVisible = true;
+  }
+  if (authStore.isAuth && link.isAuth) {
+    router.push({ name: link.value });
+  }
 };
 </script>
 
@@ -26,38 +37,38 @@ const loginAccount = () => {
     <aside
       class="flex flex-col border-r border-base-200 bg-base-100 text-base-content w-80"
     >
-      <TheLogo class="border-b border-base-200" />
-      <div v-if="!authStore.isAuth" class="m-2 flex lg:hidden justify-center">
-        <button class="btn btn-ghost modal-button mr-2" @click="createAccount">
-          Create account
-        </button>
-        <button class="btn btn-outline modal-button" @click="loginAccount">
-          Login
-        </button>
-      </div>
+      <TheLogo />
+      <AuthControl class="lg:hidden" />
       <ul
-        class="menu flex flex-col p-4 pt-2 compact"
-        v-for="section in links"
+        class="menu flex flex-col px-4 mb-4 compact"
+        v-for="section in menu"
         :key="section.name"
       >
-        <li class="mt-4 menu-title">
+        <li class="menu-title">
           <span>
             {{ section.name }}
           </span>
         </li>
-        <li v-for="link in section.items" :key="link.value">
-          <router-link
-            :to="{ name: link.value }"
-            @click="drawer = false"
-            class="capitalize"
-          > 
-            <component
-              :is="link.icon"
-              class="inline-block w-6 h-6 mr-2 stroke-current"
-            />
-            {{ link.name }}
-          </router-link>
-        </li>
+        <template v-for="link in section.links" :key="link.value">
+          <li v-if="link.value === 'news'" class="disabled">
+            <span>
+              <component
+                :is="link.icon"
+                class="inline-block w-6 h-6 mr-2 stroke-current"
+              />
+              {{ link.name }}
+            </span>
+          </li>
+          <li v-else :class="{ disabled: link.isAuth && !authStore.isAuth }">
+            <a class="capitalize" @click="goToPage(link)">
+              <component
+                :is="link.icon"
+                class="inline-block w-6 h-6 mr-2 stroke-current"
+              />
+              {{ link.name }}
+            </a>
+          </li>
+        </template>
       </ul>
     </aside>
   </div>

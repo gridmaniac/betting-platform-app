@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ICompetitor } from "@/models/season";
+import type { ICompetitor } from "@/models/sportModel";
 
 interface IProps {
   competitor: ICompetitor;

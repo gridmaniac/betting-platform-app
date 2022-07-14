@@ -1,80 +1,66 @@
 import { createRouter, createWebHistory } from "vue-router";
-import MMA from "../pages/MMAPage.vue";
-import Soccer from "../pages/SoccerPage.vue";
-import Fight from "../pages/FightPage.vue";
-import MyBets from "../pages/MyBetsPage.vue";
-import Wallet from "../pages/WalletPage.vue";
-import News from "../pages/NewsPage.vue";
-import Profile from "../pages/ProfilePage.vue";
+import HomePage from "../pages/HomePage.vue";
+import MMAPage from "../pages/MMAPage.vue";
+import SoccerPage from "../pages/SoccerPage.vue";
+import BetsPage from "../pages/BetsPage.vue";
+import WalletPage from "../pages/WalletPage.vue";
+import ProfilePage from "../pages/ProfilePage.vue";
+import NewsPage from "../pages/NewsPage.vue";
 
-const routes = [
-  {
-    path: "/",
-    name: "home",
-    redirect: "mma",
-  },
-  {
-    path: "/mma",
-    name: "mma",
-    meta: {
-      authReq: false,
-    },
-    component: MMA,
-  },
-  {
-    path: "/soccer",
-    name: "soccer",
-    meta: {
-      authReq: false,
-    },
-    component: Soccer,
-  },
-  {
-    path: "/fight/:id",
-    name: "fight",
-    meta: {
-      authReq: false,
-    },
-    component: Fight,
-  },
-  {
-    path: "/my-bets",
-    name: "my-bets",
-    meta: {
-      authReq: true,
-    },
-    component: MyBets,
-  },
-  {
-    path: "/wallet",
-    name: "wallet",
-    meta: {
-      authReq: true,
-    },
-    component: Wallet,
-  },
-  {
-    path: "/news",
-    name: "news",
-    meta: {
-      authReq: false,
-    },
-    component: News,
-  },
-  {
-    path: "/profile",
-    name: "profile",
-    meta: {
-      authReq: true,
-    },
-    component: Profile,
-  },
-];
+import { useAuthStore } from "@/stores/authStore";
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes,
-  linkActiveClass: "active",
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: [
+    {
+      path: "/",
+      name: "home",
+      component: HomePage,
+      redirect: { name: "mma" },
+    },
+    {
+      path: "/mma",
+      name: "mma",
+      component: MMAPage,
+    },
+    {
+      path: "/soccer",
+      name: "soccer",
+      component: SoccerPage,
+    },
+    {
+      path: "/bets",
+      name: "bets",
+      component: BetsPage,
+    },
+    {
+      path: "/wallet",
+      name: "wallet",
+      component: WalletPage,
+    },
+    {
+      path: "/profile",
+      name: "profile",
+      component: ProfilePage,
+    },
+    {
+      path: "/news",
+      name: "news",
+      component: NewsPage,
+    },
+  ],
+});
+
+router.beforeEach((to) => {
+  const authStore = useAuthStore();
+  const privatPages = ["/profile", "/wallet", "/bets", "/news"];
+  const authRequired = !privatPages.includes(to.path);
+
+  if (!authRequired && !authStore.isAuth) {
+    router.push({ name: "mma" });
+    return;
+  }
+  // document.title = to.meta.title as string;
 });
 
 export default router;

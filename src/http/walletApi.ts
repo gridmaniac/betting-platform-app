@@ -1,20 +1,41 @@
-import { $host, getAuth } from "./index";
-import { fetchWalletApi, withdrawUrl, addressUrl } from "@/models/http";
+import { $host, getAuth } from ".";
+import { ERoutes } from "@/models/apiModels";
+import type { IUserBet } from "@/models/walletModels";
 
-// withdraw koa token
-export const withdraw = async (amount: number) => {
-  const { data } = await $host.post(withdrawUrl, { amount }, getAuth());
-  return data;
-};
-
-// fetch data about user wallet, amount, transactions and so on
 export const fetchWallet = async () => {
-  const { data } = await $host.get(fetchWalletApi, getAuth());
+  const { data } = await $host.get(ERoutes.Wallet, getAuth());
   return data;
 };
 
 // set user wallet address
-export const setMyAddress = async (address: string) => {
-  const { data } = await $host.patch(addressUrl, { address }, getAuth());
+export const setUserAddress = async (address: string) => {
+  const { data } = await $host.patch(
+    ERoutes.WalletAddress,
+    { address },
+    getAuth()
+  );
+  return data;
+};
+
+// set user wallet address
+export const withdrawForUser = async (amount: number) => {
+  const { data } = await $host.post(
+    ERoutes.WalletWithdraw,
+    { amount },
+    getAuth()
+  );
+  return data;
+};
+
+// fecth all user bets
+export const fetchBets = async () => {
+  const { data } = await $host.get(ERoutes.Bets, getAuth());
+  return data;
+};
+
+// create bet from user
+export const setBet = async (bet: IUserBet) => {
+  bet.amount = bet.amount * 1000000000;
+  const { data } = await $host.post(ERoutes.Bets, bet, getAuth());
   return data;
 };

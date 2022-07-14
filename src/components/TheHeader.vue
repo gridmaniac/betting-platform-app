@@ -1,97 +1,24 @@
 <script setup lang="ts">
-import { inject } from "vue";
-import { useRouter } from "vue-router";
-// icon
-import { CashIcon } from "@heroicons/vue/outline";
 // assets
-import token from "../assets/koa-token.png";
-// component
+import token from "@/assets/koa-token.png";
+// components
 import TheLogo from "./TheLogo.vue";
-// store
-import { useAuthStore } from "@/stores/authStore";
-import { useWalletStore } from "@/stores/walletStore";
-const authStore = useAuthStore();
-const walletStore = useWalletStore();
-// variables
-const router = useRouter();
-
-const { isModalAuthVisible, isLogin } = inject<any>("auth");
-
-const createAccount = () => {
-  isLogin.value = false;
-  isModalAuthVisible.value = true;
-};
-
-const loginAccount = () => {
-  isLogin.value = true;
-  isModalAuthVisible.value = true;
-};
+import AuthControl from "./AuthControl.vue";
 </script>
 
 <template>
   <div
     class="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box sticky top-0 z-50"
   >
-    <TheLogo class="flex lg:hidden" />
+    <TheLogo class="lg:hidden" />
     <div class="flex-1 px-2 hidden lg:inline-block">
-      <button
-        class="btn btn-sm btn-success btn-outline"
-        @click="router.push({ name: 'wallet' })"
-      >
+      <button class="btn btn-sm btn-success btn-outline">
         <img class="flex-0 mr-1 h-4" :src="token" />DEPOSIT
       </button>
     </div>
     <div class="flex-none hidden px-2 lg:flex">
       <div class="flex items-stretch">
-        <div v-if="walletStore.isConnected">
-          <button class="btn" @click="router.push({ name: 'wallet' })">
-            <component
-              :is="CashIcon"
-              class="block mr-2 w-6 h-6 stroke-current"
-            />
-            Deposit now
-          </button>
-        </div>
-        <div v-else class="dropdown dropdown-end">
-          <template v-if="authStore.isAuth">
-            <div class="dropdown dropdown-end">
-              <div tabindex="0" class="btn btn-ghost rounded-btn">
-                <component
-                  :is="CashIcon"
-                  class="block mr-2 w-6 h-6 stroke-current"
-                />
-                Connect Wallet
-              </div>
-              <ul
-                tabindex="0"
-                class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52"
-              >
-                <li>
-                  <a @click="walletStore.connectWallet">
-                    <img
-                      class="mr-3"
-                      src="https://sportsbet.imgix.net/logos/metamask.svg?auto=compress%2Cformat&blur=200&px=16&ixlib=react-9.0.3"
-                      width="24"
-                      height="24"
-                    />
-                    Metamask
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </template>
-          <template v-else>
-            <button
-              class="btn btn-ghost modal-button mr-2"
-              @click="createAccount"
-            >
-              Create account
-            </button>
-            <button class="btn btn-outline modal-button" @click="loginAccount">
-              Login
-            </button>
-          </template>
-        </div>
+        <AuthControl />
       </div>
     </div>
     <div class="flex-none">
