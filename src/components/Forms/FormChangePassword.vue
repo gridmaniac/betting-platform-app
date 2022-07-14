@@ -10,6 +10,8 @@ import { useToastStore } from "@/stores/toastStore";
 const authStore = useAuthStore();
 const toastStore = useToastStore();
 
+const isRequest = ref(false)
+
 const errors = ref<{ [key: string]: string }>({});
 const validationSchema = {
   password(value: string) {
@@ -41,16 +43,17 @@ const onSubmit = handleSubmit(async () => {
     };
     return;
   }
+  isRequest.value = true
   const { modelErrors, data } = await authStore.changePassword(
     password.value as string
   );
+  isRequest.value = false
   if (modelErrors) {
     errors.value = modelErrors;
   }
   if (data) {
     toastStore.push(ToastPasswordChange);
     resetForm();
-    // errors.value = {};
   }
 });
 </script>
@@ -92,7 +95,14 @@ const onSubmit = handleSubmit(async () => {
       </div>
     </div>
     <div class="flex justify-between mt-5">
-      <button class="btn btn-outline" @click="onSubmit">Change password</button>
+      <button
+        class="btn btn-outline"
+        :class="{ loading: isRequest }"
+        :disabled="isRequest"
+        @click="onSubmit"
+      >
+        Change password
+      </button>
     </div>
   </div>
 </template>

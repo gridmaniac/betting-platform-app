@@ -25,15 +25,16 @@ export const useWalletStore = defineStore("walletStore", () => {
   // var withdraws
   const contractAddress = ref();
   const hotAddress = ref();
-  const withdrawError = ref();
   //
   const isWalletPage = ref(false);
   const address = ref<string | null>();
   const balance = ref<number>(0);
   const inBets = ref<number>(0);
-  const withdrawAmount = ref<number>(0);
+  const withdrawAmount = ref<number | null>(null);
   const transactions = ref<ITransaction[]>([]);
   const decimals = ref<string>("9");
+  //
+  const deposit = ref();
   // store
   const modalStore = useModalStore();
   const toastStore = useToastStore();
@@ -109,6 +110,7 @@ export const useWalletStore = defineStore("walletStore", () => {
       await window.ethereum.send("eth_requestAccounts");
       const etheriumWallet = window.ethereum.selectedAddress;
       const response = await setUserAddress(etheriumWallet);
+      console.log(response);
       if (response.data) {
         address.value = etheriumWallet;
       }
@@ -118,7 +120,7 @@ export const useWalletStore = defineStore("walletStore", () => {
     }
   }
 
-  async function createDeposit(ether: number) {
+  async function createDeposit() {
     try {
       checkMetamask();
       await window.ethereum.send("eth_requestAccounts"); // blockchain provider
@@ -130,9 +132,11 @@ export const useWalletStore = defineStore("walletStore", () => {
         signer
       );
 
-      await contract.transfer(hotAddress.value, ether + "000000000");
+      await contract.transfer(hotAddress.value, deposit.value + "000000000");
+      deposit.value = null
       modalStore.modalNotificationContent = DepositSuccess;
       modalStore.isModalNotification = true;
+
     } catch (error: any) {
       modalStore.modalNotificationContent = DepositError;
       modalStore.isModalNotification = true;
@@ -140,16 +144,10 @@ export const useWalletStore = defineStore("walletStore", () => {
   }
 
   async function withdraw() {
-    const { data, err } = await withdrawForUser(
-      withdrawAmount.value * 1000000000
-    );
-    if (err) {
-      withdrawError.value = err;
-      return;
+    if (withdrawAmount.value) {
+      const response = await withdrawForUser(withdrawAmount.value * 1000000000);
+      return response;
     }
-    withdrawError.value = null;
-    modalStore.isModalWithdraw = false;
-    return data;
   }
 
   return {
@@ -158,12 +156,12 @@ export const useWalletStore = defineStore("walletStore", () => {
     balance,
     transactions,
     isWalletPage,
+    deposit,
     // function
     createDeposit,
     disconnectWallet,
     connectWallet,
     withdraw,
     withdrawAmount,
-    withdrawError,
   };
 });

@@ -13,6 +13,7 @@ import { useModalStore } from "@/stores/modalStore";
 const authStore = useAuthStore();
 const modalStore = useModalStore();
 
+const isRequest = ref(false)
 const errors = ref<{ [key: string]: string }>({});
 ({});
 const emailInput = ref();
@@ -51,11 +52,13 @@ const { value: confirmPassword, errorMessage: confirmPasswordError } =
   useField("confirmPassword");
 
 const onSubmit = handleSubmit(async () => {
+  isRequest.value = true
   const { data, modelErrors } = await authStore.register(
     email.value as string,
     password.value as string,
     confirmPassword.value as string
   );
+    isRequest.value = false
   if (modelErrors) {
     errors.value = modelErrors;
     return;
@@ -125,8 +128,19 @@ const onSubmit = handleSubmit(async () => {
     </div>
     <div class="divider"></div>
     <div class="flex justify-between">
-      <button class="btn btn-outline" @click="onSubmit">Create account</button>
-      <button class="btn btn-ghost" @click="modalStore.isLogin = true">
+      <button
+        class="btn btn-outline"
+        @click="onSubmit"
+        :class="{ loading: isRequest }"
+        :disabled="isRequest"
+      >
+        Create account
+      </button>
+      <button
+        class="btn btn-ghost"
+        @click="modalStore.isLogin = true"
+        :disabled="isRequest"
+      >
         login
       </button>
     </div>

@@ -2,6 +2,7 @@ import {
   CheckCircleIcon,
   ExclamationCircleIcon,
   QuestionMarkCircleIcon,
+  MailOpenIcon,
 } from "@heroicons/vue/outline";
 
 export const ResetPassword = {
@@ -11,9 +12,15 @@ export const ResetPassword = {
 };
 
 export const RegisterSucces = {
-  icon: CheckCircleIcon,
+  icon: MailOpenIcon,
   title: "Confirm Your Email",
   description: "Thanks for signing up! We sent you a confirmation email.",
+};
+
+export const EmailConfirmSucces = {
+  icon: CheckCircleIcon,
+  title: "Awesome",
+  description: "Your email has been confirmed.",
 };
 
 export const WalletError = {

@@ -8,26 +8,23 @@ import { WithdrawMoney } from "@/composables/ModalNotifications";
 import TableWallet from "@/components/Tables/TableWallet.vue";
 // store
 import { useWalletStore } from "@/stores/walletStore";
-import WalletDropdown from "../components/WalletDropdown.vue";
+import DropdownWallet from "@/components/Dropdowns/DropdownWallet.vue";
 import TheSpinner from "../components/TheSpinner.vue";
 import { useModalStore } from "@/stores/modalStore";
 const modalStore = useModalStore();
 const walletStore = useWalletStore();
 // variables
-const deposit = ref();
-const withdrawAmount = ref();
 
 onMounted(() => {
   document.querySelector("main")?.scrollTo(0, 0);
 });
 
 const setMoney = (money: number) => {
-  deposit.value = money;
+  walletStore.deposit = money;
 };
 
 const withdraw = () => {
   modalStore.modalNotificationContent = WithdrawMoney;
-  walletStore.withdrawAmount = withdrawAmount.value;
   modalStore.isModalWithdraw = true;
 };
 </script>
@@ -54,7 +51,7 @@ const withdraw = () => {
             class="absolute inset-0 w-full h-full flex justify-center items-center z-50"
             v-if="!walletStore.address"
           >
-            <WalletDropdown :is-glass="true" />
+            <DropdownWallet :is-glass="true" />
           </div>
           <div :class="{ 'blur-md': !walletStore.address }">
             <div class="flex justify-between">
@@ -88,13 +85,13 @@ const withdraw = () => {
                 <input
                   type="number"
                   placeholder="0"
-                  v-model="deposit"
+                  v-model="walletStore.deposit"
                   class="input input-bordered input-md sm:input-lg flex-1 text-right"
                 />
                 <button
                   class="btn btn-outline btn-md sm:btn-lg w-auto sm:w-56"
-                  @click="walletStore.createDeposit(deposit)"
-                  :disabled="!deposit"
+                  @click="walletStore.createDeposit()"
+                  :disabled="!walletStore.deposit"
                 >
                   Deposit
                 </button>
@@ -105,13 +102,13 @@ const withdraw = () => {
                 <input
                   type="number"
                   placeholder="0"
-                  v-model="withdrawAmount"
+                  v-model="walletStore.withdrawAmount"
                   class="input input-bordered flex-1 text-right"
                   autocomplete="off"
                 />
                 <button
                   class="btn btn-outline w-auto sm:w-56"
-                  :disabled="!withdrawAmount"
+                  :disabled="!walletStore.withdrawAmount"
                   @click="withdraw()"
                 >
                   Withdraw

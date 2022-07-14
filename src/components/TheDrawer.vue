@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { useRouter } from "vue-router";
 import { menu } from "@/composables/links";
 // store
@@ -11,6 +12,8 @@ const modalStore = useModalStore();
 
 const router = useRouter();
 
+const emit = defineEmits(["navigate"]);
+
 interface ILink {
   icon: any;
   isAuth: boolean;
@@ -21,12 +24,14 @@ interface ILink {
 const goToPage = (link: ILink) => {
   if (!link.isAuth) {
     router.push({ name: link.value });
+    emit("navigate");
   }
   if (!authStore.isAuth && link.isAuth) {
     modalStore.isModalAuthVisible = true;
   }
   if (authStore.isAuth && link.isAuth) {
     router.push({ name: link.value });
+    emit("navigate");
   }
 };
 </script>
@@ -40,7 +45,7 @@ const goToPage = (link: ILink) => {
       <TheLogo />
       <AuthControl class="lg:hidden" />
       <ul
-        class="menu flex flex-col px-4 mb-4 compact"
+        class="menu flex flex-col p-4 mb-2 compact"
         v-for="section in menu"
         :key="section.name"
       >
@@ -60,7 +65,7 @@ const goToPage = (link: ILink) => {
             </span>
           </li>
           <li v-else :class="{ disabled: link.isAuth && !authStore.isAuth }">
-            <a class="capitalize" @click="goToPage(link)">
+            <a class="capitalize" @click="goToPage(link)" >
               <component
                 :is="link.icon"
                 class="inline-block w-6 h-6 mr-2 stroke-current"

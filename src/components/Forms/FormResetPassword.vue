@@ -13,6 +13,8 @@ import { useModalStore } from "@/stores/modalStore";
 const authStore = useAuthStore();
 const modalStore = useModalStore();
 
+const isRequest = ref(false);
+
 const emailInput = ref();
 onMounted(() => {
   emailInput.value.focus();
@@ -37,7 +39,9 @@ const { handleSubmit } = useForm({
 const { value: email, errorMessage: emailError } = useField("email");
 
 const onSubmit = handleSubmit(async () => {
+  isRequest.value = true;
   const { data } = await authStore.resetPassword(email.value as string);
+  isRequest.value = false;
   if (data) {
     modalStore.isModalResetPassword = false;
     modalStore.modalNotificationContent = ResetPassword;
@@ -69,9 +73,17 @@ const onSubmit = handleSubmit(async () => {
     </div>
     <div class="divider"></div>
     <div class="flex justify-between mt-5">
-      <button class="btn btn-outline" @click="onSubmit">Reset password</button>
+      <button
+        class="btn btn-outline"
+        @click="onSubmit"
+        :class="{ loading: isRequest }"
+        :disabled="isRequest"
+      >
+        Reset password
+      </button>
       <button
         class="btn btn-ghost"
+        :disabled="isRequest"
         @click="
           (modalStore.isModalResetPassword = false),
             (modalStore.isModalAuthVisible = true)

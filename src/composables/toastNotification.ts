@@ -20,3 +20,10 @@ export const ToastBetSuccess: IToast = {
   description: "Bet was created.",
   status: "success",
 };
+
+export const ToastWithdrawSuccess: IToast = {
+  id: 0,
+  title: "",
+  description: "Withdrawal success.",
+  status: "success",
+};

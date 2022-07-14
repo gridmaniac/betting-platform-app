@@ -16,7 +16,7 @@ const toastStore = useToastStore();
 
 const amount = ref(150000);
 const errors = ref<{ [key: string]: string }>({});
-const isBetInProcess = ref(false);
+const isRequest = ref(false);
 
 const placeBet = async () => {
   const bet: IUserBet = {
@@ -25,9 +25,9 @@ const placeBet = async () => {
     eventId: modalStore.ModalBetContent?.event.id,
     type: "winner",
   };
-  isBetInProcess.value = true;
+  isRequest.value = true;
   const { data, modelErrors } = await setBet(bet);
-  isBetInProcess.value = false;
+  isRequest.value = false;
   if (modelErrors) {
     errors.value = modelErrors;
   }
@@ -91,15 +91,16 @@ const placeBet = async () => {
   <div class="modal-action">
     <button
       class="btn btn-primary"
+      :class="{ loading: isRequest }"
       @click="placeBet()"
-      :disabled="!amount || isBetInProcess"
+      :disabled="!amount || isRequest"
     >
       Place a bet
     </button>
     <button
       class="btn"
       @click="modalStore.isModalBetVisible = false"
-      :disabled="isBetInProcess"
+      :disabled="isRequest"
     >
       Close
     </button>

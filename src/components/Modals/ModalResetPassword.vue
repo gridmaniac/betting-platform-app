@@ -10,6 +10,6 @@ const modalStore = useModalStore();
     v-model="modalStore.isModalResetPassword"
     @close-modal="modalStore.isModalResetPassword = false"
   >
-    <FormResetPassword />
+    <FormResetPassword v-if="modalStore.isModalResetPassword"/>
   </TheModal>
 </template>

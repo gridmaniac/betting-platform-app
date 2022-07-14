@@ -1,9 +1,27 @@
 <script setup lang="ts">
+import { useRouter } from "vue-router";
 // assets
 import token from "@/assets/koa-token.png";
 // components
 import TheLogo from "./TheLogo.vue";
 import AuthControl from "./AuthControl.vue";
+// store
+import { useAuthStore } from "@/stores/authStore";
+import { useModalStore } from "@/stores/modalStore";
+const authStore = useAuthStore();
+const modalStore = useModalStore();
+
+const router = useRouter();
+
+const handleSubmit = () => {
+  console.log(authStore.isAuth);
+  // authStore.isAuth ? "" :
+  if (!authStore.isAuth) {
+    modalStore.isModalAuthVisible = true;
+    return;
+  }
+  router.push({ name: "wallet" });
+};
 </script>
 
 <template>
@@ -12,7 +30,10 @@ import AuthControl from "./AuthControl.vue";
   >
     <TheLogo class="lg:hidden" />
     <div class="flex-1 px-2 hidden lg:inline-block">
-      <button class="btn btn-sm btn-success btn-outline">
+      <button
+        class="btn btn-sm btn-success btn-outline"
+        @click="handleSubmit()"
+      >
         <img class="flex-0 mr-1 h-4" :src="token" />DEPOSIT
       </button>
     </div>

@@ -45,7 +45,9 @@ async function getEvents (season: ISeason) {
     </template>
     <template #collapse-body>
       <TableEvent v-if="isLoad" :events="events" />
-      <TheSpinner v-else />
+      <div v-else class="flex justify-center my-10">
+        <button class="btn btn-ghost loading">loading</button>
+      </div>
     </template>
   </TheCollapse>
 </template>

@@ -11,6 +11,8 @@ import { useModalStore } from "@/stores/modalStore";
 const authStore = useAuthStore();
 const modalStore = useModalStore();
 
+const isRequest = ref(false);
+
 const emailInput = ref();
 onMounted(() => {
   emailInput.value.focus();
@@ -42,10 +44,12 @@ const { value: email, errorMessage: emailError } = useField("email");
 const { value: password, errorMessage: passwordError } = useField("password");
 
 const onSubmit = handleSubmit(async () => {
+  isRequest.value = true;
   const response = await authStore.login(
     email.value as string,
     password.value as string
   );
+  isRequest.value = false;
   const { modelErrors } = response;
   if (modelErrors) {
     errors.value = modelErrors;
@@ -53,6 +57,13 @@ const onSubmit = handleSubmit(async () => {
   }
   modalStore.isModalAuthVisible = false;
 });
+
+const forgotPassword = () => {
+  email.value = "";
+  password.value = "";
+  modalStore.isModalAuthVisible = false;
+  modalStore.isModalResetPassword = true;
+};
 </script>
 
 <template>
@@ -79,12 +90,7 @@ const onSubmit = handleSubmit(async () => {
     <div class="form-control w-full">
       <label class="label">
         <span class="label-text">Password</span>
-        <span
-          class="label-text-alt"
-          @click="
-            (modalStore.isModalAuthVisible = false),
-              (modalStore.isModalResetPassword = true)
-          "
+        <span class="label-text-alt" @click="forgotPassword()"
           >Forgot password?</span
         >
       </label>
@@ -101,8 +107,19 @@ const onSubmit = handleSubmit(async () => {
     </div>
     <div class="divider"></div>
     <div class="flex justify-between mt-5">
-      <button class="btn btn-outline" @click="onSubmit">Login</button>
-      <button class="btn btn-ghost" @click="modalStore.isLogin = false">
+      <button
+        class="btn btn-outline"
+        @click="onSubmit"
+        :class="{ loading: isRequest }"
+        :disabled="isRequest"
+      >
+        Login
+      </button>
+      <button
+        class="btn btn-ghost"
+        @click="modalStore.isLogin = false"
+        :disabled="isRequest"
+      >
         create account
       </button>
     </div>
