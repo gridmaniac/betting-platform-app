@@ -12,21 +12,30 @@ import TableEvent from "../Tables/TableEvent/TableEvent.vue";
 
 interface IProps {
   season: ISeason;
+  number: number
 }
-defineProps<IProps>();
+const props = defineProps<IProps>();
 
 const isLoad = ref(false);
+const isCollapseOpen = ref(false);
 const events = ref<IEvent[]>([]);
 
-const getEvents = async (season: ISeason) => {
-  const response = await fetchEvents(season.id);
-  events.value = response;
-  isLoad.value = true;
+if (!props.number) {
+  getEvents(props.season)
+  isCollapseOpen.value = true
+}
+
+async function getEvents (season: ISeason) {
+  if (!isLoad.value) {
+    const response = await fetchEvents(season.id);
+    events.value = response;
+    isLoad.value = true;
+  }
 };
 </script>
 
 <template>
-  <TheCollapse @click="getEvents(season)">
+  <TheCollapse @open-collapse="getEvents(season)" v-model="isCollapseOpen">
     <template #collapse-title>
       <h2 class="text-xl font-medium">{{ season.name }}</h2>
       <p>

@@ -7,9 +7,9 @@ interface IProps {
 }
 defineProps<IProps>();
 
-const imgPlaceholder = () => {
-  return null;
-  // https://koacombat.nyc3.cdn.digitaloceanspaces.com/fighters/silhouette.png
+const imgPlaceholder = (e) => {
+  e.target.src =
+    "https://koacombat.nyc3.cdn.digitaloceanspaces.com/competitors/silhouette.png";
 };
 </script>
 
@@ -19,7 +19,7 @@ const imgPlaceholder = () => {
       <div class="avatar">
         <div class="rounded-full w-14 h-14 shadow">
           <img
-            src="@/assets/silhouette.png"
+            :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/competitors/MMA/${competitor.name}.png`"
             alt="Avatar Tailwind CSS Component"
             @error="imgPlaceholder"
           />
@@ -35,22 +35,4 @@ const imgPlaceholder = () => {
       </p>
     </div>
   </div>
-
-  <!-- <div class="flex items-center space-x-3">
-        <div class="text-right">
-          <h2 class="card-title">fighter 2</h2>
-          <p class="text-base-content text-opacity-40">fighter 2 info</p>
-        </div>
-        <div>
-          <div class="avatar">
-            <div class="rounded-full w-14 h-14 shadow">
-              <img
-                src="@/assets/silhouette.png"
-                alt="Avatar Tailwind CSS Component"
-                @error="imgPlaceholder"
-              />
-            </div>
-          </div>
-        </div>
-      </div> -->
 </template>

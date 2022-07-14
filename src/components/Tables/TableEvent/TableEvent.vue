@@ -10,7 +10,7 @@ defineProps<IProps>();
 </script>
 
 <template>
-  <table class="table table-zebra w-full">
+  <table class="table table-zebra table-compact w-full">
     <thead>
       <tr>
         <th class="text-center w-3/5">COMPETITORS</th>

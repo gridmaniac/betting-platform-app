@@ -5,6 +5,10 @@ interface IProps {
   competitor: ICompetitor;
 }
 defineProps<IProps>();
+
+const imgPlaceholder = (e) => {
+  e.target.src = 'https://koacombat.nyc3.cdn.digitaloceanspaces.com/competitors/silhouette.png'
+}
 </script>
 
 <template>
@@ -14,8 +18,9 @@ defineProps<IProps>();
     <div class="avatar w-10">
       <div class="w-12 h-12 mask mask-squircle">
         <img
-          src="@/assets/silhouette.png"
+          :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/competitors/MMA/${competitor.name}.png`"
           alt="Avatar Tailwind CSS Component"
+          @error="imgPlaceholder"
         />
       </div>
     </div>
