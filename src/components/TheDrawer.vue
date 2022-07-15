@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from "vue";
 import { useRouter } from "vue-router";
 import { menu } from "@/composables/links";
 // store
@@ -65,7 +64,7 @@ const goToPage = (link: ILink) => {
             </span>
           </li>
           <li v-else :class="{ disabled: link.isAuth && !authStore.isAuth }">
-            <a class="capitalize" @click="goToPage(link)" >
+            <a class="capitalize" @click="goToPage(link)">
               <component
                 :is="link.icon"
                 class="inline-block w-6 h-6 mr-2 stroke-current"

@@ -11,13 +11,17 @@ import { ref } from "vue";
 const toastStore = useToastStore();
 
 const drawer = ref(false);
-
 </script>
 
 <template>
   <AllModals />
   <div class="drawer drawer-mobile relative">
-    <input id="my-drawer-2" type="checkbox" class="drawer-toggle" v-model="drawer" />
+    <input
+      id="my-drawer-2"
+      type="checkbox"
+      class="drawer-toggle"
+      v-model="drawer"
+    />
     <main class="drawer-content overflow-x-hidden flex flex-col bg-base-200">
       <!-- Page content here -->
       <!-- <label for="my-drawer-2" class="btn btn-primary drawer-button lg:hidden"
@@ -29,7 +33,7 @@ const drawer = ref(false);
       </div>
       <TheFooter class="max-w-6xl" />
     </main>
-    <TheDrawer @navigate="drawer = false"/>
+    <TheDrawer @navigate="drawer = false" />
     <div class="absolute text-white z-50 bottom-5 right-5">
       <div class="toast toast-end w-full max-w-md">
         <div

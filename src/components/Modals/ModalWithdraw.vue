@@ -3,7 +3,7 @@ import { ref } from "vue";
 // component
 import TheModal from "./TheModal.vue";
 //composables
-import { ToastWithdrawSuccess } from "@/composables/toastNotification"
+import { ToastWithdrawSuccess } from "@/composables/toastNotification";
 // model
 import type { IToast } from "@/models/notificationModel";
 // store
@@ -14,33 +14,33 @@ const modalStore = useModalStore();
 const walletStore = useWalletStore();
 const toastStore = useToastStore();
 
-const isRequest = ref(false)
+const isRequest = ref(false);
 
 const closeModal = () => {
   modalStore.isModalWithdraw = false;
 };
 
 const handleSubmit = async () => {
-  isRequest.value = true
-  const { data, err} = await walletStore.withdraw()
-  isRequest.value = false
+  isRequest.value = true;
+  const { data, err } = await walletStore.withdraw();
+  isRequest.value = false;
   if (err) {
-    modalStore.isModalWithdraw = false
-    const toast:IToast = {
+    modalStore.isModalWithdraw = false;
+    const toast: IToast = {
       id: 0,
       title: "",
       description: err,
-      status: "error"
-    }
-    toastStore.push(toast)
+      status: "error",
+    };
+    toastStore.push(toast);
   }
   if (data) {
-    walletStore.withdrawAmount = null
-    modalStore.isModalWithdraw = false
-    const toast:IToast = ToastWithdrawSuccess
-    toastStore.push(toast)
+    walletStore.withdrawAmount = null;
+    modalStore.isModalWithdraw = false;
+    const toast: IToast = ToastWithdrawSuccess;
+    toastStore.push(toast);
   }
-}
+};
 </script>
 
 <template>
@@ -67,7 +67,14 @@ const handleSubmit = async () => {
         >
           close
         </button>
-        <button class="btn" :class="{'loading' : isRequest}" @click="handleSubmit()" :disabled="isRequest">confirm</button>
+        <button
+          class="btn"
+          :class="{ loading: isRequest }"
+          @click="handleSubmit()"
+          :disabled="isRequest"
+        >
+          confirm
+        </button>
       </div>
     </template>
   </TheModal>

@@ -9,7 +9,7 @@ import {
 
 export const useAuthStore = defineStore("authStore", () => {
   const isAuth = ref(false);
-  const userEmail = ref<String | null>()
+  const userEmail = ref<string | null>();
   const token = ref<string | null>();
 
   token.value = localStorage.getItem("token");
@@ -32,7 +32,7 @@ export const useAuthStore = defineStore("authStore", () => {
     localStorage.setItem("userEmail", email);
     token.value = response.data;
     isAuth.value = true;
-    userEmail.value = email
+    userEmail.value = email;
     return response;
   }
 
@@ -54,7 +54,7 @@ export const useAuthStore = defineStore("authStore", () => {
     isAuth.value = false;
     token.value = null;
     localStorage.removeItem("token");
-    userEmail.value = null
+    userEmail.value = null;
   }
 
   async function changePassword(password: string) {
@@ -75,6 +75,6 @@ export const useAuthStore = defineStore("authStore", () => {
     logout,
     changePassword,
     resetPassword,
-    userEmail
+    userEmail,
   };
 });

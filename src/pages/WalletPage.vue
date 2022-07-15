@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 // icons
 import { CreditCardIcon } from "@heroicons/vue/outline";
 // composables

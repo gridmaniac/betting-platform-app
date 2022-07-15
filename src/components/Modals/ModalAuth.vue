@@ -11,6 +11,9 @@ const modalStore = useModalStore();
     v-model="modalStore.isModalAuthVisible"
     @close-modal="modalStore.isModalAuthVisible = false"
   >
-    <component :is="modalStore.isLogin ? FormLogin : FormRegister" v-if="modalStore.isModalAuthVisible"/>
+    <component
+      :is="modalStore.isLogin ? FormLogin : FormRegister"
+      v-if="modalStore.isModalAuthVisible"
+    />
   </TheModal>
 </template>

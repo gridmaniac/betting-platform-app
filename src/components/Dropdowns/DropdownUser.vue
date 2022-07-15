@@ -6,7 +6,7 @@ import { UserCircleIcon } from "@heroicons/vue/outline";
 import { useAuthStore } from "@/stores/authStore";
 const authStore = useAuthStore();
 
-const router = useRouter()
+const router = useRouter();
 
 defineProps({
   isGlass: {
@@ -16,8 +16,8 @@ defineProps({
 });
 
 const logout = () => {
-  authStore.logout()
-  router.push({ name: "mma"})
+  authStore.logout();
+  router.push({ name: "mma" });
 };
 </script>
 
@@ -47,7 +47,7 @@ const logout = () => {
       </li>
       <li></li>
       <li>
-        <p @click="logout()"> Log out </p>
+        <p @click="logout()">Log out</p>
       </li>
     </ul>
   </div>

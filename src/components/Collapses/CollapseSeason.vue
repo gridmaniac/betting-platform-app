@@ -7,12 +7,11 @@ import type { ISeason, IEvent } from "@/models/sportModel";
 import { fetchEvents } from "@/http/sportsApi";
 // components
 import TheCollapse from "@/components/TheCollapse.vue";
-import TheSpinner from "@/components/TheSpinner.vue";
 import TableEvent from "../Tables/TableEvent/TableEvent.vue";
 
 interface IProps {
   season: ISeason;
-  number: number
+  number: number;
 }
 const props = defineProps<IProps>();
 
@@ -21,17 +20,17 @@ const isCollapseOpen = ref(false);
 const events = ref<IEvent[]>([]);
 
 if (!props.number) {
-  getEvents(props.season)
-  isCollapseOpen.value = true
+  getEvents(props.season);
+  isCollapseOpen.value = true;
 }
 
-async function getEvents (season: ISeason) {
+async function getEvents(season: ISeason) {
   if (!isLoad.value) {
     const response = await fetchEvents(season.id);
     events.value = response;
     isLoad.value = true;
   }
-};
+}
 </script>
 
 <template>

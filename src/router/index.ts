@@ -10,7 +10,7 @@ import NewsPage from "../pages/NewsPage.vue";
 import { useAuthStore } from "@/stores/authStore";
 import { useModalStore } from "@/stores/modalStore";
 
-import { EmailConfirmSucces} from "@/composables/ModalNotifications"
+import { EmailConfirmSucces } from "@/composables/ModalNotifications";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -56,12 +56,11 @@ const router = createRouter({
 router.beforeEach((to) => {
   const authStore = useAuthStore();
   if (to.query.confirmationCode) {
-    const modalStore = useModalStore()
-    modalStore.modalNotificationContent = EmailConfirmSucces
-    modalStore.isModalNotification = true
-    
+    const modalStore = useModalStore();
+    modalStore.modalNotificationContent = EmailConfirmSucces;
+    modalStore.isModalNotification = true;
   }
-  
+
   const privatPages = ["/profile", "/wallet", "/bets", "/news"];
   const authRequired = !privatPages.includes(to.path);
 

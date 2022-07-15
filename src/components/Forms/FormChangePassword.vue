@@ -10,7 +10,7 @@ import { useToastStore } from "@/stores/toastStore";
 const authStore = useAuthStore();
 const toastStore = useToastStore();
 
-const isRequest = ref(false)
+const isRequest = ref(false);
 
 const errors = ref<{ [key: string]: string }>({});
 const validationSchema = {
@@ -43,11 +43,11 @@ const onSubmit = handleSubmit(async () => {
     };
     return;
   }
-  isRequest.value = true
+  isRequest.value = true;
   const { modelErrors, data } = await authStore.changePassword(
     password.value as string
   );
-  isRequest.value = false
+  isRequest.value = false;
   if (modelErrors) {
     errors.value = modelErrors;
   }

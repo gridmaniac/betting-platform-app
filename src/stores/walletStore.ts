@@ -133,10 +133,9 @@ export const useWalletStore = defineStore("walletStore", () => {
       );
 
       await contract.transfer(hotAddress.value, deposit.value + "000000000");
-      deposit.value = null
+      deposit.value = null;
       modalStore.modalNotificationContent = DepositSuccess;
       modalStore.isModalNotification = true;
-
     } catch (error: any) {
       modalStore.modalNotificationContent = DepositError;
       modalStore.isModalNotification = true;

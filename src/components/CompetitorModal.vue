@@ -7,7 +7,7 @@ interface IProps {
 }
 defineProps<IProps>();
 
-const imgPlaceholder = (e) => {
+const imgPlaceholder = (e: any) => {
   e.target.src =
     "https://koacombat.nyc3.cdn.digitaloceanspaces.com/competitors/silhouette.png";
 };
