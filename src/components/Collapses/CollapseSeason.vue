@@ -43,7 +43,7 @@ async function getEvents(season: ISeason) {
       </p>
     </template>
     <template #collapse-body>
-      <TableEvent v-if="isLoad" :events="events" />
+      <TableEvent v-if="isLoad" :events="events" :season="season"/>
       <div v-else class="flex justify-center my-10">
         <button class="btn btn-ghost loading">loading</button>
       </div>

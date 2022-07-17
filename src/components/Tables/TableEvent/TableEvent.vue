@@ -1,12 +1,14 @@
 <script setup lang="ts">
 // type
-import type { IEvent } from "@/models/sportModel";
+import type { IEvent, ISeason } from "@/models/sportModel";
 import TableEventRow from "./TableEventRow.vue";
 
 interface IProps {
   events: IEvent[];
+  season: ISeason;
 }
 defineProps<IProps>();
+
 </script>
 
 <template>
@@ -19,7 +21,7 @@ defineProps<IProps>();
       </tr>
     </thead>
     <tbody>
-      <TableEventRow v-for="event in events" :key="event.id" :event="event" />
+      <TableEventRow v-for="event in events" :key="event.id" :event="event" :season="season"/>
     </tbody>
   </table>
 </template>

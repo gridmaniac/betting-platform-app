@@ -20,7 +20,7 @@ export const RegisterSucces = {
 export const EmailConfirmSucces = {
   icon: CheckCircleIcon,
   title: "Awesome",
-  description: "Your email has been confirmed.",
+  description: "Your account was activated successfully.",
 };
 
 export const EmailConfirmError = {

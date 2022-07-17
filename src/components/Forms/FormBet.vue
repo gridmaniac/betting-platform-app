@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import moment from "moment";
 import token from "@/assets/koa-token.png";
 import { ToastBetSuccess } from "@/composables/toastNotification";
@@ -17,6 +17,11 @@ const toastStore = useToastStore();
 const amount = ref(150000);
 const errors = ref<{ [key: string]: string }>({});
 const isRequest = ref(false);
+const amountInput = ref()
+
+onMounted(() => {
+  amountInput.value.focus();
+});
 
 const placeBet = async () => {
   const bet: IUserBet = {
@@ -43,7 +48,7 @@ const placeBet = async () => {
     <h2
       class="font-bold text-center mb-2 text-2xl text-primary justify-start sm:justify-center"
     >
-      {{ modalStore.ModalBetContent!.event.id }}
+      {{ modalStore.ModalBetContent!.season.name }}
     </h2>
     <p class="text-primary">
       {{
@@ -77,6 +82,7 @@ const placeBet = async () => {
           type="number"
           class="input input-bordered input-lg"
           v-model="amount"
+          ref="amountInput"
         />
         <span>
           <img class="flex-0 mr-1 h-5" :src="token" />

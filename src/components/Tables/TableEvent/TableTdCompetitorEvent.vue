@@ -13,7 +13,6 @@ const imgPlaceholder = (e: any) => {
 };
 
 const sportType = route.meta.sportType
-console.log(sportType);
 </script>
 
 <template>

@@ -18,3 +18,8 @@ export const TitleMyBets = {
   icon: CreditCardIcon,
   name: "My Bets",
 };
+
+export const TitleWallet = {
+  icon: CreditCardIcon,
+  name: "Wallet",
+};

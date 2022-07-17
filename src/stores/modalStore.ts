@@ -1,5 +1,5 @@
 import type { IModalNotification } from "@/models/notificationModel";
-import type { ICompetitor, IEvent } from "@/models/sportModel";
+import type { ICompetitor, IEvent, ISeason } from "@/models/sportModel";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
@@ -14,6 +14,7 @@ export const useModalStore = defineStore("modalStore", () => {
   const isModalBetVisible = ref(false);
   const ModalBetContent = ref<{
     event: IEvent;
+    season: ISeason;
     winner: ICompetitor;
   }>();
   return {

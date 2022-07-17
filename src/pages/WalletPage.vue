@@ -11,6 +11,8 @@ import { useWalletStore } from "@/stores/walletStore";
 import DropdownWallet from "@/components/Dropdowns/DropdownWallet.vue";
 import TheSpinner from "../components/TheSpinner.vue";
 import { useModalStore } from "@/stores/modalStore";
+import TheTitle from "../components/TheTitle.vue";
+import { TitleWallet } from "@/composables/titlesState"
 const modalStore = useModalStore();
 const walletStore = useWalletStore();
 // variables
@@ -30,19 +32,8 @@ const withdraw = () => {
 </script>
 
 <template>
-  <div class="card shadow-lg compact side bg-base-100 p-3">
-    <div class="flex justify-between items-center">
-      <div class="flex items-center">
-        <component
-          :is="CreditCardIcon"
-          class="inline-block w-6 h-6 mr-2 stroke-current"
-        />
-        <h1 class="font-bold text-2xl text-primary">Wallet</h1>
-      </div>
-    </div>
-  </div>
+  <TheTitle :title="TitleWallet"/>
   <div class="my-6" v-if="walletStore.isWalletPage">
-    <div>
       <div class="flex flex-col lg:flex-row w-full">
         <div
           class="relative card shadow-lg compact side bg-base-100 p-3 mb-6 lg:mb-0 mr-0 lg:mr-6 flex-1"
@@ -141,7 +132,6 @@ const withdraw = () => {
           <TableWallet />
         </div>
       </div>
-    </div>
   </div>
   <div v-else class="mt-10 relative w-full">
     <TheSpinner />

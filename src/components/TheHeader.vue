@@ -14,8 +14,6 @@ const modalStore = useModalStore();
 const router = useRouter();
 
 const handleSubmit = () => {
-  console.log(authStore.isAuth);
-  // authStore.isAuth ? "" :
   if (!authStore.isAuth) {
     modalStore.isModalAuthVisible = true;
     return;

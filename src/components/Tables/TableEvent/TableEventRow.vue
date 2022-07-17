@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import moment from "moment";
 // type
-import type { ICompetitor, IEvent } from "@/models/sportModel";
+import type { ICompetitor, IEvent, ISeason } from "@/models/sportModel";
 // component
 import EventButton from "@/components/EventButton.vue";
 import TableTdCompetitorEvent from "./TableTdCompetitorEvent.vue";
@@ -15,6 +15,7 @@ const modalStore = useModalStore();
 
 interface IProps {
   event: IEvent;
+  season: ISeason
 }
 const props = defineProps<IProps>();
 
@@ -32,6 +33,7 @@ const openModal = (winner: ICompetitor) => {
   }
   modalStore.ModalBetContent = {
     event: props.event,
+    season: props.season,
     winner: winner,
   };
   modalStore.isModalBetVisible = true;

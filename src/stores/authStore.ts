@@ -20,7 +20,7 @@ export const useAuthStore = defineStore("authStore", () => {
 
   async function login(email: string, password: string) {
     const user = {
-      email,
+      email: email.toLowerCase(),
       password,
     };
     const response = await fetchUser(user);
@@ -42,7 +42,7 @@ export const useAuthStore = defineStore("authStore", () => {
     confirmPassword: string
   ) {
     const user = {
-      email,
+      email: email.toLowerCase(),
       password,
       confirmPassword,
     };
@@ -63,7 +63,7 @@ export const useAuthStore = defineStore("authStore", () => {
   }
 
   async function resetPassword(email: string) {
-    const response = await resetUserPassword(email);
+    const response = await resetUserPassword(email.toLowerCase());
     return response;
   }
 

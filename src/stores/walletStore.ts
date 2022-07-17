@@ -73,7 +73,6 @@ export const useWalletStore = defineStore("walletStore", () => {
 
   async function getWallet() {
     const response = await fetchWallet();
-
     address.value = response.address;
     decimals.value = response.decimals;
     if (balance.value) {
@@ -83,9 +82,9 @@ export const useWalletStore = defineStore("walletStore", () => {
       ) {
         toastStore.push(ToastTransaction);
       }
-    }
-    balance.value = response.balance.toString().slice(0, -response.decimals);
-    inBets.value = response.inBets.slice(0, -response.decimals);
+    } else {}
+    balance.value = response.balance === 0 ? response.balance : response.balance.toString().slice(0, -response.decimals);
+    inBets.value = +response.inBets === 0 ? +response.inBets : response.inBets.slice(0, -response.decimals);
     // for deposit
     contractAddress.value = response.contractAddress;
     hotAddress.value = response.hotAddress;
@@ -110,7 +109,6 @@ export const useWalletStore = defineStore("walletStore", () => {
       await window.ethereum.send("eth_requestAccounts");
       const etheriumWallet = window.ethereum.selectedAddress;
       const response = await setUserAddress(etheriumWallet);
-      console.log(response);
       if (response.data) {
         address.value = etheriumWallet;
       }
