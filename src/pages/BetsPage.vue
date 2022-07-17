@@ -84,7 +84,6 @@ const changeSelect = () => {
       <div class="flex flex-col">
         <div
           class="flex justify-between items-center"
-          v-if="paginateItems.length"
         >
           <table class="table table-zebra w-full">
             <thead>
@@ -127,7 +126,9 @@ const changeSelect = () => {
             </button>
           </div>
         </div>
-        <div class="flex items-center justify-center w-full h-32" v-else>
+        <div class="flex items-center justify-center w-full h-32" 
+                    v-if="!paginateItems.length" 
+        >
           <p class="text-white">
             No bets.
             <RouterLink :to="{ name: 'mma' }" class="link-hover" style="color: #f8cb48">Place</RouterLink>

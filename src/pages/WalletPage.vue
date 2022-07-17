@@ -128,9 +128,9 @@ const withdraw = () => {
       </div>
     </div>
     <div class="card shadow-lg compact side bg-base-100 p-3 my-6 w-full">
-      <div class="flex justify-between items-center">
-        <TableWallet v-if="walletStore.transactions.length" />
-        <div class="flex items-center justify-center w-full h-32" v-else>
+      <div class="flex flex-col justify-between items-center">
+        <TableWallet/>
+        <div class="flex items-center justify-center w-full h-32" v-if="!walletStore.transactions.length">
           <p>No transactions.</p>
         </div>
       </div>
