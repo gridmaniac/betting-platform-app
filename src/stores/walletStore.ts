@@ -50,6 +50,7 @@ export const useWalletStore = defineStore("walletStore", () => {
   }
   watch(isAuth, () => {
     if (isAuth.value) {
+      console.log("user авторизовался");
       getWallet();
       // walletDataInterval.value = setInterval(testFunction, 5000);
     } else {
@@ -82,7 +83,7 @@ export const useWalletStore = defineStore("walletStore", () => {
       ) {
         toastStore.push(ToastTransaction);
       }
-    } else {}
+    }
     balance.value = response.balance === 0 ? response.balance : response.balance.toString().slice(0, -response.decimals);
     inBets.value = +response.inBets === 0 ? +response.inBets : response.inBets.slice(0, -response.decimals);
     // for deposit
@@ -94,6 +95,9 @@ export const useWalletStore = defineStore("walletStore", () => {
       (x) => (x.amount = x.amount.toString().slice(0, -response.decimals))
     );
     isWalletPage.value = true;
+    userInterval.value = setInterval(() => {
+      getWallet();
+    }, 5000);
   }
 
   async function disconnectWallet() {
