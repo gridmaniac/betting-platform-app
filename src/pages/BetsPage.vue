@@ -62,6 +62,12 @@ const changeSelect = () => {
     <template #control-right>
       <select
         class="select select-bordered select-sm max-w-xs"
+        v-if="paginateItems.length"
+      >
+        <option value="all">ALL</option>
+      </select>
+      <!-- <select
+        class="select select-bordered select-sm max-w-xs"
         :class="{ blur: !authStore.isAuth }"
         :disabled="!authStore.isAuth"
         v-model="currEntries"
@@ -70,13 +76,16 @@ const changeSelect = () => {
         <option v-for="entrie in showEntries" :key="entrie" :value="entrie">
           {{ entrie }}
         </option>
-      </select>
+      </select> -->
     </template>
   </TheTitle>
-  <div class="relative my-6">
+  <div class="my-6">
     <div class="card shadow-lg compact side bg-base-100 p-3 w-full">
       <div class="flex flex-col">
-        <div class="flex justify-between items-center">
+        <div
+          class="flex justify-between items-center"
+          v-if="paginateItems.length"
+        >
           <table class="table table-zebra w-full">
             <thead>
               <tr>
@@ -106,17 +115,26 @@ const changeSelect = () => {
               </tr>
             </tbody>
           </table>
+          <div class="btn-group mt-6 mx-auto" v-if="allPages !== 1">
+            <button
+              class="btn"
+              v-for="i in allPages"
+              :key="i"
+              @click="currPage(i)"
+              :class="{ 'btn-active': i === pageNumber }"
+            >
+              {{ i }}
+            </button>
+          </div>
         </div>
-        <div class="btn-group mt-6 mx-auto" v-if="allPages !== 1">
-          <button
-            class="btn"
-            v-for="i in allPages"
-            :key="i"
-            @click="currPage(i)"
-            :class="{ 'btn-active': i === pageNumber }"
-          >
-            {{ i }}
-          </button>
+        <div class="flex items-center justify-center w-full h-32" v-else>
+          <p class="text-white">
+            No bets.
+            <RouterLink :to="{ name: 'mma' }" style="color: #f8cb48">
+              Place
+            </RouterLink>
+            your first bet now!
+          </p>
         </div>
       </div>
     </div>
