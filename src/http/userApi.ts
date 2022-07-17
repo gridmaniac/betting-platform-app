@@ -25,3 +25,8 @@ export const changeUserPassword = async (password: string) => {
   );
   return data;
 };
+
+export const confirmEmail = async (code: string) => {
+  const { data } = await $host.put(ERoutes.Activate, { confirmationCode: code})
+  return data;
+};

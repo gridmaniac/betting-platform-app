@@ -10,7 +10,10 @@ import NewsPage from "../pages/NewsPage.vue";
 import { useAuthStore } from "@/stores/authStore";
 import { useModalStore } from "@/stores/modalStore";
 
-import { EmailConfirmSucces } from "@/composables/ModalNotifications";
+import { EmailConfirmSucces, EmailConfirmError } from "@/composables/ModalNotifications";
+
+import { confirmEmail } from "@/http/userApi";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -24,11 +27,17 @@ const router = createRouter({
       path: "/mma",
       name: "mma",
       component: MMAPage,
+      meta: {
+        sportType: "MMA"
+      }
     },
     {
       path: "/soccer",
       name: "soccer",
       component: SoccerPage,
+      meta: {
+        sportType: "Soccer"
+      }
     },
     {
       path: "/bets",
@@ -53,11 +62,18 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   const authStore = useAuthStore();
   if (to.query.confirmationCode) {
     const modalStore = useModalStore();
-    modalStore.modalNotificationContent = EmailConfirmSucces;
+    const code = to.query.confirmationCode.toString();
+    const response = await confirmEmail(code);
+    if (response) {
+      modalStore.modalNotificationContent = EmailConfirmSucces;
+      modalStore.isModalNotification = true;
+      return;
+    }
+    modalStore.modalNotificationContent = EmailConfirmError;
     modalStore.isModalNotification = true;
   }
 

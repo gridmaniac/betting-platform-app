@@ -4,6 +4,7 @@ export enum ERoutes {
   Signup = "api/v1/signup",
   ForgotPassword = "api/v1/password/reset",
   ChangePassword = "api/v1/password",
+  Activate = "api/v1/activate",
   // bet
   Seasons = "/api/v1/seasons/",
   Events = "/api/v1/events/",

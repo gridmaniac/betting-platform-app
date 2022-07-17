@@ -23,6 +23,12 @@ export const EmailConfirmSucces = {
   description: "Your email has been confirmed.",
 };
 
+export const EmailConfirmError = {
+  icon: CheckCircleIcon,
+  title: "Confirm email error",
+  description: "Something went wrong.",
+};
+
 export const WalletError = {
   icon: ExclamationCircleIcon,
   title: "No crypto wallet",
