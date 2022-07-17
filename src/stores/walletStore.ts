@@ -9,7 +9,7 @@ import {
   DepositSuccess,
   DepositError,
 } from "@/composables/ModalNotifications";
-import { ToastTransaction } from "@/composables/toastNotification";
+import { ToastTransaction, ToastAlreadyUseAddress } from "@/composables/toastNotification";
 // store
 import { useAuthStore } from "./authStore";
 import { useModalStore } from "./modalStore";
@@ -98,7 +98,7 @@ export const useWalletStore = defineStore("walletStore", () => {
 
   async function disconnectWallet() {
     const response = await setUserAddress("");
-    if (response.data) {
+    if (!response.data) {
       address.value = null;
     }
   }
@@ -109,7 +109,9 @@ export const useWalletStore = defineStore("walletStore", () => {
       await window.ethereum.send("eth_requestAccounts");
       const etheriumWallet = window.ethereum.selectedAddress;
       const response = await setUserAddress(etheriumWallet);
+      
       if (response.data) {
+        toastStore.push(ToastAlreadyUseAddress);
         address.value = etheriumWallet;
       }
     } catch (error) {

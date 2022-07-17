@@ -17,7 +17,7 @@ const walletStore = useWalletStore();
       ><span class="capitalize">{{ item.type }}</span></template
     >
     <template #amount="{ item }">
-      <img class="inline-block mr-2 h-4" :src="coin" />
+      <img class="inline-block mr-1 h-4" :src="coin" />
       {{ balanceFormat(item.amount) }}
     </template>
     <template #txHash="{ item }">

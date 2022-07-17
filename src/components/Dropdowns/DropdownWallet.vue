@@ -24,7 +24,7 @@ const connectMetamask = () => {
       class="btn btn-ghost rounded-btn"
       :class="{ glass: isGlass }"
     >
-      <component :is="CashIcon" class="block mr-2 w-6 h-6 stroke-current" />
+      <component :is="CashIcon" class="block mr-1 w-6 h-6 stroke-current" />
       Connect Wallet
     </div>
 

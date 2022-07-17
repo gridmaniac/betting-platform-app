@@ -65,7 +65,7 @@ const setPage = (pageNumber: number) => {
         </tr>
       </tbody>
     </table>
-    <div class="btn-group mt-6 mx-auto">
+    <div class="btn-group mt-6 mx-auto" v-if="pages > 1">
       <button
         class="btn"
         v-for="i in pages"

@@ -27,3 +27,17 @@ export const ToastWithdrawSuccess: IToast = {
   description: "Withdrawal success.",
   status: "success",
 };
+
+export const ToastLimitedExceeded: IToast = {
+  id: 0,
+  title: "",
+  description: "Limit exceeded.",
+  status: "error",
+};
+
+export const ToastAlreadyUseAddress: IToast = {
+  id: 0,
+  title: "",
+  description: "Addres is already in use.",
+  status: "error",
+};
