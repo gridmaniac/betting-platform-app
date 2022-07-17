@@ -24,15 +24,15 @@ const logout = () => {
 
 const element = ref();
 const unFocus = () => {
-  element.value.focus();
+  nextTick(() => {
+    element.value.focus();
+    element.value.blur();
+  });
 };
 </script>
 
 <template>
-  <div style="opacity: 0">
-    <input ref="element"/>
-  </div>
-  <div class="dropdown dropdown-end">
+  <div class="dropdown dropdown-end" ref="element" tabindex="0">
     <div
       tabindex="0"
       class="btn btn-ghost rounded-btn"
