@@ -7,6 +7,7 @@ import coin from "@/assets/koa-token.png";
 import { walletCols } from "@/composables/walletState";
 // store
 import { useWalletStore } from "@/stores/walletStore";
+import { balanceFormat } from "@/composables/functions";
 const walletStore = useWalletStore();
 </script>
 
@@ -17,7 +18,7 @@ const walletStore = useWalletStore();
     >
     <template #amount="{ item }">
       <img class="inline-block mr-2 h-4" :src="coin" />
-      {{ item.amount }}
+      {{ balanceFormat(item.amount) }}
     </template>
     <template #txHash="{ item }">
       <div class="flex justify-center">

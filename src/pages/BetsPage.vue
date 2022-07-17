@@ -7,6 +7,9 @@ import token from "../assets/koa-token.png";
 //composables
 import { useAuthStore } from "@/stores/authStore";
 import { fetchBets } from "@/http/walletApi";
+// composables
+import { balanceFormat } from "@/composables/functions";
+// components
 import TheTitle from "../components/TheTitle.vue";
 const authStore = useAuthStore();
 
@@ -31,6 +34,11 @@ onMounted(async () => {
   document.querySelector("main")?.scrollTo(0, 0);
 
   const response = await fetchBets();
+  const array: IBet[] = response.data;
+  array.forEach((element) => {
+    element.amount = +element.amount.toString().slice(0, -9);
+  });
+
   bets.value = response.data;
 });
 
@@ -82,9 +90,7 @@ const changeSelect = () => {
   <div class="my-6">
     <div class="card shadow-lg compact side bg-base-100 p-3 w-full">
       <div class="flex flex-col">
-        <div
-          class="flex justify-between items-center"
-        >
+        <div class="flex justify-between items-center">
           <table class="table table-zebra w-full">
             <thead>
               <tr>
@@ -105,11 +111,19 @@ const changeSelect = () => {
                 <td class="text-center" data-name="amount: ">
                   <span>
                     <img class="inline-block mr-1 h-4" :src="token" />
-                    {{ bet.amount }}
+                    {{ balanceFormat(bet.amount) }}
                   </span>
                 </td>
-                <td class="text-center" data-name="status: ">
-                  <div class="badge badge-primary">{{ bet.status }}</div>
+                <td class="text-center" data-name="status:">
+                  <div
+                    class="badge badge-primary capitalize"
+                    :class="{
+                      'badge-accent': bet.status === 'cancelled',
+                      'badge-success': bet.status === 'settled',
+                    }"
+                  >
+                    {{ bet.status }}
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -126,12 +140,18 @@ const changeSelect = () => {
             </button>
           </div>
         </div>
-        <div class="flex items-center justify-center w-full h-32" 
-                    v-if="!paginateItems.length" 
+        <div
+          class="flex items-center justify-center w-full h-32"
+          v-if="!paginateItems.length"
         >
           <p class="text-white">
             No bets.
-            <RouterLink :to="{ name: 'mma' }" class="link-hover" style="color: #f8cb48">Place</RouterLink>
+            <RouterLink
+              :to="{ name: 'mma' }"
+              class="link-hover"
+              style="color: #f8cb48"
+              >Place</RouterLink
+            >
             your first bet now!
           </p>
         </div>

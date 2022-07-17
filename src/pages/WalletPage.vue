@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
-// icons
-import { CreditCardIcon } from "@heroicons/vue/outline";
 // composables
 import { WithdrawMoney } from "@/composables/ModalNotifications";
+import { balanceFormat } from "@/composables/functions";
 // components
 import TableWallet from "@/components/Tables/TableWallet.vue";
 // store
@@ -15,7 +14,6 @@ import TheTitle from "../components/TheTitle.vue";
 import { TitleWallet } from "@/composables/titlesState";
 const modalStore = useModalStore();
 const walletStore = useWalletStore();
-// variables
 
 onMounted(() => {
   document.querySelector("main")?.scrollTo(0, 0);
@@ -53,7 +51,7 @@ const withdraw = () => {
               </p>
             </div>
             <button
-              class="btn btn-outline"
+              class="btn btn-sm btn-outline ml-2"
               @click="walletStore.disconnectWallet"
             >
               disconnect
@@ -112,7 +110,7 @@ const withdraw = () => {
         <div class="stat">
           <div class="stat-title">Balance</div>
           <div class="stat-value">
-            {{ walletStore.balance }}
+            {{ balanceFormat(walletStore.balance) }}
             <span class="text-primary">KOA</span>
           </div>
         </div>
@@ -120,7 +118,7 @@ const withdraw = () => {
         <div class="stat">
           <div class="stat-title">In Bets</div>
           <div class="stat-value">
-            {{ walletStore.inBets }}
+            {{ balanceFormat(walletStore.inBets)}}
             <span class="text-primary">KOA</span>
           </div>
           <!-- <div class="stat-desc">Potential win: {{ potentialWin }} KOA</div> -->

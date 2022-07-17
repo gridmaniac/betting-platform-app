@@ -14,7 +14,7 @@ import type { IUserBet } from "@/models/walletModels";
 const modalStore = useModalStore();
 const toastStore = useToastStore();
 
-const amount = ref(150000);
+const amount = ref();
 const errors = ref<{ [key: string]: string }>({});
 const isRequest = ref(false);
 const amountInput = ref()

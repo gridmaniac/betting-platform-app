@@ -39,7 +39,7 @@ const { value: confirmPassword, errorMessage: confirmPasswordError } =
 const onSubmit = handleSubmit(async () => {
   if (password.value !== confirmPassword.value) {
     errors.value = {
-      confirmPassword: "Passwords do not match.", // ASK
+      confirmPassword: "Passwords do not match.",
     };
     return;
   }
@@ -52,6 +52,7 @@ const onSubmit = handleSubmit(async () => {
     errors.value = modelErrors;
   }
   if (data) {
+    errors.value = {}
     toastStore.push(ToastPasswordChange);
     resetForm();
   }
