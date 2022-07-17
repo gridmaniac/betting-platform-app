@@ -130,9 +130,7 @@ const changeSelect = () => {
         <div class="flex items-center justify-center w-full h-32" v-else>
           <p class="text-white">
             No bets.
-            <RouterLink :to="{ name: 'mma' }" style="color: #f8cb48">
-              Place
-            </RouterLink>
+            <RouterLink :to="{ name: 'mma' }" class="link-hover" style="color: #f8cb48">Place</RouterLink>
             your first bet now!
           </p>
         </div>
