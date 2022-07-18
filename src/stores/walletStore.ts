@@ -114,8 +114,9 @@ export const useWalletStore = defineStore("walletStore", () => {
       const { data } = await setUserAddress(etheriumWallet);
       if (!data) {
         toastStore.push(ToastAlreadyUseAddress);
-        address.value = etheriumWallet;
+        return
       }
+      address.value = etheriumWallet;
       return data
     } catch (error) {
       modalStore.modalNotificationContent = WalletConnectError;
