@@ -51,7 +51,9 @@ const placeBet = async () => {
 };
 
 const ceilBet = () => {
-  amount.value = Math.floor(amount.value);
+  if (amount.value) {
+    amount.value = Math.floor(amount.value);
+  }
 };
 </script>
 

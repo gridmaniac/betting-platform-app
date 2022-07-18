@@ -38,7 +38,9 @@ const disconnectUserWallet = async () => {
 };
 
 const ceilDeposit = () => {
-  walletStore.deposit = Math.floor(walletStore.deposit);
+  if (walletStore.deposit) {
+    walletStore.deposit = Math.floor(walletStore.deposit);
+  }
 };
 
 const ceilWithdraw = () => {

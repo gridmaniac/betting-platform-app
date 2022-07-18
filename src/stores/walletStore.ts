@@ -109,10 +109,8 @@ export const useWalletStore = defineStore("walletStore", () => {
 
   async function disconnectWallet() {
     const response = await setUserAddress("");
-    if (!response.data) {
-      address.value = null;
-      return response;
-    }
+    address.value = null;
+    return response;
   }
 
   async function connectWallet() {
