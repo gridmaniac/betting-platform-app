@@ -95,9 +95,6 @@ export const useWalletStore = defineStore("walletStore", () => {
       (x) => (x.amount = x.amount.toString().slice(0, -response.decimals))
     );
     isWalletPage.value = true;
-    userInterval.value = setInterval(() => {
-      getWallet();
-    }, 5000);
   }
 
   async function disconnectWallet() {
