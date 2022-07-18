@@ -101,6 +101,7 @@ export const useWalletStore = defineStore("walletStore", () => {
     const response = await setUserAddress("");
     if (!response.data) {
       address.value = null;
+      return response
     }
   }
 
@@ -109,12 +110,12 @@ export const useWalletStore = defineStore("walletStore", () => {
       checkMetamask();
       await window.ethereum.send("eth_requestAccounts");
       const etheriumWallet = window.ethereum.selectedAddress;
-      const response = await setUserAddress(etheriumWallet);
-      
-      if (response.data) {
+      const { data } = await setUserAddress(etheriumWallet);
+      if (!data) {
         toastStore.push(ToastAlreadyUseAddress);
         address.value = etheriumWallet;
       }
+      return data
     } catch (error) {
       modalStore.modalNotificationContent = WalletConnectError;
       modalStore.isModalNotification = true;

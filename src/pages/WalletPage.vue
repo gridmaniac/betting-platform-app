@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 // composables
 import { WithdrawMoney } from "@/composables/ModalNotifications";
 import { balanceFormat } from "@/composables/functions";
@@ -14,6 +14,7 @@ import TheTitle from "../components/TheTitle.vue";
 import { TitleWallet } from "@/composables/titlesState";
 const modalStore = useModalStore();
 const walletStore = useWalletStore();
+const isDisconnectRequest = ref(false);
 
 onMounted(() => {
   document.querySelector("main")?.scrollTo(0, 0);
@@ -26,6 +27,16 @@ const setMoney = (money: number) => {
 const withdraw = () => {
   modalStore.modalNotificationContent = WithdrawMoney;
   modalStore.isModalWithdraw = true;
+};
+
+const disconnectUserWallet = async () => {
+  console.log("test");
+  
+  isDisconnectRequest.value = true;
+  const response = await walletStore.disconnectWallet();
+  if (response) {
+    isDisconnectRequest.value = false;
+  }
 };
 </script>
 
@@ -52,7 +63,9 @@ const withdraw = () => {
             </div>
             <button
               class="btn btn-sm btn-outline ml-2"
-              @click="walletStore.disconnectWallet"
+              :class="{ loading: isDisconnectRequest }"
+              @click="disconnectUserWallet()"
+              :disabled="isDisconnectRequest"
             >
               disconnect
             </button>
@@ -106,7 +119,7 @@ const withdraw = () => {
           </div>
         </div>
       </div>
-      <div class="shadow stats stats-vertical" style="min-width: 300px;">
+      <div class="shadow stats stats-vertical" style="min-width: 300px">
         <div class="stat">
           <div class="stat-title">Balance</div>
           <div class="stat-value">
@@ -118,7 +131,7 @@ const withdraw = () => {
         <div class="stat">
           <div class="stat-title">In Bets</div>
           <div class="stat-value">
-            {{ balanceFormat(walletStore.inBets)}}
+            {{ balanceFormat(walletStore.inBets) }}
             <span class="text-primary">KOA</span>
           </div>
           <!-- <div class="stat-desc">Potential win: {{ potentialWin }} KOA</div> -->
@@ -127,8 +140,11 @@ const withdraw = () => {
     </div>
     <div class="card shadow-lg compact side bg-base-100 p-3 my-6 w-full">
       <div class="flex flex-col justify-between items-center">
-        <TableWallet/>
-        <div class="flex items-center justify-center w-full h-32" v-if="!walletStore.transactions.length">
+        <TableWallet />
+        <div
+          class="flex items-center justify-center w-full h-32"
+          v-if="!walletStore.transactions.length"
+        >
           <p>No transactions.</p>
         </div>
       </div>
