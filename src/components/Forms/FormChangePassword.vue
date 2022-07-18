@@ -52,7 +52,7 @@ const onSubmit = handleSubmit(async () => {
     errors.value = modelErrors;
   }
   if (data) {
-    errors.value = {}
+    errors.value = {};
     toastStore.push(ToastPasswordChange);
     resetForm();
   }

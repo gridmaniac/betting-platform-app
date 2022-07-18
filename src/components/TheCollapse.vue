@@ -10,7 +10,6 @@ const active = computed({
   get: () => props.modelValue,
   set: (value) => emit("update:modelValue", value),
 });
-
 </script>
 
 <template>

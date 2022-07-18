@@ -49,6 +49,10 @@ const placeBet = async () => {
     toastStore.push(ToastBetSuccess);
   }
 };
+
+const ceilBet = () => {
+  amount.value = Math.floor(amount.value);
+};
 </script>
 
 <template>
@@ -80,18 +84,21 @@ const placeBet = async () => {
   <div class="flex flex-col sm:flex-row justify-between">
     <div class="flex flex-row sm:flex-col mb-2 sm:mb-0">
       <p class="text-base-content text-opacity-40">Winner:</p>
-      <p class="text-base-content text-bold flex justify-between items-center ml-2 sm:ml-0">
+      <p
+        class="text-base-content text-bold flex justify-between items-center ml-2 sm:ml-0"
+      >
         {{ modalStore.ModalBetContent!.winner.name }}
       </p>
     </div>
     <div class="form-control">
-      <label class="input-group  sm:justify-end"
+      <label class="input-group sm:justify-end"
         ><input
           type="number"
           class="input input-bordered input-lg w-full"
           v-model="amount"
           ref="amountInput"
           placeholder="0"
+          @blur="ceilBet"
         />
         <span>
           <img class="flex-0 mr-1 h-5 w-5 w-full" :src="token" />

@@ -15,7 +15,7 @@ const modalStore = useModalStore();
 
 interface IProps {
   event: IEvent;
-  season: ISeason
+  season: ISeason;
 }
 const props = defineProps<IProps>();
 

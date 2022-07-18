@@ -4,8 +4,6 @@ import TheDrawer from "./components/TheDrawer.vue";
 import TheHeader from "./components/TheHeader.vue";
 import TheFooter from "./components/TheFooter.vue";
 import AllModals from "./components/Modals/AllModals.vue";
-import { XIcon } from "@heroicons/vue/outline";
-
 import { useToastStore } from "./stores/toastStore";
 import { ref } from "vue";
 const toastStore = useToastStore();

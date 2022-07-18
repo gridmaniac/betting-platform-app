@@ -8,7 +8,6 @@ interface IProps {
   season: ISeason;
 }
 defineProps<IProps>();
-
 </script>
 
 <template>
@@ -21,7 +20,12 @@ defineProps<IProps>();
       </tr>
     </thead>
     <tbody>
-      <TableEventRow v-for="event in events" :key="event.id" :event="event" :season="season"/>
+      <TableEventRow
+        v-for="event in events"
+        :key="event.id"
+        :event="event"
+        :season="season"
+      />
     </tbody>
   </table>
 </template>

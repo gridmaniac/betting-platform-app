@@ -5,14 +5,11 @@ import moment from "moment";
 //icons
 import token from "../assets/koa-token.png";
 //composables
-import { useAuthStore } from "@/stores/authStore";
 import { fetchBets } from "@/http/walletApi";
 // composables
 import { balanceFormat } from "@/composables/functions";
 // components
 import TheTitle from "../components/TheTitle.vue";
-const authStore = useAuthStore();
-
 interface IBet {
   amount: number;
   date: string;
@@ -29,15 +26,15 @@ interface IBet {
 }
 
 const bets = ref<IBet[]>([]);
-const isRequest = ref(false)
+const isRequest = ref(false);
 onMounted(async () => {
   document.querySelector("main")?.scrollTo(0, 0);
 
-  isRequest.value = true
+  isRequest.value = true;
   const response = await fetchBets();
   console.log(response.data);
-  
-  isRequest.value = false
+
+  isRequest.value = false;
   const array: IBet[] = response.data;
   array.forEach((element) => {
     element.amount = +element.amount.toString().slice(0, -9);
@@ -48,7 +45,7 @@ onMounted(async () => {
 const currEntries = ref(8);
 const pageNumber = ref(1);
 const allItems = computed(() => {
-  return bets.value.length
+  return bets.value.length;
 });
 console.log(allItems.value);
 
@@ -64,11 +61,6 @@ const paginateItems = computed(() => {
   const to = from + currEntries.value;
   return bets.value.slice(from, to);
 });
-const changeSelect = () => {
-  if (!paginateItems.value.length) {
-    pageNumber.value = 1;
-  }
-};
 </script>
 
 <template>
@@ -80,17 +72,6 @@ const changeSelect = () => {
       >
         <option value="all">ALL</option>
       </select>
-      <!-- <select
-        class="select select-bordered select-sm max-w-xs"
-        :class="{ blur: !authStore.isAuth }"
-        :disabled="!authStore.isAuth"
-        v-model="currEntries"
-        @change="changeSelect()"
-      >
-        <option v-for="entrie in showEntries" :key="entrie" :value="entrie">
-          {{ entrie }}
-        </option>
-      </select> -->
     </template>
   </TheTitle>
   <div class="my-6">

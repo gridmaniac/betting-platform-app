@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ICompetitor } from "@/models/sportModel";
 import { useRoute } from "vue-router";
-const route = useRoute()
+const route = useRoute();
 interface IProps {
   competitor: ICompetitor;
 }
@@ -12,7 +12,7 @@ const imgPlaceholder = (e: any) => {
     "https://koacombat.nyc3.cdn.digitaloceanspaces.com/competitors/silhouette.png";
 };
 
-const sportType = route.meta.sportType
+const sportType = route.meta.sportType;
 </script>
 
 <template>
@@ -41,19 +41,19 @@ const sportType = route.meta.sportType
 </template>
 
 <style scoped lang="scss">
-.competitor{
+.competitor {
   overflow: hidden;
   &-content {
     overflow: hidden;
   }
   &-name {
-  width: 100%;
-  overflow: hidden;
-  p {
-    white-space: nowrap; /* Запрещаем перенос строк */
-    overflow: hidden; /* Обрезаем все, что не помещается в область */
-    text-overflow: ellipsis; /* Добавляем многоточие */
+    width: 100%;
+    overflow: hidden;
+    p {
+      white-space: nowrap; /* Запрещаем перенос строк */
+      overflow: hidden; /* Обрезаем все, что не помещается в область */
+      text-overflow: ellipsis; /* Добавляем многоточие */
+    }
   }
-}
 }
 </style>

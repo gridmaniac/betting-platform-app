@@ -9,7 +9,10 @@ import {
   DepositSuccess,
   DepositError,
 } from "@/composables/ModalNotifications";
-import { ToastTransaction, ToastAlreadyUseAddress } from "@/composables/toastNotification";
+import {
+  ToastTransaction,
+  ToastAlreadyUseAddress,
+} from "@/composables/toastNotification";
 // store
 import { useAuthStore } from "./authStore";
 import { useModalStore } from "./modalStore";
@@ -30,7 +33,7 @@ export const useWalletStore = defineStore("walletStore", () => {
   const address = ref<string | null>();
   const balance = ref<number>(0);
   const inBets = ref<number>(0);
-  const withdrawAmount = ref<number | null>(null);
+  const withdrawAmount = ref<number>(0);
   const transactions = ref<ITransaction[]>([]);
   const decimals = ref<string>("9");
   //
@@ -52,7 +55,7 @@ export const useWalletStore = defineStore("walletStore", () => {
     if (isAuth.value) {
       getWallet();
       userInterval.value = setInterval(() => {
-        getWallet()
+        getWallet();
       }, 30000);
     } else {
       clearInterval(userInterval.value);
@@ -85,8 +88,14 @@ export const useWalletStore = defineStore("walletStore", () => {
         toastStore.push(ToastTransaction);
       }
     }
-    balance.value = response.balance === 0 ? response.balance : response.balance.toString().slice(0, -response.decimals);
-    inBets.value = +response.inBets === 0 ? +response.inBets : response.inBets.slice(0, -response.decimals);
+    balance.value =
+      response.balance === 0
+        ? response.balance
+        : response.balance.toString().slice(0, -response.decimals);
+    inBets.value =
+      +response.inBets === 0
+        ? +response.inBets
+        : response.inBets.slice(0, -response.decimals);
     // for deposit
     contractAddress.value = response.contractAddress;
     hotAddress.value = response.hotAddress;
@@ -102,7 +111,7 @@ export const useWalletStore = defineStore("walletStore", () => {
     const response = await setUserAddress("");
     if (!response.data) {
       address.value = null;
-      return response
+      return response;
     }
   }
 
@@ -114,10 +123,10 @@ export const useWalletStore = defineStore("walletStore", () => {
       const { data } = await setUserAddress(etheriumWallet);
       if (!data) {
         toastStore.push(ToastAlreadyUseAddress);
-        return
+        return;
       }
       address.value = etheriumWallet;
-      return data
+      return data;
     } catch (error) {
       modalStore.modalNotificationContent = WalletConnectError;
       modalStore.isModalNotification = true;

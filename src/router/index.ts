@@ -10,7 +10,10 @@ import NewsPage from "../pages/NewsPage.vue";
 import { useAuthStore } from "@/stores/authStore";
 import { useModalStore } from "@/stores/modalStore";
 
-import { EmailConfirmSucces, EmailConfirmError } from "@/composables/ModalNotifications";
+import {
+  EmailConfirmSucces,
+  EmailConfirmError,
+} from "@/composables/ModalNotifications";
 
 import { confirmEmail } from "@/http/userApi";
 
@@ -28,16 +31,16 @@ const router = createRouter({
       name: "mma",
       component: MMAPage,
       meta: {
-        sportType: "MMA"
-      }
+        sportType: "MMA",
+      },
     },
     {
       path: "/soccer",
       name: "soccer",
       component: SoccerPage,
       meta: {
-        sportType: "Soccer"
-      }
+        sportType: "Soccer",
+      },
     },
     {
       path: "/bets",

@@ -2,7 +2,7 @@
 import type { ICompetitor } from "@/models/sportModel";
 import { useRoute } from "vue-router";
 
-const route = useRoute()
+const route = useRoute();
 interface IProps {
   competitor: ICompetitor;
   side: "left" | "right";
@@ -14,8 +14,7 @@ const imgPlaceholder = (e: any) => {
     "https://koacombat.nyc3.cdn.digitaloceanspaces.com/competitors/silhouette.png";
 };
 
-
-const sportType = route.meta.sportType
+const sportType = route.meta.sportType;
 </script>
 
 <template>

@@ -36,6 +36,14 @@ const disconnectUserWallet = async () => {
     isDisconnectRequest.value = false;
   }
 };
+
+const ceilDeposit = () => {
+  walletStore.deposit = Math.floor(walletStore.deposit);
+};
+
+const ceilWithdraw = () => {
+  walletStore.withdrawAmount = Math.floor(walletStore.withdrawAmount);
+};
 </script>
 
 <template>
@@ -84,6 +92,7 @@ const disconnectUserWallet = async () => {
               </button>
               <input
                 type="number"
+                @blur="ceilDeposit()"
                 placeholder="0"
                 v-model="walletStore.deposit"
                 class="input input-bordered input-md sm:input-lg flex-1 text-right"
@@ -105,6 +114,7 @@ const disconnectUserWallet = async () => {
                 v-model="walletStore.withdrawAmount"
                 class="input input-bordered flex-1 text-right"
                 autocomplete="off"
+                @blur="ceilWithdraw()"
               />
               <button
                 class="btn btn-outline w-auto sm:w-56"
