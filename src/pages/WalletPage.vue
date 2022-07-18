@@ -42,7 +42,9 @@ const ceilDeposit = () => {
 };
 
 const ceilWithdraw = () => {
-  walletStore.withdrawAmount = Math.floor(walletStore.withdrawAmount);
+  if (walletStore.withdrawAmount) {
+    walletStore.withdrawAmount = Math.floor(walletStore.withdrawAmount);
+  }
 };
 </script>
 

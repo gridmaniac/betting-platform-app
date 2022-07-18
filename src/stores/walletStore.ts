@@ -33,7 +33,7 @@ export const useWalletStore = defineStore("walletStore", () => {
   const address = ref<string | null>();
   const balance = ref<number>(0);
   const inBets = ref<number>(0);
-  const withdrawAmount = ref<number>(0);
+  const withdrawAmount = ref<number | null>();
   const transactions = ref<ITransaction[]>([]);
   const decimals = ref<string>("9");
   //

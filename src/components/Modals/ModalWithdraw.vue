@@ -35,7 +35,7 @@ const handleSubmit = async () => {
     toastStore.push(toast);
   }
   if (data) {
-    walletStore.withdrawAmount = 0;
+    walletStore.withdrawAmount = null;
     modalStore.isModalWithdraw = false;
     const toast: IToast = ToastWithdrawSuccess;
     toastStore.push(toast);
