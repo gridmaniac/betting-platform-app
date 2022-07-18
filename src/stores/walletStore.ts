@@ -46,14 +46,14 @@ export const useWalletStore = defineStore("walletStore", () => {
     getWallet();
     userInterval.value = setInterval(() => {
       getWallet();
-    }, 5000);
+    }, 30000);
   }
   watch(isAuth, () => {
     if (isAuth.value) {
       getWallet();
       userInterval.value = setInterval(() => {
         getWallet()
-      }, 5000);
+      }, 30000);
     } else {
       clearInterval(userInterval.value);
       isWalletPage.value = false;

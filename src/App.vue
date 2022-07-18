@@ -38,7 +38,7 @@ const drawer = ref(false);
       <div
         v-for="toast in toastStore.toasts"
         :key="toast.id"
-        class="alert shadow-lg"
+        class="alert shadow-lg mt-2"
         :class="{
           'alert-error': toast.status === 'error',
           'alert-success': toast.status === 'success',

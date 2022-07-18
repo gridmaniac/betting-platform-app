@@ -77,24 +77,24 @@ const placeBet = async () => {
       side="right"
     />
   </div>
-  <div class="flex justify-between">
-    <div class="flex flex-col">
+  <div class="flex flex-col sm:flex-row justify-between">
+    <div class="flex flex-row sm:flex-col mb-2 sm:mb-0">
       <p class="text-base-content text-opacity-40">Winner:</p>
-      <p class="text-base-content text-bold flex justify-between items-center">
+      <p class="text-base-content text-bold flex justify-between items-center ml-2 sm:ml-0">
         {{ modalStore.ModalBetContent!.winner.name }}
       </p>
     </div>
     <div class="form-control">
-      <label class="input-group input-group-md justify-end"
+      <label class="input-group  sm:justify-end"
         ><input
           type="number"
-          class="input input-bordered input-lg"
+          class="input input-bordered input-lg w-full"
           v-model="amount"
           ref="amountInput"
           placeholder="0"
         />
         <span>
-          <img class="flex-0 mr-1 h-5" :src="token" />
+          <img class="flex-0 mr-1 h-5 w-5 w-full" :src="token" />
         </span>
       </label>
       <label class="label">

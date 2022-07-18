@@ -52,15 +52,15 @@ const disconnectUserWallet = async () => {
           <DropdownWallet :is-glass="true" />
         </div>
         <div :class="{ 'blur-md': !walletStore.address }">
-          <div class="flex justify-between">
-            <div>
+          <div class="flex flex-col sm:flex-row sm:justify-between">
+            <div class="forAddress">
               <span class="font-bold">Connected:</span>
               <p class="text-primary">
                 {{ walletStore.address }}
               </p>
             </div>
             <button
-              class="btn btn-sm btn-outline ml-2"
+              class="btn btn-sm btn-outline ml-2 mt-2 sm:mt-0"
               :class="{ loading: isDisconnectRequest }"
               @click="disconnectUserWallet()"
               :disabled="isDisconnectRequest"
@@ -152,3 +152,14 @@ const disconnectUserWallet = async () => {
     <TheSpinner />
   </div>
 </template>
+
+<style scoped lang="scss">
+.forAddress {
+  overflow: hidden;
+  p {
+    white-space: nowrap; /* Запрещаем перенос строк */
+    overflow: hidden; /* Обрезаем все, что не помещается в область */
+    text-overflow: ellipsis; /* Добавляем многоточие */
+  }
+}
+</style>

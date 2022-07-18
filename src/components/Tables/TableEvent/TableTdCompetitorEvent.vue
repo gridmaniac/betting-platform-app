@@ -17,7 +17,7 @@ const sportType = route.meta.sportType
 
 <template>
   <div
-    class="competitor flex flex-1 items-center space-x-3 sm:space-x-0 flex-row sm:flex-col"
+    class="flex flex-1 items-center space-x-3 sm:space-x-0 flex-row sm:flex-col competitor"
   >
     <div class="avatar w-10">
       <div class="w-12 h-12 mask mask-squircle">
@@ -28,7 +28,7 @@ const sportType = route.meta.sportType
         />
       </div>
     </div>
-    <div class="text-left sm:text-center">
+    <div class="text-left sm:text-center competitor-content">
       <div class="font-bold competitor-name">
         <p>{{ competitor.name }}</p>
       </div>
@@ -41,19 +41,19 @@ const sportType = route.meta.sportType
 </template>
 
 <style scoped lang="scss">
-.competitor-name {
-  max-width: 140px;
+.competitor{
+  overflow: hidden;
+  &-content {
+    overflow: hidden;
+  }
+  &-name {
+  width: 100%;
   overflow: hidden;
   p {
     white-space: nowrap; /* Запрещаем перенос строк */
     overflow: hidden; /* Обрезаем все, что не помещается в область */
     text-overflow: ellipsis; /* Добавляем многоточие */
   }
-  @media screen and (max-width: 640px) {
-    & {
-      max-width: 200px;
-      width: 100%;
-    }
-  }
+}
 }
 </style>

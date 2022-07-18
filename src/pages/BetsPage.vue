@@ -29,25 +29,31 @@ interface IBet {
 }
 
 const bets = ref<IBet[]>([]);
-
+const isRequest = ref(false)
 onMounted(async () => {
   document.querySelector("main")?.scrollTo(0, 0);
 
+  isRequest.value = true
   const response = await fetchBets();
+  console.log(response.data);
+  
+  isRequest.value = false
   const array: IBet[] = response.data;
   array.forEach((element) => {
     element.amount = +element.amount.toString().slice(0, -9);
   });
-
-  bets.value = response.data;
+  bets.value = array;
 });
 
-const currEntries = ref(4);
+const currEntries = ref(8);
 const pageNumber = ref(1);
-const showEntries = [4, 8, 12, 16, 20];
-const allItems = bets.value.length;
+const allItems = computed(() => {
+  return bets.value.length
+});
+console.log(allItems.value);
+
 const allPages = computed(() => {
-  return Math.ceil(allItems / currEntries.value);
+  return Math.ceil(allItems.value / currEntries.value);
 });
 // pagination funct
 const currPage = (number: number) => {
@@ -90,7 +96,7 @@ const changeSelect = () => {
   <div class="my-6">
     <div class="card shadow-lg compact side bg-base-100 p-3 w-full">
       <div class="flex flex-col">
-        <div class="flex justify-between items-center">
+        <div class="flex flex-col justify-between items-center">
           <table class="table table-zebra w-full">
             <thead>
               <tr>
@@ -104,7 +110,7 @@ const changeSelect = () => {
                 <td data-name="Event: ">
                   <div class="whitespace-normal">
                     <strong>{{ bet.season }}</strong>
-                    <p>{{ moment(bet.date).format("MMMM DD, YYYY") }}</p>
+                    <p>{{ moment(bet.startTime).format("MMMM DD, YYYY") }}</p>
                     <p class="text-primary">Winner: {{ bet.winner }}</p>
                   </div>
                 </td>
@@ -128,7 +134,10 @@ const changeSelect = () => {
               </tr>
             </tbody>
           </table>
-          <div class="btn-group mt-6 mx-auto" v-if="allPages !== 1">
+          <div class="h-32 flex justify-center items-center" v-if="isRequest">
+            <button class="btn loading" disabled>loading</button>
+          </div>
+          <div class="btn-group mt-6 mx-auto" v-if="allPages > 1">
             <button
               class="btn"
               v-for="i in allPages"
@@ -142,7 +151,7 @@ const changeSelect = () => {
         </div>
         <div
           class="flex items-center justify-center w-full h-32"
-          v-if="!paginateItems.length"
+          v-if="!paginateItems.length && !isRequest"
         >
           <p class="text-white">
             No bets.

@@ -22,7 +22,7 @@ onClickOutside(modal, () => {
 
 <template>
   <input type="checkbox" class="modal-toggle" v-model="active" />
-  <div class="modal">
+  <div class="modal modal-bottom sm:modal-middle">
     <div class="modal-box" ref="modal">
       <slot />
     </div>
