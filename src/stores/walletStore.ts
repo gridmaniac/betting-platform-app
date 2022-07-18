@@ -50,9 +50,10 @@ export const useWalletStore = defineStore("walletStore", () => {
   }
   watch(isAuth, () => {
     if (isAuth.value) {
-      console.log("user авторизовался");
       getWallet();
-      // walletDataInterval.value = setInterval(testFunction, 5000);
+      userInterval.value = setInterval(() => {
+        getWallet()
+      }, 5000);
     } else {
       clearInterval(userInterval.value);
       isWalletPage.value = false;

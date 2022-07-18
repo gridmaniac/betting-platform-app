@@ -30,8 +30,6 @@ const withdraw = () => {
 };
 
 const disconnectUserWallet = async () => {
-  console.log("test");
-  
   isDisconnectRequest.value = true;
   const response = await walletStore.disconnectWallet();
   if (response) {
