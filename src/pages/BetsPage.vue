@@ -32,7 +32,6 @@ onMounted(async () => {
 
   isRequest.value = true;
   const response = await fetchBets();
-  console.log(response.data);
 
   isRequest.value = false;
   const array: IBet[] = response.data;
@@ -47,8 +46,6 @@ const pageNumber = ref(1);
 const allItems = computed(() => {
   return bets.value.length;
 });
-console.log(allItems.value);
-
 const allPages = computed(() => {
   return Math.ceil(allItems.value / currEntries.value);
 });
