@@ -36,18 +36,18 @@ const placeBet = async () => {
   isRequest.value = true;
   const { data, modelErrors, err } = await setBet(bet);
   isRequest.value = false;
-  if (modelErrors) {
-    errors.value = modelErrors;
-  }
-  if (err) {
-    modalStore.isModalBetVisible = false;
-    toastStore.push(ToastLimitedExceeded);
-    return;
-  }
+  // if (modelErrors) {
+  //   errors.value = modelErrors;
+  // }
+  // if (err) {
+  //   modalStore.isModalBetVisible = false;
+  //   toastStore.push(ToastLimitedExceeded);
+  //   return;
+  // }
   if (data) {
-    modalStore.isModalBetVisible = false;
-    toastStore.push(ToastBetSuccess);
   }
+  modalStore.isModalBetVisible = false;
+  toastStore.push(ToastBetSuccess);
 };
 
 const ceilBet = () => {
