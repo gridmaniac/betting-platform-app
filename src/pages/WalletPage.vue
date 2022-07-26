@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 // composables
+import { usePagination } from "@/composables/pagination";
 import { WithdrawMoney } from "@/composables/ModalNotifications";
 import { balanceFormat } from "@/composables/functions";
+import { TitleWallet } from "@/composables/titlesState";
 // components
 import TableWallet from "@/components/Tables/TableWallet.vue";
-// store
-import { useWalletStore } from "@/stores/walletStore";
 import DropdownWallet from "@/components/Dropdowns/DropdownWallet.vue";
-import TheSpinner from "../components/TheSpinner.vue";
+import TheSpinner from "@/components/TheSpinner.vue";
+import TheTitle from "@/components/TheTitle.vue";
+// store
 import { useModalStore } from "@/stores/modalStore";
-import TheTitle from "../components/TheTitle.vue";
-import { TitleWallet } from "@/composables/titlesState";
+import { useWalletStore } from "@/stores/walletStore";
 const modalStore = useModalStore();
 const walletStore = useWalletStore();
+
 const isDisconnectRequest = ref(false);
 
 onMounted(() => {
@@ -48,6 +50,15 @@ const ceilWithdraw = () => {
     walletStore.withdrawAmount = Math.floor(walletStore.withdrawAmount);
   }
 };
+const totalRecords = ref(500)
+const { pages, setPage, totalPages } = usePagination({totalRecords, pageSize: 8})
+// setInterval(() => {
+//   totalRecords.value += 500
+//   console.log(totalPages.value);
+  
+// }, 5000)
+// console.log(totalPages.value);
+
 </script>
 
 <template>

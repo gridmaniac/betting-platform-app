@@ -6,7 +6,7 @@ export function checkData(seasons: ISeason[]) {
   const upcoming: ISeason[] = [];
   const currentTime = moment().format();
   seasons.forEach((season) => {
-    const seasonTime = moment(season.startDate).format();
+    const seasonTime = moment(season.endDate).utc().format();
     if (currentTime > seasonTime) {
       completed.unshift(season);
       return;
