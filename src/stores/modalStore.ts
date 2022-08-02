@@ -9,6 +9,7 @@ export const useModalStore = defineStore("modalStore", () => {
   const isLogin = ref(true);
   const isModalNotification = ref(false);
   const isModalWithdraw = ref(false);
+  const isModalConfirm = ref(false);
   const modalNotificationContent = ref<IModalNotification | null>();
   // modal bet
   const isModalBetVisible = ref(false);
@@ -24,6 +25,7 @@ export const useModalStore = defineStore("modalStore", () => {
     isModalNotification,
     modalNotificationContent,
     isModalWithdraw,
+    isModalConfirm,
     isModalBetVisible,
     ModalBetContent,
   };

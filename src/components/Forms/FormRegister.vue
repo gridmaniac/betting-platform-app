@@ -117,7 +117,7 @@ const onSubmit = handleSubmit(async () => {
           v-model="confirmPassword"
           type="password"
           class="input input-bordered w-full"
-          autocomplete="off"
+          autocomplete="new-password"
         />
         <label class="label">
           <span class="label-text-alt">

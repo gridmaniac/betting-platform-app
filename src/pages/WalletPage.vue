@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 // composables
-import { usePagination } from "@/composables/pagination";
 import { WithdrawMoney } from "@/composables/ModalNotifications";
 import { balanceFormat } from "@/composables/functions";
 import { TitleWallet } from "@/composables/titlesState";
@@ -16,8 +15,6 @@ import { useWalletStore } from "@/stores/walletStore";
 const modalStore = useModalStore();
 const walletStore = useWalletStore();
 
-const isDisconnectRequest = ref(false);
-
 onMounted(() => {
   document.querySelector("main")?.scrollTo(0, 0);
 });
@@ -31,14 +28,6 @@ const withdraw = () => {
   modalStore.isModalWithdraw = true;
 };
 
-const disconnectUserWallet = async () => {
-  isDisconnectRequest.value = true;
-  const response = await walletStore.disconnectWallet();
-  if (response) {
-    isDisconnectRequest.value = false;
-  }
-};
-
 const ceilDeposit = () => {
   if (walletStore.deposit) {
     walletStore.deposit = Math.floor(walletStore.deposit);
@@ -50,15 +39,6 @@ const ceilWithdraw = () => {
     walletStore.withdrawAmount = Math.floor(walletStore.withdrawAmount);
   }
 };
-const totalRecords = ref(500)
-const { pages, setPage, totalPages } = usePagination({totalRecords, pageSize: 8})
-// setInterval(() => {
-//   totalRecords.value += 500
-//   console.log(totalPages.value);
-  
-// }, 5000)
-// console.log(totalPages.value);
-
 </script>
 
 <template>
@@ -84,9 +64,7 @@ const { pages, setPage, totalPages } = usePagination({totalRecords, pageSize: 8}
             </div>
             <button
               class="btn btn-sm btn-outline ml-2 mt-2 sm:mt-0"
-              :class="{ loading: isDisconnectRequest }"
-              @click="disconnectUserWallet()"
-              :disabled="isDisconnectRequest"
+              @click="modalStore.isModalConfirm = true"
             >
               disconnect
             </button>
@@ -128,7 +106,7 @@ const { pages, setPage, totalPages } = usePagination({totalRecords, pageSize: 8}
                 placeholder="0"
                 v-model="walletStore.withdrawAmount"
                 class="input input-bordered flex-1 text-right"
-                autocomplete="off"
+                autocomplete="new-password"
                 @blur="ceilWithdraw()"
               />
               <button

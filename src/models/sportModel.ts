@@ -12,11 +12,13 @@ export interface ISeason {
 }
 
 export interface IEvent {
+  closeTime: string;
   winnerId: string;
   awayScore: number;
   homeScore: number;
   competitors: ICompetitor[];
   id: string;
+  processed: boolean;
   seasonId: string;
   startTime: string;
   startTimeConfirmed: boolean;

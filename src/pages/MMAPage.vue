@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { fetchSeasons } from "@/http/sportsApi";
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, computed, provide } from "vue";
 // components
 import TitleMMA from "../components/Titles/TitleMMA.vue";
 import CollapsesSeason from "@/components/Collapses/CollapsesSeason.vue";
@@ -16,6 +16,11 @@ const seasonsCompleted = ref<ISeason[]>([]);
 //
 const isUpcoming = ref(true);
 const isReady = ref(false);
+
+provide("seasons", {
+  seasonsUpcoming,
+  seasonsCompleted,
+});
 
 onMounted(async () => {
   const { data } = await fetchSeasons("mma");

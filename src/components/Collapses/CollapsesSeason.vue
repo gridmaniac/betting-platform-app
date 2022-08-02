@@ -11,10 +11,12 @@ defineProps<IProps>();
 </script>
 
 <template>
-  <CollapseSeason
-    v-for="(season, i) in seasons"
-    :key="season.id"
-    :season="season"
-    :number="i"
-  />
+  <div class="mt-6">
+    <CollapseSeason
+      v-for="(season, i) in seasons"
+      :key="season.id"
+      :season="season"
+      :number="i"
+    />
+  </div>
 </template>

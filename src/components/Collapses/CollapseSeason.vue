@@ -8,13 +8,13 @@ import { fetchEvents } from "@/http/sportsApi";
 // components
 import TheCollapse from "@/components/TheCollapse.vue";
 import TableEvent from "../Tables/TableEvent/TableEvent.vue";
-
+// props
 interface IProps {
   season: ISeason;
   number: number;
 }
 const props = defineProps<IProps>();
-
+// vars
 const isLoad = ref(false);
 const isCollapseOpen = ref(false);
 const events = ref<IEvent[]>([]);
@@ -26,7 +26,16 @@ if (!props.number) {
 
 async function getEvents(season: ISeason) {
   if (!isLoad.value) {
-    const response = await fetchEvents(season.id);
+    const response: IEvent[] = await fetchEvents(season.id);
+    // const eventsSorted:IEvent[] = []
+    // response.forEach(event => {
+    //   const closeTime = moment(event.closeTime).utc().format()
+    //   const currTime = moment().utc().format()
+    //   if (moment(currTime).isBefore(closeTime)) {
+    //     eventsSorted.push(event)
+    //   }
+    // });
+    // events.value = eventsSorted;
     events.value = response;
     isLoad.value = true;
   }
@@ -34,7 +43,11 @@ async function getEvents(season: ISeason) {
 </script>
 
 <template>
-  <TheCollapse @open-collapse="getEvents(season)" v-model="isCollapseOpen">
+  <TheCollapse
+    @open-collapse="getEvents(season)"
+    v-model="isCollapseOpen"
+    class="mb-6"
+  >
     <template #collapse-title>
       <h2 class="text-xl font-medium">{{ season.name }}</h2>
       <p>
@@ -43,7 +56,12 @@ async function getEvents(season: ISeason) {
       </p>
     </template>
     <template #collapse-body>
-      <TableEvent v-if="isLoad" :events="events" :season="season" />
+      <template v-if="isLoad">
+        <TableEvent v-if="events.length" :events="events" :season="season" />
+        <div v-else class="text-center flex justify-center items-center h-20">
+          <p>All events was completed</p>
+        </div>
+      </template>
       <div v-else class="flex justify-center my-10">
         <button class="btn btn-ghost loading">loading</button>
       </div>

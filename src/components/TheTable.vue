@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed, ref, useSlots } from "vue";
+// composables
+import { usePagination } from "@/composables/pagination";
+// types
 import type { ITransaction } from "@/models/walletModels";
-
+// props
 interface IProps {
   rows: ITransaction[];
   cols: {
@@ -10,31 +13,27 @@ interface IProps {
     classes: string;
   }[];
 }
-
 const props = defineProps<IProps>();
+// vars
 const slots = useSlots();
-
-const currentPage = ref(1);
 const size = 8;
-
 const colName = ref("");
+//
+const totalRecords = ref(props.rows.length);
+const { page, pages, setPage } = usePagination({
+  totalRecords,
+  pageSize: size,
+});
+
 const setSort = (value: string) => {
   colName.value = value;
 };
 
-const pages = computed(() => {
-  return Math.ceil(props.rows.length / size);
-});
-
 const paginateItems = computed(() => {
-  const from = (currentPage.value - 1) * size;
+  const from = (page.value - 1) * size;
   const to = from + size;
   return props.rows.slice(from, to);
 });
-
-const setPage = (pageNumber: number) => {
-  currentPage.value = pageNumber;
-};
 </script>
 
 <template>
@@ -65,16 +64,26 @@ const setPage = (pageNumber: number) => {
         </tr>
       </tbody>
     </table>
-    <div class="btn-group mt-6 mx-auto" v-if="pages > 1">
-      <button
-        class="btn"
-        v-for="i in pages"
-        :key="i"
-        :class="{ 'btn-active': i === currentPage }"
-        @click="setPage(i)"
-      >
-        {{ i }}
-      </button>
+    <div class="btn-group mt-6 mx-auto" v-if="pages.length > 1">
+      <template v-for="(tablePage, index) in pages" :key="tablePage.n">
+        <template v-if="tablePage.break">
+          <template v-if="pages[index - 1].n !== pages[index].n - 1">
+            <button class="btn">...</button>
+          </template>
+        </template>
+        <button
+          class="btn"
+          :class="{ 'btn-active': tablePage.n === page }"
+          @click="setPage(tablePage.n)"
+        >
+          {{ tablePage.n }}
+        </button>
+        <template v-if="tablePage.break">
+          <template v-if="pages[index + 1].n !== pages[index].n + 1">
+            <button class="btn">...</button>
+          </template>
+        </template>
+      </template>
     </div>
   </div>
 </template>

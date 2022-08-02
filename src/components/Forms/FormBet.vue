@@ -2,10 +2,7 @@
 import { ref, onMounted } from "vue";
 import moment from "moment";
 import token from "@/assets/koa-token.png";
-import {
-  ToastBetSuccess,
-  ToastLimitedExceeded,
-} from "@/composables/toastNotification";
+import { ToastBetSuccess } from "@/composables/toastNotification";
 // api
 import { setBet } from "@/http/walletApi";
 // component
@@ -34,7 +31,8 @@ const placeBet = async () => {
     type: "winner",
   };
   isRequest.value = true;
-  const { data, modelErrors, err } = await setBet(bet);
+  // const { data, modelErrors, err } = await setBet(bet);
+  await setBet(bet);
   isRequest.value = false;
   // if (modelErrors) {
   //   errors.value = modelErrors;
@@ -44,8 +42,8 @@ const placeBet = async () => {
   //   toastStore.push(ToastLimitedExceeded);
   //   return;
   // }
-  if (data) {
-  }
+  // if (data) {
+  // }
   modalStore.isModalBetVisible = false;
   toastStore.push(ToastBetSuccess);
 };

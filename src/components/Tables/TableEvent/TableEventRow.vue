@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { ref } from "vue";
 import moment from "moment";
 // type
 import type { ICompetitor, IEvent, ISeason } from "@/models/sportModel";
@@ -12,19 +12,23 @@ import { useAuthStore } from "@/stores/authStore";
 import { useModalStore } from "@/stores/modalStore";
 const authStore = useAuthStore();
 const modalStore = useModalStore();
-
+// props
 interface IProps {
   event: IEvent;
   season: ISeason;
 }
 const props = defineProps<IProps>();
-
-const eventStatus = computed(() => {
-  if (props.event.status === "not_started") {
-    return false;
+//vars
+const eventStatus = ref<boolean>();
+const closeTime = moment(props.event.closeTime).utc().format();
+const currTime = moment().utc().format();
+if (!moment(currTime).isBefore(closeTime)) {
+  eventStatus.value = true;
+} else {
+  if (props.event.status !== "not_started") {
+    eventStatus.value = true;
   }
-  return true;
-});
+}
 
 const openModal = (winner: ICompetitor) => {
   if (!authStore.isAuth) {
