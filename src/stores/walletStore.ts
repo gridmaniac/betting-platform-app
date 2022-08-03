@@ -114,7 +114,9 @@ export const useWalletStore = defineStore("walletStore", () => {
   async function connectWallet() {
     try {
       checkMetamask();
-      await window.ethereum.send("eth_requestAccounts");
+      await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
       const etheriumWallet = window.ethereum.selectedAddress;
       const { data } = await setUserAddress(etheriumWallet);
       if (!data) {
@@ -132,7 +134,11 @@ export const useWalletStore = defineStore("walletStore", () => {
   async function deposit(deposit: number) {
     try {
       checkMetamask();
-      await window.ethereum.send("eth_requestAccounts"); // blockchain provider
+      const response = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      }); // blockchain provider
+      console.log(response);
+
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
