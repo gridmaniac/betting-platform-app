@@ -15,14 +15,14 @@ const setMoney = (money: number) => {
 
 //valid
 const validationSchema = {
-  deposit(value: string) {
-    if (value != null && value.toString().length >= 22) {
+  deposit(value: number) {
+    if (value != null && value >= 1_000_000_000_000_000_000) {
       return `Limit exceeded`;
     }
     return true;
   },
-  withdraw(value: string) {
-    if (value != null && value.toString().length >= 22) {
+  withdraw(value: number) {
+    if (value != null && value >= 1_000_000_000_000_000_000) {
       return "Limit exceeded";
     }
     return true;
@@ -91,7 +91,7 @@ const createWithdraw = () => {
       />
       <button
         class="btn btn-outline btn-md sm:btn-lg w-auto sm:w-56"
-        :disabled="!deposit"
+        :disabled="!deposit || !!depositError "
         @click="createDeposit()"
       >
         Deposit

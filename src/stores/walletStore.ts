@@ -8,6 +8,7 @@ import {
   WalletConnectError,
   DepositSuccess,
   DepositError,
+  AddressError
 } from "@/composables/ModalNotifications";
 import {
   ToastTransaction,
@@ -111,19 +112,21 @@ export const useWalletStore = defineStore("walletStore", () => {
     return response;
   }
 
-  async function connectWallet() {
+  async function connectWallet() {    
     try {
       checkMetamask();
-      await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
       const etheriumWallet = window.ethereum.selectedAddress;
       const { data } = await setUserAddress(etheriumWallet);
       if (!data) {
         toastStore.push(ToastAlreadyUseAddress);
         return;
-      }
+      }      
       address.value = etheriumWallet;
+
+      await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+
       return data;
     } catch (error) {
       modalStore.modalNotificationContent = WalletConnectError;
@@ -134,11 +137,16 @@ export const useWalletStore = defineStore("walletStore", () => {
   async function deposit(deposit: number) {
     try {
       checkMetamask();
-      const response = await window.ethereum.request({
+      await window.ethereum.request({
         method: "eth_requestAccounts",
-      }); // blockchain provider
-      console.log(response);
+      });
 
+      const etheriumWallet = window.ethereum.selectedAddress; 
+      if (etheriumWallet[0] !== address.value) {
+        modalStore.modalNotificationContent = AddressError;
+        modalStore.isModalNotification = true;
+        return
+      }
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(

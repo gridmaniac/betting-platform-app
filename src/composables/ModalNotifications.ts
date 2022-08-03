@@ -47,6 +47,12 @@ export const DepositError = {
   description: "Something went wrong. Please try again.",
 };
 
+export const AddressError = {
+  icon: ExclamationCircleIcon,
+  title: "Deposit error",
+  description: "Connected wallet address does not match selected address. Please switch active account in your wallet or disconnect and connect wallet again.",
+};
+
 export const DepositSuccess = {
   icon: CheckCircleIcon,
   title: "Success",

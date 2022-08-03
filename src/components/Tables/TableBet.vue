@@ -120,8 +120,8 @@ const { page, pages, setPage, paginate } = usePagination<IBet>({
           }
 
           &:first-child {
-            justify-content: center;
-            text-align: center;
+            justify-content: flex-start;
+            text-align: start;
 
             div {
               width: 100%;
