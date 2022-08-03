@@ -43,11 +43,11 @@ const sportType = route.meta.sportType;
 <style scoped lang="scss">
 .competitor {
   overflow: hidden;
-  &-content {
-    overflow: hidden;
-  }
+  max-width: 100%;
+  width: 100%;
   &-name {
     width: 100%;
+    max-width: 150px;
     overflow: hidden;
     p {
       white-space: nowrap; /* Запрещаем перенос строк */
