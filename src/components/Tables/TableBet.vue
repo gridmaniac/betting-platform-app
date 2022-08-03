@@ -77,7 +77,11 @@ const { page, pages, setPage, paginate } = usePagination<IBet>({
     </tbody>
   </table>
   <div v-if="rows.length === 0" class="h-20 flex items-center ">
-    <p>No bets</p>
+    <p class="text-white">
+      No bets.
+      <RouterLink :to="{ name: 'mma' }" class="link-hover" style="color: #f8cb48">Place</RouterLink>
+      your first bet now!
+    </p>
   </div>
   <div class="btn-group mt-6 mx-auto" v-if="pages.length > 1">
     <template v-for="(tablePage, index) in pages" :key="tablePage.n">

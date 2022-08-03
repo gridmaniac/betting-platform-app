@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ChevronDoubleLeftIcon, ChevronLeftIcon, ChevronDoubleRightIcon, ChevronRightIcon } from "@heroicons/vue/outline";
 import { computed, ref, useSlots } from "vue";
 // composables
 import { usePagination } from "@/composables/pagination";
@@ -20,7 +21,7 @@ const size = 8;
 const colName = ref("");
 //
 const totalRecords = ref(props.rows.length);
-const { page, pages, setPage } = usePagination({
+const { page, pages, setPage, totalPages } = usePagination({
   totalRecords,
   pageSize: size,
 });
@@ -41,12 +42,7 @@ const paginateItems = computed(() => {
     <table class="table table-zebra table-compact w-full">
       <thead>
         <tr>
-          <th
-            v-for="col in cols"
-            :key="col.value"
-            :class="col.classes"
-            @click="setSort(col.value)"
-          >
+          <th v-for="col in cols" :key="col.value" :class="col.classes" @click="setSort(col.value)">
             {{ col.name }}
           </th>
         </tr>
@@ -65,17 +61,16 @@ const paginateItems = computed(() => {
       </tbody>
     </table>
     <div class="btn-group mt-6 mx-auto" v-if="pages.length > 1">
+      <button class="btn" @click="setPage(page - 1)" v-if="page !== 1">
+        <component :is="ChevronLeftIcon" class="w-4 h-4" />
+      </button>
       <template v-for="(tablePage, index) in pages" :key="tablePage.n">
         <template v-if="tablePage.break">
           <template v-if="pages[index - 1].n !== pages[index].n - 1">
             <button class="btn">...</button>
           </template>
         </template>
-        <button
-          class="btn"
-          :class="{ 'btn-active': tablePage.n === page }"
-          @click="setPage(tablePage.n)"
-        >
+        <button class="btn" :class="{ 'btn-active': tablePage.n === page }" @click="setPage(tablePage.n)">
           {{ tablePage.n }}
         </button>
         <template v-if="tablePage.break">
@@ -84,6 +79,9 @@ const paginateItems = computed(() => {
           </template>
         </template>
       </template>
+      <button class="btn" @click="setPage(page + 1)" v-if="page !== totalPages">
+        <component :is="ChevronRightIcon" class="w-4 h-4" />
+      </button>
     </div>
   </div>
 </template>

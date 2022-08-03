@@ -41,16 +41,17 @@ export function usePagination<T>(
           n: 1,
         });
 
-      if (page.value - 3 > 1) {
-        list.push({
-          n: page.value - 3,
-          break: true,
-        });
-      }
+      // if (page.value - 3 > 1) {
+      //   list.push({
+      //     n: page.value - 3,
+      //     break: true,
+      //   });
+      // }
 
       if (page.value - 2 > 1) {
         list.push({
           n: page.value - 2,
+          break: true,
         });
       }
 
@@ -73,15 +74,16 @@ export function usePagination<T>(
       if (page.value + 2 < totalPages.value) {
         list.push({
           n: page.value + 2,
-        });
-      }
-
-      if (page.value + 3 < totalPages.value) {
-        list.push({
-          n: page.value + 3,
           break: true,
         });
       }
+
+      // if (page.value + 3 < totalPages.value) {
+      //   list.push({
+      //     n: page.value + 3,
+      //     break: true,
+      //   });
+      // }
 
       if (page.value !== totalPages.value)
         list.push({
