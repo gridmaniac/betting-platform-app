@@ -36,7 +36,7 @@ const disconnect = async () => {
       </div>
       <h2 class="text-center mt-4 text-2xl">Do you really want to withdraw?</h2>
       <div class="divider"></div>
-      <div class="modal-footer">
+      <div class="flex justify-between">
         <button
           class="btn btn-ghost"
           @click="modalStore.isModalConfirm = false"
@@ -55,9 +55,3 @@ const disconnect = async () => {
     </template>
   </TheModal>
 </template>
-
-<style scoped lang="scss">
-.modal-footer {
-  @apply flex justify-between;
-}
-</style>

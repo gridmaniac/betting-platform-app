@@ -18,11 +18,17 @@ const validationSchema = {
     if (value === "" || value == null) {
       return "Password is required";
     }
+    if (value != null && value.length >= 50) {
+      return `Limit exceeded`;
+    }
     return true;
   },
   confirmPassword(value: string) {
     if (value === "" || value == null) {
       return "Confirm password is required";
+    }
+    if (value != null && value.length >= 50) {
+      return `Limit exceeded`;
     }
     return true;
   },
@@ -32,7 +38,8 @@ const { handleSubmit, resetForm } = useForm({
   validationSchema,
 });
 
-const { value: password, errorMessage: passwordError } = useField("password");
+const { value: password, errorMessage: passwordError } =
+  useField<string>("password");
 const { value: confirmPassword, errorMessage: confirmPasswordError } =
   useField("confirmPassword");
 
@@ -44,9 +51,7 @@ const onSubmit = handleSubmit(async () => {
     return;
   }
   isRequest.value = true;
-  const { modelErrors, data } = await authStore.changePassword(
-    password.value as string
-  );
+  const { modelErrors, data } = await authStore.changePassword(password.value);
   isRequest.value = false;
   if (modelErrors) {
     errors.value = modelErrors;

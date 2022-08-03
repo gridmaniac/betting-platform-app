@@ -28,6 +28,9 @@ const validationSchema = {
     if (value === "" || value == null) {
       return "E-mail is required";
     }
+    if (value != null && value.length >= 50) {
+      return `Limit exceeded`;
+    }
     return true;
   },
 };
@@ -36,11 +39,11 @@ const { handleSubmit } = useForm({
   validationSchema,
 });
 
-const { value: email, errorMessage: emailError } = useField("email");
+const { value: email, errorMessage: emailError } = useField<string>("email");
 
 const onSubmit = handleSubmit(async () => {
   isRequest.value = true;
-  const { data } = await authStore.resetPassword(email.value as string);
+  const { data } = await authStore.resetPassword(email.value);
   isRequest.value = false;
   if (data) {
     modalStore.isModalResetPassword = false;

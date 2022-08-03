@@ -1,32 +1,23 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
 import { TitleMyBets } from "@/composables/titlesState";
-import moment from "moment";
-//icons
-import token from "../assets/koa-token.png";
+// type
+import type { IBet, IBetType } from "@/models/Bet";
 //composables
 import { fetchBets } from "@/http/walletApi";
-// composables
-import { balanceFormat } from "@/composables/functions";
 // components
 import TheTitle from "../components/TheTitle.vue";
-interface IBet {
-  amount: number;
-  date: string;
-  eventId: string;
-  season: string;
-  startTime: string;
-  status: string;
-  type: string;
-  userId: string;
-  winner: string;
-  winnerId: string;
-  __v: number;
-  _id: string;
-}
+import TableBet from "../components/Tables/TableBet.vue";
+
+const betType = ref<IBetType>("all");
 
 const bets = ref<IBet[]>([]);
+const betsOpened = ref<IBet[]>([]);
+const betsSettled = ref<IBet[]>([]);
+const betsCancelled = ref<IBet[]>([]);
+
 const isRequest = ref(false);
+
 onMounted(async () => {
   document.querySelector("main")?.scrollTo(0, 0);
 
@@ -37,26 +28,30 @@ onMounted(async () => {
   const array: IBet[] = response.data;
   array.forEach((element) => {
     element.amount = +element.amount.toString().slice(0, -9);
+    if (element.status === "open") {
+      betsOpened.value.push(element);
+    }
+    if (element.status === "settled") {
+      betsSettled.value.push(element);
+    }
+    if (element.status === "cancelled") {
+      betsCancelled.value.push(element);
+    }
   });
   bets.value = array;
 });
 
-const currEntries = ref(8);
-const pageNumber = ref(1);
-const allItems = computed(() => {
-  return bets.value.length;
-});
-const allPages = computed(() => {
-  return Math.ceil(allItems.value / currEntries.value);
-});
-// pagination funct
-const currPage = (number: number) => {
-  pageNumber.value = number;
-};
-const paginateItems = computed(() => {
-  const from = (pageNumber.value - 1) * currEntries.value;
-  const to = from + currEntries.value;
-  return bets.value.slice(from, to);
+const sortedBet = computed(() => {
+  if (betType.value === "cancelled") {
+    return betsCancelled.value;
+  }
+  if (betType.value === "settled") {
+    return betsSettled.value;
+  }
+  if (betType.value === "open") {
+    return betsOpened.value;
+  }
+  return bets.value;
 });
 </script>
 
@@ -65,9 +60,12 @@ const paginateItems = computed(() => {
     <template #control-right>
       <select
         class="select select-bordered select-sm max-w-xs"
-        v-if="paginateItems.length"
+        v-model="betType"
       >
         <option value="all">ALL</option>
+        <option value="cancelled">Cancelled</option>
+        <option value="settled">Settled</option>
+        <option value="open">Openned</option>
       </select>
     </template>
   </TheTitle>
@@ -75,61 +73,14 @@ const paginateItems = computed(() => {
     <div class="card shadow-lg compact side bg-base-100 p-3 w-full">
       <div class="flex flex-col">
         <div class="flex flex-col justify-between items-center">
-          <table class="table table-zebra w-full">
-            <thead>
-              <tr>
-                <th>Event</th>
-                <th align="center">AMOUNT</th>
-                <th align="center">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="bet in paginateItems" :key="bet._id">
-                <td data-name="Event: ">
-                  <div class="whitespace-normal">
-                    <strong>{{ bet.season }}</strong>
-                    <p>{{ moment(bet.startTime).format("MMMM DD, YYYY") }}</p>
-                    <p class="text-primary">Winner: {{ bet.winner }}</p>
-                  </div>
-                </td>
-                <td class="text-center" data-name="amount: ">
-                  <span>
-                    <img class="inline-block mr-1 h-4" :src="token" />
-                    {{ balanceFormat(bet.amount) }}
-                  </span>
-                </td>
-                <td class="text-center" data-name="status:">
-                  <div
-                    class="badge badge-primary capitalize"
-                    :class="{
-                      'badge-accent': bet.status === 'cancelled',
-                      'badge-success': bet.status === 'settled',
-                    }"
-                  >
-                    {{ bet.status }}
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <TableBet v-if="sortedBet" :rows="sortedBet" />
           <div class="h-32 flex justify-center items-center" v-if="isRequest">
             <button class="btn loading" disabled>loading</button>
-          </div>
-          <div class="btn-group mt-6 mx-auto" v-if="allPages > 1">
-            <button
-              class="btn"
-              v-for="i in allPages"
-              :key="i"
-              @click="currPage(i)"
-              :class="{ 'btn-active': i === pageNumber }"
-            >
-              {{ i }}
-            </button>
           </div>
         </div>
         <div
           class="flex items-center justify-center w-full h-32"
-          v-if="!paginateItems.length && !isRequest"
+          v-if="!bets.length && !isRequest"
         >
           <p class="text-white">
             No bets.

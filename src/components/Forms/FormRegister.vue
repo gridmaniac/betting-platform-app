@@ -26,17 +26,26 @@ const validationSchema = {
     if (value === "" || value == null) {
       return "E-mail is required";
     }
+    if (value != null && value.length >= 50) {
+      return `Limit exceeded`;
+    }
     return true;
   },
   password(value: string) {
     if (value === "" || value == null) {
       return "Password is required";
     }
+    if (value != null && value.length >= 50) {
+      return `Limit exceeded`;
+    }
     return true;
   },
   confirmPassword(value: string) {
     if (value === "" || value == null) {
       return "Password is required";
+    }
+    if (value != null && value.length >= 50) {
+      return `Limit exceeded`;
     }
     return true;
   },
@@ -46,17 +55,18 @@ const { handleSubmit } = useForm({
   validationSchema,
 });
 
-const { value: email, errorMessage: emailError } = useField("email");
-const { value: password, errorMessage: passwordError } = useField("password");
+const { value: email, errorMessage: emailError } = useField<string>("email");
+const { value: password, errorMessage: passwordError } =
+  useField<string>("password");
 const { value: confirmPassword, errorMessage: confirmPasswordError } =
-  useField("confirmPassword");
+  useField<string>("confirmPassword");
 
 const onSubmit = handleSubmit(async () => {
   isRequest.value = true;
   const { data, modelErrors } = await authStore.register(
-    email.value as string,
-    password.value as string,
-    confirmPassword.value as string
+    email.value,
+    password.value,
+    confirmPassword.value
   );
   isRequest.value = false;
   if (modelErrors) {

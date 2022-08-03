@@ -11,21 +11,22 @@ export interface Page {
   break?: boolean;
 }
 
-export interface PaginationContext {
-  total: ComputedRef<number>;
+export interface PaginationContext<T> {
   totalPages: ComputedRef<number>;
   page: Ref<number>;
   pages: ComputedRef<Page[]>;
   setPage: (n: number) => void;
-  paginate: (array: unknown[]) => unknown[];
+  paginate: (array: T[]) => T[];
   nextPage: () => void;
   prevPage: () => void;
 }
 
-export function usePagination(options: PaginationOptions): PaginationContext {
-  const total = computed(() => options.totalRecords.value);
-
-  const totalPages = computed(() => Math.ceil(total.value / options.pageSize));
+export function usePagination<T>(
+  options: PaginationOptions
+): PaginationContext<T> {
+  const totalPages = computed(() =>
+    Math.ceil(options.totalRecords.value / options.pageSize)
+  );
   const page = ref(1);
   const pages = computed(() => {
     let list = [];
@@ -95,7 +96,7 @@ export function usePagination(options: PaginationOptions): PaginationContext {
     page.value = n;
   };
 
-  const paginate = (array: unknown[]) => {
+  const paginate = (array: T[]) => {
     if (array?.length <= options.pageSize) return array;
 
     return array?.slice(
@@ -115,7 +116,6 @@ export function usePagination(options: PaginationOptions): PaginationContext {
   };
 
   return {
-    total,
     totalPages,
     page,
     pages,

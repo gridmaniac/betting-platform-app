@@ -87,7 +87,6 @@ router.beforeEach(async (to) => {
     router.push({ name: "mma" });
     return;
   }
-  // document.title = to.meta.title as string;
 });
 
 export default router;

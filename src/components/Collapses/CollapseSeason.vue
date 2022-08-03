@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import moment from "moment";
 // model
 import type { ISeason, IEvent } from "@/models/sportModel";
@@ -12,10 +12,11 @@ import TableEvent from "../Tables/TableEvent/TableEvent.vue";
 interface IProps {
   season: ISeason;
   number: number;
+  isUpcoming: boolean;
 }
 const props = defineProps<IProps>();
 // vars
-const isLoad = ref(false);
+const isResponse = ref(false);
 const isCollapseOpen = ref(false);
 const events = ref<IEvent[]>([]);
 
@@ -23,21 +24,26 @@ if (!props.number) {
   getEvents(props.season);
   isCollapseOpen.value = true;
 }
+watch(
+  () => props.isUpcoming,
+  () => {
+    events.value = [];
+    isResponse.value = false;
+    getEvents(props.season);
+    isCollapseOpen.value = true;
+  }
+);
 
 async function getEvents(season: ISeason) {
-  if (!isLoad.value) {
-    const response: IEvent[] = await fetchEvents(season.id);
-    // const eventsSorted:IEvent[] = []
-    // response.forEach(event => {
-    //   const closeTime = moment(event.closeTime).utc().format()
-    //   const currTime = moment().utc().format()
-    //   if (moment(currTime).isBefore(closeTime)) {
-    //     eventsSorted.push(event)
-    //   }
-    // });
-    // events.value = eventsSorted;
-    events.value = response;
-    isLoad.value = true;
+  if (!isResponse.value) {
+    const response: IEvent[] = await fetchEvents(season.id, props.isUpcoming);
+    const eventsSorted: IEvent[] = [];
+    response.forEach((event) => {
+      eventsSorted.push(event);
+    });
+    events.value = eventsSorted;
+    // events.value = response;
+    isResponse.value = true;
   }
 }
 </script>
@@ -56,7 +62,7 @@ async function getEvents(season: ISeason) {
       </p>
     </template>
     <template #collapse-body>
-      <template v-if="isLoad">
+      <template v-if="isResponse">
         <TableEvent v-if="events.length" :events="events" :season="season" />
         <div v-else class="text-center flex justify-center items-center h-20">
           <p>All events was completed</p>

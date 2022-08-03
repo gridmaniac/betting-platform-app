@@ -45,7 +45,11 @@ const changeTab = (status: boolean) => {
 
 <template>
   <TitleMMA @change-tab="changeTab" :active-tab="isUpcoming" />
-  <CollapsesSeason v-if="isReady" :seasons="seasons" />
+  <CollapsesSeason
+    v-if="isReady"
+    :seasons="seasons"
+    :is-upcoming="isUpcoming"
+  />
   <div class="mt-6" v-else>
     <TheSpinner />
   </div>

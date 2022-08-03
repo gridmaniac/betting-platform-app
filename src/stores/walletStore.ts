@@ -35,9 +35,7 @@ export const useWalletStore = defineStore("walletStore", () => {
   const inBets = ref<number>(0);
   const withdrawAmount = ref<number | null>();
   const transactions = ref<ITransaction[]>([]);
-  const decimals = ref<string>("9");
-  //
-  const deposit = ref();
+  const decimals = ref<number>(9);
   // store
   const modalStore = useModalStore();
   const toastStore = useToastStore();
@@ -64,7 +62,7 @@ export const useWalletStore = defineStore("walletStore", () => {
       balance.value = 0;
       inBets.value = 0;
       transactions.value = [];
-      decimals.value = "9";
+      decimals.value = 9;
     }
   });
 
@@ -131,7 +129,7 @@ export const useWalletStore = defineStore("walletStore", () => {
     }
   }
 
-  async function createDeposit() {
+  async function deposit(deposit: number) {
     try {
       checkMetamask();
       await window.ethereum.send("eth_requestAccounts"); // blockchain provider
@@ -142,9 +140,7 @@ export const useWalletStore = defineStore("walletStore", () => {
         contractABI,
         signer
       );
-
-      await contract.transfer(hotAddress.value, deposit.value + "000000000");
-      deposit.value = null;
+      await contract.transfer(hotAddress.value, deposit * 1000000000);
       modalStore.modalNotificationContent = DepositSuccess;
       modalStore.isModalNotification = true;
     } catch (error: any) {
@@ -166,9 +162,8 @@ export const useWalletStore = defineStore("walletStore", () => {
     balance,
     transactions,
     isWalletPage,
-    deposit,
     // function
-    createDeposit,
+    deposit,
     disconnectWallet,
     connectWallet,
     withdraw,

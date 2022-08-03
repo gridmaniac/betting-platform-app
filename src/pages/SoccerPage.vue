@@ -11,6 +11,7 @@ import { checkData } from "@/composables/functions";
 import type { ISeason } from "@/models/sportModel";
 
 const seasonsResponse = ref<ISeason[]>([]);
+
 const seasonsUpcoming = ref<ISeason[]>([]);
 const seasonsCompleted = ref<ISeason[]>([]);
 //
@@ -41,7 +42,11 @@ const changeTab = (status: boolean) => {
 <template>
   <div class="flex flex-col h-auto">
     <TitleSoccer @change-tab="changeTab" :active-tab="isUpcoming" />
-    <CollapsesSeason v-if="isReady" :seasons="seasons" />
+    <CollapsesSeason
+      v-if="isReady"
+      :seasons="seasons"
+      :is-upcoming="isUpcoming"
+    />
     <div class="mt-10 flex-1" v-else>
       <TheSpinner />
     </div>

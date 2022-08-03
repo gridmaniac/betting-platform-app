@@ -4,14 +4,16 @@ import moment from "moment";
 export function checkData(seasons: ISeason[]) {
   const completed: ISeason[] = [];
   const upcoming: ISeason[] = [];
-  const currentTime = moment().format();
+  const currentDate = moment().utc();
   seasons.forEach((season) => {
-    const seasonTime = moment(season.endDate).utc().format();
-    if (currentTime > seasonTime) {
-      completed.unshift(season);
-      return;
+    const startDate = moment(season.startDate).utc();
+    const endDate = moment(season.endDate).utc();
+    if (moment(currentDate).isBefore(endDate)) {
+      upcoming.push(season);
     }
-    upcoming.push(season);
+    if (moment(currentDate).isAfter(startDate)) {
+      completed.unshift(season);
+    }
   });
   return { upcoming, completed };
 }

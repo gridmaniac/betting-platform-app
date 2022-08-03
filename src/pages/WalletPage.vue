@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 // composables
-import { WithdrawMoney } from "@/composables/ModalNotifications";
 import { balanceFormat } from "@/composables/functions";
 import { TitleWallet } from "@/composables/titlesState";
 // components
@@ -9,36 +8,14 @@ import TableWallet from "@/components/Tables/TableWallet.vue";
 import DropdownWallet from "@/components/Dropdowns/DropdownWallet.vue";
 import TheSpinner from "@/components/TheSpinner.vue";
 import TheTitle from "@/components/TheTitle.vue";
+import FormWallet from "@/components/Forms/FormWallet.vue";
 // store
-import { useModalStore } from "@/stores/modalStore";
 import { useWalletStore } from "@/stores/walletStore";
-const modalStore = useModalStore();
 const walletStore = useWalletStore();
 
 onMounted(() => {
   document.querySelector("main")?.scrollTo(0, 0);
 });
-
-const setMoney = (money: number) => {
-  walletStore.deposit = money;
-};
-
-const withdraw = () => {
-  modalStore.modalNotificationContent = WithdrawMoney;
-  modalStore.isModalWithdraw = true;
-};
-
-const ceilDeposit = () => {
-  if (walletStore.deposit) {
-    walletStore.deposit = Math.floor(walletStore.deposit);
-  }
-};
-
-const ceilWithdraw = () => {
-  if (walletStore.withdrawAmount) {
-    walletStore.withdrawAmount = Math.floor(walletStore.withdrawAmount);
-  }
-};
 </script>
 
 <template>
@@ -55,69 +32,7 @@ const ceilWithdraw = () => {
           <DropdownWallet :is-glass="true" />
         </div>
         <div :class="{ 'blur-md': !walletStore.address }">
-          <div class="flex flex-col sm:flex-row sm:justify-between">
-            <div class="forAddress">
-              <span class="font-bold">Connected:</span>
-              <p class="text-primary">
-                {{ walletStore.address }}
-              </p>
-            </div>
-            <button
-              class="btn btn-sm btn-outline ml-2 mt-2 sm:mt-0"
-              @click="modalStore.isModalConfirm = true"
-            >
-              disconnect
-            </button>
-          </div>
-          <div class="form-control mt-3">
-            <div class="input-group">
-              <button
-                class="btn btn-ghost btn-lg hidden sm:block"
-                @click="setMoney(100000)"
-              >
-                100K
-              </button>
-              <button
-                class="btn btn-ghost btn-lg hidden sm:block"
-                @click="setMoney(1000000)"
-              >
-                1M
-              </button>
-              <input
-                type="number"
-                @blur="ceilDeposit()"
-                placeholder="0"
-                v-model="walletStore.deposit"
-                class="input input-bordered input-md sm:input-lg flex-1 text-right"
-              />
-              <button
-                class="btn btn-outline btn-md sm:btn-lg w-auto sm:w-56"
-                @click="walletStore.createDeposit()"
-                :disabled="!walletStore.deposit"
-              >
-                Deposit
-              </button>
-            </div>
-          </div>
-          <div class="form-control mt-3">
-            <div class="input-group">
-              <input
-                type="number"
-                placeholder="0"
-                v-model="walletStore.withdrawAmount"
-                class="input input-bordered flex-1 text-right"
-                autocomplete="new-password"
-                @blur="ceilWithdraw()"
-              />
-              <button
-                class="btn btn-outline w-auto sm:w-56"
-                :disabled="!walletStore.withdrawAmount"
-                @click="withdraw()"
-              >
-                Withdraw
-              </button>
-            </div>
-          </div>
+          <FormWallet />
         </div>
       </div>
       <div class="shadow stats stats-vertical" style="min-width: 300px">

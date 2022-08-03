@@ -7,7 +7,9 @@ export const fetchSeasons = async (sportType: TSportType) => {
   return response;
 };
 
-export const fetchEvents = async (id: string) => {
-  const { data } = await $host.get(ERoutes.Events + id);
+export const fetchEvents = async (id: string, isUpcoming: boolean) => {
+  const { data } = await $host.get(ERoutes.Events + id, {
+    params: { isUpcoming },
+  });
   return data;
 };
