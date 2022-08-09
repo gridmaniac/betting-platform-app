@@ -28,5 +28,3 @@ onClickOutside(modal, () => {
     </div>
   </div>
 </template>
-
-<style></style>

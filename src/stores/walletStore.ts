@@ -8,7 +8,7 @@ import {
   WalletConnectError,
   DepositSuccess,
   DepositError,
-  AddressError
+  AddressError,
 } from "@/composables/ModalNotifications";
 import {
   ToastTransaction,
@@ -112,9 +112,9 @@ export const useWalletStore = defineStore("walletStore", () => {
     return response;
   }
 
-  async function connectWallet() {    
+  async function connectWallet() {
     try {
-      checkMetamask();  
+      checkMetamask();
       const [etheriumWallet] = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
@@ -123,7 +123,7 @@ export const useWalletStore = defineStore("walletStore", () => {
       if (!data) {
         toastStore.push(ToastAlreadyUseAddress);
         return;
-      }  
+      }
       return data;
     } catch (error) {
       modalStore.modalNotificationContent = WalletConnectError;
@@ -137,27 +137,27 @@ export const useWalletStore = defineStore("walletStore", () => {
       const [etheriumWallet] = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-      console.log(etheriumWallet);      
+      console.log(etheriumWallet);
       if (etheriumWallet !== address.value) {
         modalStore.modalNotificationContent = AddressError;
         modalStore.isModalNotification = true;
-        return
+        return;
       }
-      const provider = new ethers.providers.Web3Provider(window.ethereum);      
-      const signer = provider.getSigner();      
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
       const contract = new ethers.Contract(
         contractAddress.value,
         contractABI,
         signer
       );
 
-      const result = await contract.transfer(hotAddress.value, deposit + "000000000");
-      
+      await contract.transfer(hotAddress.value, deposit + "000000000");
+
       modalStore.modalNotificationContent = DepositSuccess;
       modalStore.isModalNotification = true;
     } catch (error: any) {
       modalStore.modalNotificationContent = DepositError;
-      modalStore.isModalNotification = true;      
+      modalStore.isModalNotification = true;
     }
   }
 

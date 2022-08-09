@@ -50,7 +50,8 @@ export const AddressError = {
 export const DepositError = {
   icon: ExclamationCircleIcon,
   title: "Deposit error",
-  description: "Connected wallet address does not match selected address or insufficient balance. Please switch active account in your wallet or disconnect and connect wallet again.",
+  description:
+    "Connected wallet address does not match selected address or insufficient balance. Please switch active account in your wallet or disconnect and connect wallet again.",
 };
 
 export const DepositSuccess = {

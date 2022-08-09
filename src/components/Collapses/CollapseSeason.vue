@@ -36,7 +36,7 @@ watch(
 );
 
 async function getEvents(season: ISeason) {
-  isResponse.value = true
+  isResponse.value = true;
   const response: IEvent[] = await fetchEvents(season.id, props.isUpcoming);
   isResponse.value = false;
   events.value = response;
@@ -44,7 +44,11 @@ async function getEvents(season: ISeason) {
 </script>
 
 <template>
-  <TheCollapse @open-collapse="getEvents(season)" v-model="isCollapseOpen" class="mb-6">
+  <TheCollapse
+    @open-collapse="getEvents(season)"
+    v-model="isCollapseOpen"
+    class="mb-6"
+  >
     <template #collapse-title>
       <h2 class="text-xl font-medium">{{ season.name }}</h2>
       <p>

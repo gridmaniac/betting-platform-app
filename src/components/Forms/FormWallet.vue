@@ -92,7 +92,7 @@ const createWithdraw = () => {
       />
       <button
         class="btn btn-outline btn-md sm:btn-lg w-auto sm:w-56"
-        :disabled="!deposit || !!depositError "
+        :disabled="!deposit || !!depositError"
         @click="createDeposit()"
       >
         Deposit

@@ -30,7 +30,7 @@ onMounted(async () => {
   seasonsUpcoming.value = upcoming;
   console.log(seasonsCompleted.value);
   console.log(seasonsUpcoming.value);
-  
+
   isReady.value = true;
 });
 

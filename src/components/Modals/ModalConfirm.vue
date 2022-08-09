@@ -34,7 +34,10 @@ const disconnect = async () => {
           class="inline-block w-16 h-16 stroke-current"
         />
       </div>
-      <h2 class="text-center mt-4 text-2xl">Please make sure all deposits corresponding to this wallet are already reflected in your balance.</h2>
+      <h2 class="text-center mt-4 text-2xl">
+        Please make sure all deposits corresponding to this wallet are already
+        reflected in your balance.
+      </h2>
       <div class="divider"></div>
       <div class="flex justify-between">
         <button

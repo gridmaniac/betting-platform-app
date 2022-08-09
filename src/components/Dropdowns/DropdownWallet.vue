@@ -29,7 +29,7 @@ defineProps({
       class="p-2 shadow menu dropdown-content bg-base-100 rounded-box w-52"
     >
       <li>
-        <a @click="walletStore.connectWallet();">
+        <a @click="walletStore.connectWallet()">
           <img
             class="mr-3"
             src="https://sportsbet.imgix.net/logos/metamask.svg?auto=compress%2Cformat&blur=200&px=16&ixlib=react-9.0.3"

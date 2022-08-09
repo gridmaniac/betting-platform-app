@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ChevronDoubleLeftIcon, ChevronLeftIcon, ChevronDoubleRightIcon, ChevronRightIcon } from "@heroicons/vue/outline";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/vue/outline";
 import { computed, ref, useSlots } from "vue";
 // composables
 import { usePagination } from "@/composables/pagination";
@@ -42,7 +42,12 @@ const paginateItems = computed(() => {
     <table class="table table-zebra table-compact w-full">
       <thead>
         <tr>
-          <th v-for="col in cols" :key="col.value" :class="col.classes" @click="setSort(col.value)">
+          <th
+            v-for="col in cols"
+            :key="col.value"
+            :class="col.classes"
+            @click="setSort(col.value)"
+          >
             {{ col.name }}
           </th>
         </tr>
@@ -70,7 +75,11 @@ const paginateItems = computed(() => {
             <button class="btn">...</button>
           </template>
         </template>
-        <button class="btn" :class="{ 'btn-active': tablePage.n === page }" @click="setPage(tablePage.n)">
+        <button
+          class="btn"
+          :class="{ 'btn-active': tablePage.n === page }"
+          @click="setPage(tablePage.n)"
+        >
           {{ tablePage.n }}
         </button>
         <template v-if="tablePage.break">

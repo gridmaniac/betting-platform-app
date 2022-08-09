@@ -11,8 +11,8 @@ interface IProps {
 defineProps<IProps>();
 
 const getNum = () => {
-  return +Math.random().toString().slice(2) 
-}
+  return +Math.random().toString().slice(2);
+};
 </script>
 
 <template>

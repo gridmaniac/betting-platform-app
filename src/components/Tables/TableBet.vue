@@ -66,20 +66,28 @@ const { page, pages, setPage, paginate } = usePagination<IBet>({
           </span>
         </td>
         <td class="text-center" data-name="status:">
-          <div class="badge badge-primary capitalize" :class="{
-            'badge-accent': bet.status === 'cancelled',
-            'badge-success': bet.status === 'settled',
-          }">
+          <div
+            class="badge badge-primary capitalize"
+            :class="{
+              'badge-accent': bet.status === 'cancelled',
+              'badge-success': bet.status === 'settled',
+            }"
+          >
             {{ bet.status }}
           </div>
         </td>
       </tr>
     </tbody>
   </table>
-  <div v-if="rows.length === 0" class="h-20 flex items-center ">
+  <div v-if="rows.length === 0" class="h-20 flex items-center">
     <p class="text-white">
       No bets.
-      <RouterLink :to="{ name: 'mma' }" class="link-hover" style="color: #f8cb48">Place</RouterLink>
+      <RouterLink
+        :to="{ name: 'mma' }"
+        class="link-hover"
+        style="color: #f8cb48"
+        >Place</RouterLink
+      >
       your first bet now!
     </p>
   </div>
@@ -90,7 +98,11 @@ const { page, pages, setPage, paginate } = usePagination<IBet>({
           <button class="btn">...</button>
         </template>
       </template>
-      <button class="btn" :class="{ 'btn-active': tablePage.n === page }" @click="setPage(tablePage.n)">
+      <button
+        class="btn"
+        :class="{ 'btn-active': tablePage.n === page }"
+        @click="setPage(tablePage.n)"
+      >
         {{ tablePage.n }}
       </button>
       <template v-if="tablePage.break">
