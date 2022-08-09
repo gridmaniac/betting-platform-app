@@ -114,19 +114,16 @@ export const useWalletStore = defineStore("walletStore", () => {
 
   async function connectWallet() {    
     try {
-      checkMetamask();
-      const etheriumWallet = window.ethereum.selectedAddress;
+      checkMetamask();  
+      const [etheriumWallet] = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      address.value = etheriumWallet;
       const { data } = await setUserAddress(etheriumWallet);
       if (!data) {
         toastStore.push(ToastAlreadyUseAddress);
         return;
-      }      
-      address.value = etheriumWallet;
-
-      await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
-
+      }  
       return data;
     } catch (error) {
       modalStore.modalNotificationContent = WalletConnectError;
@@ -137,29 +134,30 @@ export const useWalletStore = defineStore("walletStore", () => {
   async function deposit(deposit: number) {
     try {
       checkMetamask();
-      await window.ethereum.request({
+      const [etheriumWallet] = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-
-      const etheriumWallet = window.ethereum.selectedAddress; 
-      if (etheriumWallet[0] !== address.value) {
+      console.log(etheriumWallet);      
+      if (etheriumWallet !== address.value) {
         modalStore.modalNotificationContent = AddressError;
         modalStore.isModalNotification = true;
         return
       }
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
+      const provider = new ethers.providers.Web3Provider(window.ethereum);      
+      const signer = provider.getSigner();      
       const contract = new ethers.Contract(
         contractAddress.value,
         contractABI,
         signer
       );
-      await contract.transfer(hotAddress.value, deposit * 1000000000);
+
+      const result = await contract.transfer(hotAddress.value, deposit + "000000000");
+      
       modalStore.modalNotificationContent = DepositSuccess;
       modalStore.isModalNotification = true;
     } catch (error: any) {
       modalStore.modalNotificationContent = DepositError;
-      modalStore.isModalNotification = true;
+      modalStore.isModalNotification = true;      
     }
   }
 

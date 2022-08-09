@@ -20,40 +20,31 @@ const isResponse = ref(false);
 const isCollapseOpen = ref(false);
 const events = ref<IEvent[]>([]);
 
-if (!props.number) {
+if (props.number === 0) {
   getEvents(props.season);
   isCollapseOpen.value = true;
 }
+
 watch(
   () => props.isUpcoming,
   () => {
-    events.value = [];
-    isResponse.value = false;
-    getEvents(props.season);
-    isCollapseOpen.value = true;
+    if (props.number === 0) {
+      getEvents(props.season);
+      isCollapseOpen.value = true;
+    }
   }
 );
 
 async function getEvents(season: ISeason) {
-  if (!isResponse.value) {
-    const response: IEvent[] = await fetchEvents(season.id, props.isUpcoming);
-    const eventsSorted: IEvent[] = [];
-    response.forEach((event) => {
-      eventsSorted.push(event);
-    });
-    events.value = eventsSorted;
-    // events.value = response;
-    isResponse.value = true;
-  }
+  isResponse.value = true
+  const response: IEvent[] = await fetchEvents(season.id, props.isUpcoming);
+  isResponse.value = false;
+  events.value = response;
 }
 </script>
 
 <template>
-  <TheCollapse
-    @open-collapse="getEvents(season)"
-    v-model="isCollapseOpen"
-    class="mb-6"
-  >
+  <TheCollapse @open-collapse="getEvents(season)" v-model="isCollapseOpen" class="mb-6">
     <template #collapse-title>
       <h2 class="text-xl font-medium">{{ season.name }}</h2>
       <p>
@@ -62,7 +53,7 @@ async function getEvents(season: ISeason) {
       </p>
     </template>
     <template #collapse-body>
-      <template v-if="isResponse">
+      <template v-if="!isResponse">
         <TableEvent v-if="events.length" :events="events" :season="season" />
         <div v-else class="text-center flex justify-center items-center h-20">
           <p>All events was completed</p>

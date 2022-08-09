@@ -20,7 +20,7 @@ export interface ITransaction extends IKeyValue {
 }
 
 export interface IUserBet {
-  amount: number;
+  amount: string;
   winnerId?: string;
   eventId?: string;
   type: TBetType;

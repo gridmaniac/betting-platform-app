@@ -65,7 +65,7 @@ const sortedBet = computed(() => {
         <option value="all">ALL</option>
         <option value="cancelled">Cancelled</option>
         <option value="settled">Settled</option>
-        <option value="open">Openned</option>
+        <option value="open">Opened</option>
       </select>
     </template>
   </TheTitle>
@@ -73,25 +73,10 @@ const sortedBet = computed(() => {
     <div class="card shadow-lg compact side bg-base-100 p-3 w-full">
       <div class="flex flex-col">
         <div class="flex flex-col justify-between items-center">
-          <TableBet v-if="sortedBet" :rows="sortedBet" />
           <div class="h-32 flex justify-center items-center" v-if="isRequest">
             <button class="btn loading" disabled>loading</button>
           </div>
-        </div>
-        <div
-          class="flex items-center justify-center w-full h-32"
-          v-if="!bets.length && !isRequest"
-        >
-          <p class="text-white">
-            No bets.
-            <RouterLink
-              :to="{ name: 'mma' }"
-              class="link-hover"
-              style="color: #f8cb48"
-              >Place</RouterLink
-            >
-            your first bet now!
-          </p>
+          <TableBet v-else :rows="sortedBet" />
         </div>
       </div>
     </div>

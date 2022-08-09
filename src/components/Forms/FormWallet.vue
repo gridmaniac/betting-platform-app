@@ -50,6 +50,7 @@ const createWithdraw = () => {
     walletStore.withdrawAmount = withdraw.value;
     modalStore.modalNotificationContent = WithdrawMoney;
     modalStore.isModalWithdraw = true;
+    // TASK! подумать как удалить value после закрытия модалки
   }
 };
 </script>

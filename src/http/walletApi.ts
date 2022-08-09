@@ -35,7 +35,6 @@ export const fetchBets = async () => {
 
 // create bet from user
 export const setBet = async (bet: IUserBet) => {
-  bet.amount = bet.amount * 1000000000;
   const { data } = await $host.post(ERoutes.Bets, bet, getAuth());
   return data;
 };
