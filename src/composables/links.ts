@@ -6,6 +6,11 @@ import {
   TableIcon,
   CreditCardIcon,
   RssIcon,
+  CogIcon,
+  UsersIcon,
+  SwitchHorizontalIcon,
+  TicketIcon,
+  CollectionIcon,
 } from "@heroicons/vue/outline";
 
 export const menu = [
@@ -27,5 +32,34 @@ export const menu = [
   {
     name: "Featured",
     links: [{ value: "news", name: "News", icon: RssIcon, isAuth: true }],
+  },
+];
+
+export const adminMenu = [
+  {
+    name: "Admin",
+    links: [
+      { value: "adminSettings", name: "settings", icon: CogIcon, isAuth: true },
+      {
+        value: "adminAssets",
+        name: "assets",
+        icon: CollectionIcon,
+        isAuth: true,
+      },
+      {
+        value: "adminDeposits",
+        name: "deposits",
+        icon: CreditCardIcon,
+        isAuth: true,
+      },
+      {
+        value: "adminTransactions",
+        name: "transactions",
+        icon: SwitchHorizontalIcon,
+        isAuth: true,
+      },
+      { value: "adminBets", name: "bets", icon: TicketIcon, isAuth: true },
+      { value: "adminUsers", name: "users", icon: UsersIcon, isAuth: true },
+    ],
   },
 ];

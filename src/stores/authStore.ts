@@ -5,14 +5,20 @@ import {
   changeUserPassword,
   resetUserPassword,
   createUser,
+  getProfile,
 } from "@/http/userApi";
 
 export const useAuthStore = defineStore("authStore", () => {
   const isAuth = ref(false);
+  const isAdmin = ref(false);
   const userEmail = ref<string | null>();
   const token = ref<string | null>();
 
   token.value = localStorage.getItem("token");
+  const roleStorage = localStorage.getItem("userRole");
+  if (roleStorage) {
+    isAdmin.value = JSON.parse(roleStorage);
+  }
   userEmail.value = localStorage.getItem("userEmail");
   if (token.value) {
     isAuth.value = true;
@@ -33,6 +39,11 @@ export const useAuthStore = defineStore("authStore", () => {
     token.value = response.data;
     isAuth.value = true;
     userEmail.value = email;
+    const profile = await getProfile();
+    if (profile.role) {
+      isAdmin.value = true;
+    }
+    localStorage.setItem("userRole", JSON.stringify(isAdmin.value));
     return response;
   }
 
@@ -70,6 +81,7 @@ export const useAuthStore = defineStore("authStore", () => {
   return {
     token,
     isAuth,
+    isAdmin,
     login,
     register,
     logout,

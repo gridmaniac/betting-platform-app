@@ -32,3 +32,8 @@ export const confirmEmail = async (code: string) => {
   });
   return data;
 };
+
+export const getProfile = async () => {
+  const { data } = await $host.get(ERoutes.Profile, getAuth());
+  return data;
+};

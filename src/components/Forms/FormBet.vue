@@ -33,7 +33,6 @@ const placeBet = async () => {
   isRequest.value = true;
   const response = await setBet(bet);
   isRequest.value = false;
-  console.log(response);
   // check data
   if (!response.data) {
     errors.value = response.modelErrors;

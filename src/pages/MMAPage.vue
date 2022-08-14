@@ -28,9 +28,6 @@ onMounted(async () => {
   const { upcoming, completed } = checkData(data);
   seasonsCompleted.value = completed;
   seasonsUpcoming.value = upcoming;
-  console.log(seasonsCompleted.value);
-  console.log(seasonsUpcoming.value);
-
   isReady.value = true;
 });
 

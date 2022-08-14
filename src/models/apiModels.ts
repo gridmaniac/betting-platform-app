@@ -5,6 +5,7 @@ export enum ERoutes {
   ForgotPassword = "api/v1/password/reset",
   ChangePassword = "api/v1/password",
   Activate = "api/v1/activate",
+  Profile = "api/v1/profile",
   // bet
   Seasons = "/api/v1/seasons/",
   Events = "/api/v1/events/",
@@ -13,4 +14,11 @@ export enum ERoutes {
   Wallet = "/api/v1/wallet",
   WalletWithdraw = "/api/v1/wallet/withdraw",
   WalletAddress = "/api/v1/wallet/address",
+  // admin
+  Setting = "/api/admin/settings",
+  Assets = "/api/admin/assets",
+  Deposits = "/api/admin/deposits",
+  Transactions = "/api/admin/transactions",
+  AllBets = "/api/admin/bets",
+  Users = "/api/admin/users",
 }

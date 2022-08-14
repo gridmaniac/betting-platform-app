@@ -137,7 +137,6 @@ export const useWalletStore = defineStore("walletStore", () => {
       const [etheriumWallet] = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-      console.log(etheriumWallet);
       if (etheriumWallet !== address.value) {
         modalStore.modalNotificationContent = AddressError;
         modalStore.isModalNotification = true;

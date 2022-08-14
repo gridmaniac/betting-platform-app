@@ -22,7 +22,7 @@ const drawer = ref(false);
     />
     <main class="drawer-content overflow-x-hidden flex flex-col bg-base-200">
       <TheHeader />
-      <div class="flex-auto mx-2 sm:mx-4 max-w-6xl">
+      <div class="flex-auto mx-2 sm:mx-4 max-w-6xl mb-6">
         <RouterView />
       </div>
       <TheFooter class="max-w-6xl" />

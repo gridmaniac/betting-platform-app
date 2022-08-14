@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { menu } from "@/composables/links";
+import { menu, adminMenu } from "@/composables/links";
 // store
 import { useAuthStore } from "@/stores/authStore";
 import { useModalStore } from "@/stores/modalStore";
@@ -46,6 +46,39 @@ const goToPage = (link: ILink) => {
       <ul
         class="menu flex flex-col p-4 mb-2 compact"
         v-for="section in menu"
+        :key="section.name"
+      >
+        <li class="menu-title">
+          <span>
+            {{ section.name }}
+          </span>
+        </li>
+        <template v-for="link in section.links" :key="link.value">
+          <li v-if="link.value === 'news'" class="disabled">
+            <span>
+              <component
+                :is="link.icon"
+                class="inline-block w-6 h-6 mr-2 stroke-current"
+              />
+              {{ link.name }}
+            </span>
+          </li>
+          <li v-else :class="{ disabled: link.isAuth && !authStore.isAuth }">
+            <a class="capitalize" @click="goToPage(link)">
+              <component
+                :is="link.icon"
+                class="inline-block w-6 h-6 mr-2 stroke-current"
+              />
+              {{ link.name }}
+            </a>
+          </li>
+        </template>
+      </ul>
+      <!-- admin menu -->
+      <ul
+        v-if="authStore"
+        class="menu flex flex-col p-4 mb-2 compact"
+        v-for="section in adminMenu"
         :key="section.name"
       >
         <li class="menu-title">
