@@ -16,6 +16,7 @@ defineProps<IProps>();
 const emit = defineEmits(["removeSetting"]);
 // vars
 const isEdit = ref(false);
+const newValue = ref();
 
 const edit = () => {
   isEdit.value = true;
@@ -39,14 +40,15 @@ const remove = (setting: ISetting) => {
     <th style="max-width: 200px">
       <div class="v-full overflow-hidden">
         <template v-if="!isEdit">
-          {{ setting.value }}
+          {{ newValue
+          }}<!-- {{ setting.value }} -->
         </template>
         <template v-else>
           <input
             type="text"
             placeholder="Type here"
             class="input input-bordered w-full max-w-xs"
-            v-model="setting.value"
+            v-model="newValue"
           />
         </template>
       </div>

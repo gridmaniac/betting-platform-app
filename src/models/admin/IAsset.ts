@@ -7,6 +7,9 @@ export interface IAsset {
   minStake: string;
   minWithdrawal: string;
   type: string;
+}
+
+export interface IAssetResponse extends IAsset {
   __v: number;
   _id: string;
 }

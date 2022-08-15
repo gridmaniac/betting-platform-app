@@ -14,11 +14,13 @@ export enum ERoutes {
   Wallet = "/api/v1/wallet",
   WalletWithdraw = "/api/v1/wallet/withdraw",
   WalletAddress = "/api/v1/wallet/address",
-  // admin
+}
+
+export enum EAdminRoutes {
   Setting = "/api/admin/settings",
   Assets = "/api/admin/assets",
   Deposits = "/api/admin/deposits",
   Transactions = "/api/admin/transactions",
-  AllBets = "/api/admin/bets",
+  Bets = "/api/admin/bets",
   Users = "/api/admin/users",
 }

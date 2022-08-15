@@ -75,38 +75,39 @@ const goToPage = (link: ILink) => {
         </template>
       </ul>
       <!-- admin menu -->
-      <ul
-        v-if="authStore"
-        class="menu flex flex-col p-4 mb-2 compact"
-        v-for="section in adminMenu"
-        :key="section.name"
-      >
-        <li class="menu-title">
-          <span>
-            {{ section.name }}
-          </span>
-        </li>
-        <template v-for="link in section.links" :key="link.value">
-          <li v-if="link.value === 'news'" class="disabled">
+      <template v-if="authStore.isAdmin">
+        <ul
+          class="menu flex flex-col p-4 mb-2 compact"
+          v-for="section in adminMenu"
+          :key="section.name"
+        >
+          <li class="menu-title">
             <span>
-              <component
-                :is="link.icon"
-                class="inline-block w-6 h-6 mr-2 stroke-current"
-              />
-              {{ link.name }}
+              {{ section.name }}
             </span>
           </li>
-          <li v-else :class="{ disabled: link.isAuth && !authStore.isAuth }">
-            <a class="capitalize" @click="goToPage(link)">
-              <component
-                :is="link.icon"
-                class="inline-block w-6 h-6 mr-2 stroke-current"
-              />
-              {{ link.name }}
-            </a>
-          </li>
-        </template>
-      </ul>
+          <template v-for="link in section.links" :key="link.value">
+            <li v-if="link.value === 'news'" class="disabled">
+              <span>
+                <component
+                  :is="link.icon"
+                  class="inline-block w-6 h-6 mr-2 stroke-current"
+                />
+                {{ link.name }}
+              </span>
+            </li>
+            <li v-else :class="{ disabled: link.isAuth && !authStore.isAuth }">
+              <a class="capitalize" @click="goToPage(link)">
+                <component
+                  :is="link.icon"
+                  class="inline-block w-6 h-6 mr-2 stroke-current"
+                />
+                {{ link.name }}
+              </a>
+            </li>
+          </template>
+        </ul>
+      </template>
     </aside>
   </div>
 </template>

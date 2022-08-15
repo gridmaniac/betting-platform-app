@@ -63,8 +63,10 @@ export const useAuthStore = defineStore("authStore", () => {
 
   function logout() {
     isAuth.value = false;
+    isAdmin.value = false;
     token.value = null;
     localStorage.removeItem("token");
+    localStorage.removeItem("userRole");
     userEmail.value = null;
   }
 

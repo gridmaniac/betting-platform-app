@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 interface IProps {
-  modelValue: string;
+  modelValue: string | number;
   title: string;
 }
 const props = defineProps<IProps>();
@@ -15,16 +15,12 @@ const active = computed({
 </script>
 
 <template>
-  <div class="form-control w-full max-w-xs">
+  <div class="form-control w-full">
     <label class="label">
       <span class="label-text">{{ title }}</span>
       <!-- <span class="label-text-alt">Alt label</span> -->
     </label>
-    <input
-      type="text"
-      class="input input-bordered w-full max-w-xs"
-      v-model="active"
-    />
+    <input type="text" class="input input-bordered w-full" v-model="active" />
     <!-- <label class="label">
       <span class="label-text-alt">Alt label</span>
       <span class="label-text-alt">Alt label</span>
