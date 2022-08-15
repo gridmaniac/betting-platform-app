@@ -3,7 +3,7 @@ import { ERoutes } from "@/models/apiModels";
 import type { IUserBet } from "@/models/walletModels";
 
 export const fetchWallet = async () => {
-  const { data } = await $host.get(ERoutes.Wallet, getAuth());
+  const { data } = await $host.get(ERoutes.Wallet + `/koa`, getAuth());
   return data;
 };
 

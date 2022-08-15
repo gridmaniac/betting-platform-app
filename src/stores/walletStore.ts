@@ -76,7 +76,10 @@ export const useWalletStore = defineStore("walletStore", () => {
   }
 
   async function getWallet() {
+    console.log("test");
+
     const response = await fetchWallet();
+    console.log(response);
     address.value = response.address;
     decimals.value = response.decimals;
     if (balance.value) {

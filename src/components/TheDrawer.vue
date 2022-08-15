@@ -42,7 +42,7 @@ const goToPage = (link: ILink) => {
       class="flex flex-col border-r border-base-200 bg-base-100 text-base-content w-80"
     >
       <TheLogo />
-      <AuthControl class="lg:hidden" @close-drawer="$emit('navigate')" />
+      <AuthControl class="lg:hidden mt-4" @close-drawer="$emit('navigate')" />
       <ul
         class="menu flex flex-col p-4 mb-2 compact"
         v-for="section in menu"
