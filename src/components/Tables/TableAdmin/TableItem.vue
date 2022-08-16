@@ -23,12 +23,10 @@ const edit = () => {
 };
 
 const save = () => {
-  console.log("save");
   isEdit.value = false;
 };
 
 const remove = (setting: ISetting) => {
-  console.log("remove");
   emit("removeSetting", setting);
   isEdit.value = false;
 };
@@ -40,8 +38,7 @@ const remove = (setting: ISetting) => {
     <th style="max-width: 200px">
       <div class="v-full overflow-hidden">
         <template v-if="!isEdit">
-          {{ newValue
-          }}<!-- {{ setting.value }} -->
+          {{ setting.value }}
         </template>
         <template v-else>
           <input

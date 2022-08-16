@@ -46,8 +46,12 @@ const edit = (asset: IAssetResponse) => {
   isEdit.value = true;
 };
 
-const save = async () => {
+const save = async (asset: IAssetResponse) => {
+  isRequest.value = true;
+  await AdminServiece.updateAsset(asset);
+
   fetchAssets();
+  isRequest.value = false;
   currentAsset.value = null;
   isEdit.value = false;
 };
@@ -95,6 +99,7 @@ async function fetchAssets() {
           <thead>
             <tr>
               <th>code</th>
+              <th>listed</th>
               <th>min stake</th>
               <th>min withdrawal</th>
               <th>contract</th>
@@ -104,6 +109,7 @@ async function fetchAssets() {
           <tbody>
             <tr v-for="asset in assets" :key="asset._id">
               <td>{{ asset.code }}</td>
+              <td>{{ asset.listed }}</td>
               <td>{{ asset.minStake }}</td>
               <td>{{ asset.minWithdrawal }}</td>
               <td class="test">{{ asset.contract }}</td>
@@ -150,7 +156,7 @@ async function fetchAssets() {
           <div>
             <button
               class="btn btn-outline mt-6"
-              @click="currentAsset ? save() : ''"
+              @click="currentAsset ? save(currentAsset) : ''"
             >
               Save
             </button>

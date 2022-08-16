@@ -4,42 +4,44 @@ import { onMounted, ref } from "vue";
 // components
 import TheTitle from "@/components/TheTitle.vue";
 // title
-import { TitleAdminUsers } from "@/composables/titlesState";
+import { TitleAdminBalances } from "@/composables/titlesState";
 // types
-import type { IUser } from "@/models/admin/IUser";
+import type { IBalance } from "@/models/admin/IBalance";
 import LoadingAtom from "../../components/Atoms/LoadingAtom.vue";
 
 // vars
-const users = ref<IUser[]>([]);
+const balances = ref<IBalance[]>([]);
 const isRequest = ref(false);
 onMounted(async () => {
   isRequest.value = true;
-  const response = await AdminServiece.getUsers();
-  users.value = response.data.data;
+  const response = await AdminServiece.getBalances();
+  console.log(response.data);
+
+  balances.value = response.data.data;
   isRequest.value = false;
 });
 </script>
 
 <template>
   <div>
-    <TheTitle :title="TitleAdminUsers" />
+    <TheTitle :title="TitleAdminBalances" />
     <div class="card shadow-lg compact side bg-base-100 p-3 mt-6">
       <LoadingAtom v-if="isRequest" />
       <template v-else>
         <table class="table table-compact table-zebra w-full">
           <thead>
             <tr>
-              <th>id</th>
-              <th>email</th>
-              <th>address</th>
+              <th>code</th>
+              <th>user id</th>
+              <th>amount</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="user in users" :key="user._id">
-              <td>{{ user._id }}</td>
-              <td>{{ user.email }}</td>
+            <tr v-for="balance in balances" :key="balance._id">
+              <td>{{ balance.code }}</td>
+              <td>{{ balance.userId }}</td>
               <td>
-                {{ user.address }}
+                {{ balance.amount }}
               </td>
             </tr>
           </tbody>

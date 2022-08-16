@@ -8,6 +8,7 @@ import ProfilePage from "../pages/ProfilePage.vue";
 import NewsPage from "../pages/NewsPage.vue";
 // admin
 import AdminAssetsPage from "@/pages/Admin/AssetsPage.vue";
+import AdminBalancesPage from "@/pages/Admin/BalancesPage.vue";
 import AdminBetsPage from "@/pages/Admin/BetsPage.vue";
 import AdminDepositsPage from "@/pages/Admin/DepositsPage.vue";
 import AdminSettingsPage from "@/pages/Admin/SettingsPage.vue";
@@ -77,6 +78,11 @@ const router = createRouter({
           path: "assets",
           name: "adminAssets",
           component: AdminAssetsPage,
+        },
+        {
+          path: "balances",
+          name: "adminBalances",
+          component: AdminBalancesPage,
         },
         {
           path: "bets",

@@ -7,6 +7,7 @@ import {
   SwitchHorizontalIcon,
   TicketIcon,
   CollectionIcon,
+  CashIcon,
 } from "@heroicons/vue/outline";
 
 export const TitleMMA = {
@@ -59,4 +60,8 @@ export const TitleAdminTransactions = {
 export const TitleAdminUsers = {
   icon: UsersIcon,
   name: "Users",
+};
+export const TitleAdminBalances = {
+  icon: CashIcon,
+  name: "Balances",
 };

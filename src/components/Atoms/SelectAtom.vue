@@ -9,7 +9,7 @@ interface IProps {
   modelValue: string | number | boolean;
   title: string;
   options: IOption[];
-  placeholder: IOption;
+  placeholder?: IOption;
 }
 const props = defineProps<IProps>();
 

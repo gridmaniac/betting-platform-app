@@ -7,8 +7,6 @@ interface IProps {
 defineProps<IProps>();
 
 const setEventStatus = (event: IEvent) => {
-  console.log(event);
-
   if (event.status === "closed") {
     if (event.winnerId) {
       if (event.competitors[0].id === event.winnerId) return "1 - 0";

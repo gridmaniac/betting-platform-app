@@ -11,6 +11,7 @@ import {
   SwitchHorizontalIcon,
   TicketIcon,
   CollectionIcon,
+  CashIcon,
 } from "@heroicons/vue/outline";
 
 export const menu = [
@@ -59,6 +60,12 @@ export const adminMenu = [
         isAuth: true,
       },
       { value: "adminBets", name: "bets", icon: TicketIcon, isAuth: true },
+      {
+        value: "adminBalances",
+        name: "balances",
+        icon: CashIcon,
+        isAuth: true,
+      },
       { value: "adminUsers", name: "users", icon: UsersIcon, isAuth: true },
     ],
   },

@@ -20,6 +20,7 @@ export enum EAdminRoutes {
   Setting = "/api/admin/settings",
   Assets = "/api/admin/assets",
   Deposits = "/api/admin/deposits",
+  Balances = "/api/admin/balances",
   Transactions = "/api/admin/transactions",
   Bets = "/api/admin/bets",
   Users = "/api/admin/users",

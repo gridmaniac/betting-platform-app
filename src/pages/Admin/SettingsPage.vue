@@ -29,6 +29,9 @@ const updateSettings = (newSettings: ISetting[]) => {
   <div class="card shadow-lg compact side bg-base-100 p-3 mt-6">
     <LoadingAtom v-if="isRequest" />
     <TableAdmin v-else :settings="settings" @update-settings="updateSettings" />
+    <div>
+      <button class="btn btn-outline mt-5">add setting</button>
+    </div>
   </div>
 </template>
 

@@ -7,6 +7,10 @@ import InputAtom from "@/components/Atoms/InputAtom.vue";
 import SelectAtom from "@/components/Atoms/SelectAtom.vue";
 // types
 import type { IAsset } from "@/models/admin/IAsset";
+import type { IToast } from "@/models/notificationModel";
+// store
+import { useToastStore } from "@/stores/toastStore";
+const toastStore = useToastStore();
 //emit
 const emit = defineEmits(["assetCreated"]);
 // vars
@@ -34,20 +38,32 @@ const listedOptions = [
 // func
 const save = async (asset: IAsset) => {
   isRequest.value = true;
-  console.log(asset);
-
-  // axios
   const response = await AdminServiece.createAsset(asset);
-  console.log(response.data);
-
-  isRequest.value = false;
-  emit("assetCreated", asset);
+  if (response.data.data) {
+    emit("assetCreated", asset);
+    return;
+  }
+  if (response.data.err) {
+    const errors = response.data.err.split("Asset validation failed: ");
+    const errorArray = errors[1].split(", ");
+    errorArray.forEach((item) => {
+      const textError = item.split(":");
+      const toast: IToast = {
+        id: 0,
+        title: "Error",
+        description: textError[1],
+        status: "error",
+      };
+      toastStore.push(toast);
+    });
+    isRequest.value = false;
+  }
 };
 </script>
 
 <template>
   <div v-if="asset" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-    <InputAtom title="Code" v-model="asset.code" />
+    <InputAtom title="Code*" v-model="asset.code" />
     <InputAtom title="Decimals" v-model="asset.decimals" />
     <SelectAtom
       title="Listed"
@@ -55,9 +71,9 @@ const save = async (asset: IAsset) => {
       :placeholder="{ value: 0, name: 'pick type' }"
       v-model="asset.listed"
     />
-    <InputAtom title="Min stake" v-model="asset.minStake" />
-    <InputAtom title="Min withdrawal" v-model="asset.minWithdrawal" />
-    <InputAtom title="Type" v-model="asset.type" />
+    <InputAtom title="Min stake*" v-model="asset.minStake" />
+    <InputAtom title="Min withdrawal*" v-model="asset.minWithdrawal" />
+    <InputAtom title="Type*" v-model="asset.type" />
     <InputAtom title="Contract" v-model="asset.contract" />
     <InputAtom title="Contract ABI" v-model="asset.contractABI" />
     <div>
@@ -66,7 +82,7 @@ const save = async (asset: IAsset) => {
         @click="save(asset)"
         :disabled="isRequest"
       >
-        Save
+        add token
       </button>
     </div>
   </div>

@@ -6,6 +6,8 @@ import { EAdminRoutes } from "@/models/apiModels";
 import type { ISetting } from "@/models/admin/ISetting";
 import type { IAsset, IAssetResponse } from "@/models/admin/IAsset";
 import type { IUserResponse } from "@/models/admin/IUser";
+import type { IBalanceResponse } from "@/models/admin/IBalance";
+import type { IDeposit, IDepositResponse } from "@/models/admin/IDeposit";
 
 interface IGetSettings {
   data: ISetting[];
@@ -13,6 +15,7 @@ interface IGetSettings {
 
 interface IGetAssets {
   data: IAssetResponse[];
+  err?: string;
 }
 
 export default class AdminServiece {
@@ -56,25 +59,25 @@ export default class AdminServiece {
   // create asset
   static async createAsset(asset: IAsset): Promise<AxiosResponse<IGetAssets>> {
     return await $host
-      .post(EAdminRoutes.Assets, { asset }, getAuth())
+      .post(EAdminRoutes.Assets, asset, getAuth())
       .catch((err) => {
         return err;
       });
   }
 
   // create asset
-  static async update(
+  static async updateAsset(
     asset: IAssetResponse
   ): Promise<AxiosResponse<IGetAssets>> {
     return await $host
-      .put(EAdminRoutes.Assets + asset._id, { asset }, getAuth())
+      .put(EAdminRoutes.Assets + "/" + asset._id, asset, getAuth())
       .catch((err) => {
         return err;
       });
   }
 
   // get all transactions
-  static async getTransactions(): Promise<AxiosResponse<IGetAssets>> {
+  static async getTransactions(): Promise<AxiosResponse<ITransactionResponse>> {
     return await $host
       .get(EAdminRoutes.Transactions, getAuth())
       .catch((err) => {
@@ -82,7 +85,7 @@ export default class AdminServiece {
       });
   }
 
-  // get all transactions
+  // get all users
   static async getUsers(): Promise<AxiosResponse<IUserResponse>> {
     return await $host.get(EAdminRoutes.Users, getAuth()).catch((err) => {
       return err;
@@ -97,9 +100,35 @@ export default class AdminServiece {
   }
 
   // get all deposits
-  static async getDeposits(): Promise<AxiosResponse<IUserResponse>> {
-    return await $host.post(EAdminRoutes.Deposits, getAuth()).catch((err) => {
+  static async checkDeposit(
+    deposit: IDeposit
+  ): Promise<AxiosResponse<IDepositResponse>> {
+    return await $host
+      .post(EAdminRoutes.Deposits, deposit, getAuth())
+      .catch((err) => {
+        return err;
+      });
+  }
+
+  // get all deposits
+  static async getBalances(): Promise<AxiosResponse<IBalanceResponse>> {
+    return await $host.get(EAdminRoutes.Balances, getAuth()).catch((err) => {
       return err;
     });
   }
+}
+
+interface ITransaction {
+  amount: string;
+  code: string;
+  date: string;
+  txHash: string;
+  type: string;
+  userId: string;
+  __v: number;
+  _id: string;
+}
+
+interface ITransactionResponse {
+  data: ITransaction[];
 }
