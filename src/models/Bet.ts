@@ -1,4 +1,5 @@
 export interface IBet {
+  sport: string;
   amount: number;
   date: string;
   eventId: string;
@@ -11,6 +12,10 @@ export interface IBet {
   winnerId: string;
   __v: number;
   _id: string;
+}
+
+export interface IBetResponse {
+  data: IBet[];
 }
 
 export type IBetType = "all" | "cancelled" | "settled" | "open";

@@ -2,11 +2,11 @@
 import { computed } from "vue";
 
 interface IProps {
-  modelValue: string | number,
-  type?: string,
-  title?: string,
-  error?: string,
-  size?: boolean,
+  modelValue: string | number;
+  type?: string;
+  title?: string;
+  error?: string;
+  size?: boolean;
 }
 
 const props = defineProps<IProps>();
