@@ -18,10 +18,10 @@ export const setUserAddress = async (address: string) => {
 };
 
 // set user wallet address
-export const withdrawForUser = async (amount: number) => {
+export const withdrawForUser = async (amount: number, code: string) => {
   const { data } = await $host.post(
     ERoutes.WalletWithdraw,
-    { amount },
+    { amount, code: code },
     getAuth()
   );
   return data;

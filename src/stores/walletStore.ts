@@ -191,7 +191,10 @@ export const useWalletStore = defineStore("walletStore", () => {
 
   async function withdraw() {
     if (withdrawAmount.value) {
-      const response = await withdrawForUser(withdrawAmount.value * 1000000000);
+      const response = await withdrawForUser(
+        withdrawAmount.value * 1000000000,
+        currentAsset.value
+      );
       return response;
     }
   }

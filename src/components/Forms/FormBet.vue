@@ -1,17 +1,20 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import moment from "moment";
+// composables
 import { ToastBetSuccess } from "@/composables/toastNotification";
+import { balanceFormat } from "@/composables/functions";
 // api
 import { setBet } from "@/http/walletApi";
 // component
 import CompetitorModal from "@/components/CompetitorModal.vue";
+// type
+import type { IUserBet } from "@/models/walletModels";
 // store
 import { useModalStore } from "@/stores/modalStore";
 import { useWalletStore } from "@/stores/walletStore";
 import { useToastStore } from "@/stores/toastStore";
-import type { IUserBet } from "@/models/walletModels";
-import { balanceFormat } from "@/composables/functions";
+import type { IToast } from "@/models/notificationModel";
 const modalStore = useModalStore();
 const walletStore = useWalletStore();
 const toastStore = useToastStore();
@@ -35,10 +38,19 @@ const placeBet = async () => {
   };
   isRequest.value = true;
   const response = await setBet(bet);
+  console.log(response);
+
   isRequest.value = false;
   // check data
   if (!response.data) {
     errors.value = response.modelErrors;
+    const notification: IToast = {
+      id: 0,
+      title: "",
+      description: response.err,
+      status: "error",
+    };
+    toastStore.push(notification);
     return;
   }
   if (response.data) {
@@ -52,6 +64,11 @@ const ceilBet = () => {
     amount.value = Math.floor(amount.value);
   }
 };
+
+const currentAsset = computed({
+  get: () => walletStore.currentAsset,
+  set: (value) => walletStore.setAsset(value),
+});
 </script>
 
 <template>
@@ -80,11 +97,11 @@ const ceilBet = () => {
       side="right"
     />
   </div>
-  <div class="flex flex-col sm:flex-row justify-between">
-    <div class="flex flex-row sm:flex-col mb-2 sm:mb-0">
-      <p class="text-base-content text-opacity-40">Winner:</p>
+  <div class="flex flex-col justify-between">
+    <div class="flex flex-row mb-2">
+      <p class="text-base-content text-opacity-40 mr-2">Winner:</p>
       <p
-        class="text-base-content text-bold flex justify-between items-center ml-2 sm:ml-0"
+        class="text-base-content text-bold flex justify-between items-center ml-0"
       >
         {{ modalStore.ModalBetContent!.winner.name }}
       </p>
@@ -93,13 +110,16 @@ const ceilBet = () => {
       <label class="input-group sm:justify-end">
         <input
           type="number"
-          class="input input-bordered input-lg w-full"
+          class="input input-bordered input-lg px-5"
           v-model="amount"
           ref="amountInput"
           placeholder="0"
           @blur="ceilBet"
         />
-        <select class="select select-lg select-warning">
+        <select
+          class="select select-lg select-warning uppercase"
+          v-model="currentAsset"
+        >
           <option v-for="asset in walletStore.assets" :key="asset.code">
             {{ asset.code }}
           </option>

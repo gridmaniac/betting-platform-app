@@ -61,7 +61,10 @@ async function getEvents(season: ISeason) {
       <template v-if="!isResponse">
         <TableEvent v-if="events.length" :events="events" :season="season" />
         <div v-else class="text-center flex justify-center items-center h-20">
-          <p>All events was completed</p>
+          <p class="text-white">
+            <template v-if="isUpcoming">No upcoming events.</template>
+            <template v-else>No completed events.</template>
+          </p>
         </div>
       </template>
       <LoadingAtom v-else />
