@@ -27,7 +27,7 @@ const currentAsset = computed({
   <TheTitle :title="TitleWallet">
     <template #control-right>
       <select
-        class="select select-bordered select-sm max-w-xs ml-6"
+        class="select select-bordered select-sm max-w-xs ml-6 uppercase"
         v-model="currentAsset"
       >
         <option v-for="asset in walletStore.assets" :key="asset.code">

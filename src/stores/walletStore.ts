@@ -13,7 +13,6 @@ import {
   WalletConnectError,
   DepositSuccess,
   DepositError,
-  AddressError,
 } from "@/composables/ModalNotifications";
 import {
   ToastTransaction,
@@ -168,7 +167,7 @@ export const useWalletStore = defineStore("walletStore", () => {
         method: "eth_requestAccounts",
       });
       if (etheriumWallet !== address.value) {
-        modalStore.modalNotificationContent = AddressError;
+        modalStore.modalNotificationContent = DepositError;
         modalStore.isModalNotification = true;
         return;
       }
@@ -185,7 +184,7 @@ export const useWalletStore = defineStore("walletStore", () => {
       modalStore.modalNotificationContent = DepositSuccess;
       modalStore.isModalNotification = true;
     } catch (error: any) {
-      modalStore.modalNotificationContent = DepositError;
+      modalStore.modalNotificationContent = WalletConnectError;
       modalStore.isModalNotification = true;
     }
   }
