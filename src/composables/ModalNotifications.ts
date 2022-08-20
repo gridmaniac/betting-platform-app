@@ -38,7 +38,8 @@ export const WalletError = {
 export const WalletConnectError = {
   icon: ExclamationCircleIcon,
   title: "Connection error",
-  description: "Something went wrong or insufficient balance.<br>Please try again.",
+  description:
+    "Something went wrong or insufficient balance.<br>Please try again.",
 };
 
 export const DepositError = {

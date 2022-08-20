@@ -55,7 +55,10 @@ const handleSubmit = async () => {
           {{ modalStore.modalNotificationContent?.title }}
         </h2>
       </div>
-      <p class="text-center mt-2" v-html="modalStore.modalNotificationContent?.description"></p>
+      <p
+        class="text-center mt-2"
+        v-html="modalStore.modalNotificationContent?.description"
+      ></p>
       <div class="divider"></div>
       <div class="flex justify-between">
         <button
