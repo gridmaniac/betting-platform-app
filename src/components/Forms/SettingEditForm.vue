@@ -49,7 +49,7 @@ settingValue.value = props.setting.value;
 const onSubmit = handleSubmit(async () => {
   isRequest.value = true;
   if (!props.setting._id) {
-    return
+    return;
   }
   await AdminService.updateSetting(props.setting._id, {
     name: settingName.value,
@@ -61,7 +61,7 @@ const onSubmit = handleSubmit(async () => {
 
 const deleteSetting = async (setting: ISetting) => {
   if (!setting._id) {
-    return
+    return;
   }
   await AdminService.deleteSetting(setting._id);
   emit("updateSettings");
@@ -71,10 +71,20 @@ const deleteSetting = async (setting: ISetting) => {
 <template>
   <tr>
     <td>
-      <InputAtom v-model="settingName" :title="!isDesktop ? 'Name' : ''" :error="settingNameError" :size="true" />
+      <InputAtom
+        v-model="settingName"
+        :title="!isDesktop ? 'Name' : ''"
+        :error="settingNameError"
+        :size="true"
+      />
     </td>
     <td>
-      <InputAtom v-model="settingValue" :title="!isDesktop ? 'Value' : ''" :error="settingValueError" :size="true" />
+      <InputAtom
+        v-model="settingValue"
+        :title="!isDesktop ? 'Value' : ''"
+        :error="settingValueError"
+        :size="true"
+      />
     </td>
     <td>
       <div class="flex md:justify-end">
