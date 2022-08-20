@@ -21,8 +21,6 @@ onMounted(() => {
 });
 
 const errors = ref<{ [key: string]: string }>({});
-({});
-
 const validationSchema = {
   email(value: string) {
     if (value === "" || value == null) {

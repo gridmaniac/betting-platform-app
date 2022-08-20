@@ -15,7 +15,6 @@ const modalStore = useModalStore();
 
 const isRequest = ref(false);
 const errors = ref<{ [key: string]: string }>({});
-({});
 const emailInput = ref();
 onMounted(() => {
   emailInput.value.focus();

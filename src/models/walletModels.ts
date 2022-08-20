@@ -24,6 +24,7 @@ export interface IUserBet {
   winnerId?: string;
   eventId?: string;
   type: TBetType;
+  code: string;
 }
 
 export type TBetType = "winner";

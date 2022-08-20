@@ -9,21 +9,18 @@ defineProps<IProps>();
 const setEventStatus = (event: IEvent) => {
   if (event.status === "closed") {
     if (event.winnerId) {
-      if (event.competitors[0].id === event.winnerId) {
-        return "1 - 0";
-      } else {
-        return "0 - 1";
-      }
-    } else {
-      return `${event.homeScore} - ${event.awayScore}`;
+      if (event.competitors[0].id === event.winnerId) return "1 - 0";
+      else return "0 - 1";
+    }
+    if (!event.winnerId) {
+      if ("homeScore" in event && "awayScore" in event)
+        return `${event.homeScore} - ${event.awayScore}`;
+      else return "1 - 1";
     }
   }
-  if (event.status === "not_started") {
+  if (event.status === "not_started") return "0 - 0";
+  if (event.status === "cancelled" || event.status === "postponed")
     return "0 - 0";
-  }
-  if (event.status === "cancelled" || event.status === "postponed") {
-    return "0 - 0";
-  }
   return event.status;
 };
 </script>

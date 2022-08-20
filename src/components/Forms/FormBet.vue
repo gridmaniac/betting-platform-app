@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import moment from "moment";
-import token from "@/assets/koa-token.png";
 import { ToastBetSuccess } from "@/composables/toastNotification";
 // api
 import { setBet } from "@/http/walletApi";
@@ -9,9 +8,12 @@ import { setBet } from "@/http/walletApi";
 import CompetitorModal from "@/components/CompetitorModal.vue";
 // store
 import { useModalStore } from "@/stores/modalStore";
+import { useWalletStore } from "@/stores/walletStore";
 import { useToastStore } from "@/stores/toastStore";
 import type { IUserBet } from "@/models/walletModels";
+import { balanceFormat } from "@/composables/functions";
 const modalStore = useModalStore();
+const walletStore = useWalletStore();
 const toastStore = useToastStore();
 
 const amount = ref();
@@ -29,11 +31,11 @@ const placeBet = async () => {
     winnerId: modalStore.ModalBetContent?.winner.id,
     eventId: modalStore.ModalBetContent?.event.id,
     type: "winner",
+    code: walletStore.currentAsset,
   };
   isRequest.value = true;
   const response = await setBet(bet);
   isRequest.value = false;
-  console.log(response);
   // check data
   if (!response.data) {
     errors.value = response.modelErrors;
@@ -88,8 +90,8 @@ const ceilBet = () => {
       </p>
     </div>
     <div class="form-control">
-      <label class="input-group sm:justify-end"
-        ><input
+      <label class="input-group sm:justify-end">
+        <input
           type="number"
           class="input input-bordered input-lg w-full"
           v-model="amount"
@@ -97,12 +99,20 @@ const ceilBet = () => {
           placeholder="0"
           @blur="ceilBet"
         />
-        <span>
-          <img class="flex-0 mr-1 h-5 w-5 w-full" :src="token" />
-        </span>
+        <select class="select select-lg select-warning">
+          <option v-for="asset in walletStore.assets" :key="asset.code">
+            {{ asset.code }}
+          </option>
+        </select>
       </label>
-      <label class="label">
-        <span class="label-text">{{ errors["amount"] }}</span>
+      <label class="label justify-end">
+        <span class="label-text"
+          >Balance:
+          <span class="font-bold uppercase"
+            >{{ balanceFormat(walletStore.balance) }}
+            {{ walletStore.currentAsset }}</span
+          ></span
+        >
       </label>
     </div>
   </div>

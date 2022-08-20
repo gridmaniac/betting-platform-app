@@ -8,6 +8,7 @@ import { fetchEvents } from "@/http/sportsApi";
 // components
 import TheCollapse from "@/components/TheCollapse.vue";
 import TableEvent from "../Tables/TableEvent/TableEvent.vue";
+import LoadingAtom from "../Atoms/LoadingAtom.vue";
 // props
 interface IProps {
   season: ISeason;
@@ -63,9 +64,7 @@ async function getEvents(season: ISeason) {
           <p>All events was completed</p>
         </div>
       </template>
-      <div v-else class="flex justify-center my-10">
-        <button class="btn btn-ghost loading">loading</button>
-      </div>
+      <LoadingAtom v-else />
     </template>
   </TheCollapse>
 </template>

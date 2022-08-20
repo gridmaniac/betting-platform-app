@@ -6,6 +6,14 @@ import BetsPage from "../pages/BetsPage.vue";
 import WalletPage from "../pages/WalletPage.vue";
 import ProfilePage from "../pages/ProfilePage.vue";
 import NewsPage from "../pages/NewsPage.vue";
+// admin
+import AdminAssetsPage from "@/pages/Admin/AssetsPage.vue";
+import AdminBalancesPage from "@/pages/Admin/BalancesPage.vue";
+import AdminBetsPage from "@/pages/Admin/BetsPage.vue";
+import AdminDepositsPage from "@/pages/Admin/DepositsPage.vue";
+import AdminSettingsPage from "@/pages/Admin/SettingsPage.vue";
+import AdminTransactionsPage from "@/pages/Admin/TransactionsPage.vue";
+import AdminUsersPage from "@/pages/Admin/UsersPage.vue";
 
 import { useAuthStore } from "@/stores/authStore";
 import { useModalStore } from "@/stores/modalStore";
@@ -62,6 +70,47 @@ const router = createRouter({
       name: "news",
       component: NewsPage,
     },
+    {
+      path: "/admin",
+      name: "admin",
+      children: [
+        {
+          path: "assets",
+          name: "adminAssets",
+          component: AdminAssetsPage,
+        },
+        {
+          path: "balances",
+          name: "adminBalances",
+          component: AdminBalancesPage,
+        },
+        {
+          path: "bets",
+          name: "adminBets",
+          component: AdminBetsPage,
+        },
+        {
+          path: "deposits",
+          name: "adminDeposits",
+          component: AdminDepositsPage,
+        },
+        {
+          path: "settings",
+          name: "adminSettings",
+          component: AdminSettingsPage,
+        },
+        {
+          path: "transactions",
+          name: "adminTransactions",
+          component: AdminTransactionsPage,
+        },
+        {
+          path: "users",
+          name: "adminUsers",
+          component: AdminUsersPage,
+        },
+      ],
+    },
   ],
 });
 
@@ -82,7 +131,9 @@ router.beforeEach(async (to) => {
 
   const privatPages = ["/profile", "/wallet", "/bets", "/news"];
   const authRequired = !privatPages.includes(to.path);
-
+  // if (to.fullPath === '/admin' && !authStore.isAdmin ) {
+  //   router.push({ name: "profile" });
+  // }
   if (!authRequired && !authStore.isAuth) {
     router.push({ name: "mma" });
     return;

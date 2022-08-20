@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, computed } from "vue";
 // composables
 import { balanceFormat } from "@/composables/functions";
 import { TitleWallet } from "@/composables/titlesState";
@@ -16,10 +16,26 @@ const walletStore = useWalletStore();
 onMounted(() => {
   document.querySelector("main")?.scrollTo(0, 0);
 });
+
+const currentAsset = computed({
+  get: () => walletStore.currentAsset,
+  set: (value) => walletStore.setAsset(value),
+});
 </script>
 
 <template>
-  <TheTitle :title="TitleWallet" />
+  <TheTitle :title="TitleWallet">
+    <template #control-right>
+      <select
+        class="select select-bordered select-sm max-w-xs ml-6"
+        v-model="currentAsset"
+      >
+        <option v-for="asset in walletStore.assets" :key="asset.code">
+          {{ asset.code }}
+        </option>
+      </select>
+    </template>
+  </TheTitle>
   <div class="my-6" v-if="walletStore.isWalletPage">
     <div class="flex flex-col lg:flex-row w-full">
       <div
@@ -40,7 +56,9 @@ onMounted(() => {
           <div class="stat-title">Balance</div>
           <div class="stat-value">
             {{ balanceFormat(walletStore.balance) }}
-            <span class="text-primary">KOA</span>
+            <span class="text-primary uppercase">{{
+              walletStore.currentAsset
+            }}</span>
           </div>
         </div>
 
@@ -48,9 +66,10 @@ onMounted(() => {
           <div class="stat-title">In Bets</div>
           <div class="stat-value">
             {{ balanceFormat(walletStore.inBets) }}
-            <span class="text-primary">KOA</span>
+            <span class="text-primary uppercase">{{
+              walletStore.currentAsset
+            }}</span>
           </div>
-          <!-- <div class="stat-desc">Potential win: {{ potentialWin }} KOA</div> -->
         </div>
       </div>
     </div>
