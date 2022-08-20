@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 // api
-import AdminServiece from "@/http/adminApi";
+import AdminService from "@/http/adminApi";
 // components
 import InputAtom from "@/components/Atoms/InputAtom.vue";
 import SelectAtom from "@/components/Atoms/SelectAtom.vue";
@@ -38,7 +38,7 @@ const listedOptions = [
 // func
 const save = async (asset: IAsset) => {
   isRequest.value = true;
-  const response = await AdminServiece.createAsset(asset);
+  const response = await AdminService.createAsset(asset);
   if (response.data.data) {
     emit("assetCreated", asset);
     return;
@@ -63,7 +63,7 @@ const save = async (asset: IAsset) => {
 
 <template>
   <div v-if="asset" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-    <InputAtom title="Code*" v-model="asset.code" />
+    <InputAtom title="Code" v-model="asset.code" />
     <InputAtom title="Decimals" v-model="asset.decimals" />
     <SelectAtom
       title="Listed"
@@ -71,9 +71,9 @@ const save = async (asset: IAsset) => {
       :placeholder="{ value: 0, name: 'pick type' }"
       v-model="asset.listed"
     />
-    <InputAtom title="Min stake*" v-model="asset.minStake" />
-    <InputAtom title="Min withdrawal*" v-model="asset.minWithdrawal" />
-    <InputAtom title="Type*" v-model="asset.type" />
+    <InputAtom title="Min stake" v-model="asset.minStake" />
+    <InputAtom title="Min withdrawal" v-model="asset.minWithdrawal" />
+    <InputAtom title="Type" v-model="asset.type" />
     <InputAtom title="Contract" v-model="asset.contract" />
     <InputAtom title="Contract ABI" v-model="asset.contractABI" />
     <div>

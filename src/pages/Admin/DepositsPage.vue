@@ -7,7 +7,7 @@ import SelectAtom from "../../components/Atoms/SelectAtom.vue";
 // composables
 import { TitleAdminDeposits } from "@/composables/titlesState";
 // api
-import AdminServiece from "@/http/adminApi";
+import AdminService from "@/http/adminApi";
 // store
 import { useToastStore } from "@/stores/toastStore";
 import type { IToast } from "@/models/notificationModel";
@@ -27,8 +27,7 @@ const code = ref("0");
 const options = ref<IOption[]>([]);
 // mounted
 onMounted(async () => {
-  const response = await AdminServiece.getAssets();
-  console.log();
+  const response = await AdminService.getAssets();
   const codeList: IOption[] = [];
   response.data.data.forEach((element) => {
     const option: IOption = {
@@ -41,7 +40,7 @@ onMounted(async () => {
 });
 // functions
 const check = async () => {
-  const { data } = await AdminServiece.checkDeposit({
+  const { data } = await AdminService.checkDeposit({
     lastBlockNumber: lastBlock.value,
     blockNumber: block.value,
     code: code.value,

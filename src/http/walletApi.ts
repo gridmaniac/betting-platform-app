@@ -2,8 +2,8 @@ import { $host, getAuth } from ".";
 import { ERoutes } from "@/models/apiModels";
 import type { IUserBet } from "@/models/walletModels";
 
-export const fetchWallet = async () => {
-  const { data } = await $host.get(ERoutes.Wallet + `/koa`, getAuth());
+export const fetchWallet = async (asset: string) => {
+  const { data } = await $host.get(ERoutes.Wallet + `/` + asset, getAuth());
   return data;
 };
 
@@ -36,5 +36,11 @@ export const fetchBets = async () => {
 // create bet from user
 export const setBet = async (bet: IUserBet) => {
   const { data } = await $host.post(ERoutes.Bets, bet, getAuth());
+  return data;
+};
+
+// create bet from user
+export const getAssets = async () => {
+  const { data } = await $host.get(ERoutes.Assets, getAuth());
   return data;
 };

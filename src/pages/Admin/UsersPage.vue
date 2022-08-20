@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AdminServiece from "@/http/adminApi";
+import AdminService from "@/http/adminApi";
 import { onMounted, ref } from "vue";
 // components
 import TheTitle from "@/components/TheTitle.vue";
@@ -14,7 +14,7 @@ const users = ref<IUser[]>([]);
 const isRequest = ref(false);
 onMounted(async () => {
   isRequest.value = true;
-  const response = await AdminServiece.getUsers();
+  const response = await AdminService.getUsers();
   users.value = response.data.data;
   isRequest.value = false;
 });

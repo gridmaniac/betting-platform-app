@@ -21,7 +21,10 @@ const sportType = route.meta.sportType;
   <div class="flex items-center space-x-3">
     <div :class="{ 'order-2': side === 'right' }">
       <div class="avatar">
-        <div class="rounded-full w-14 h-14 shadow">
+        <div
+          class="rounded-full w-14 h-14 shadow"
+          :class="{ 'ml-4': side === 'right' }"
+        >
           <img
             :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/competitors/${sportType}/${competitor.name}.png`"
             alt="Avatar Tailwind CSS Component"

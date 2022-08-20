@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AdminServiece from "@/http/adminApi";
+import AdminService from "@/http/adminApi";
 import { onMounted, ref } from "vue";
 // components
 import TheTitle from "@/components/TheTitle.vue";
@@ -48,7 +48,7 @@ const edit = (asset: IAssetResponse) => {
 
 const save = async (asset: IAssetResponse) => {
   isRequest.value = true;
-  await AdminServiece.updateAsset(asset);
+  await AdminService.updateAsset(asset);
 
   fetchAssets();
   isRequest.value = false;
@@ -63,7 +63,7 @@ const updateAssets = () => {
 
 async function fetchAssets() {
   isRequest.value = true;
-  const assetsResponse = await AdminServiece.getAssets();
+  const assetsResponse = await AdminService.getAssets();
   assets.value = assetsResponse.data.data;
   isRequest.value = false;
 }

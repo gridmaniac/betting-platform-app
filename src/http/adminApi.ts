@@ -18,7 +18,7 @@ interface IGetAssets {
   err?: string;
 }
 
-export default class AdminServiece {
+export default class AdminService {
   // get all settings
   static async getSettings(): Promise<AxiosResponse<IGetSettings>> {
     return await $host.get(EAdminRoutes.Setting, getAuth()).catch((err) => {
@@ -27,26 +27,37 @@ export default class AdminServiece {
   }
 
   // add new setting
-  static async postSetting(): Promise<AxiosResponse<IGetSettings>> {
-    return await $host.post(EAdminRoutes.Setting, getAuth()).catch((err) => {
-      return err;
-    });
-  }
-
-  // update choosed setting
-  static async updateSetting(id: number): Promise<AxiosResponse<IGetSettings>> {
+  static async createSetting(
+    setting: ISetting
+  ): Promise<AxiosResponse<IGetSettings>> {
     return await $host
-      .put(EAdminRoutes.Setting + id, getAuth())
+      .post(EAdminRoutes.Setting, setting, getAuth())
       .catch((err) => {
         return err;
       });
   }
 
   // update choosed setting
-  static async deleteSetting(): Promise<AxiosResponse<IGetSettings>> {
-    return await $host.delete(EAdminRoutes.Setting, getAuth()).catch((err) => {
-      return err;
-    });
+  static async updateSetting(
+    id: string,
+    setting: ISetting
+  ): Promise<AxiosResponse<IGetSettings>> {
+    return await $host
+      .put(EAdminRoutes.Setting + "/" + id, setting, getAuth())
+      .catch((err) => {
+        return err;
+      });
+  }
+
+  // update choosed setting
+  static async deleteSetting(
+    settingId: string
+  ): Promise<AxiosResponse<IGetSettings>> {
+    return await $host
+      .delete(EAdminRoutes.Setting + "/" + settingId, getAuth())
+      .catch((err) => {
+        return err;
+      });
   }
 
   // get all assets

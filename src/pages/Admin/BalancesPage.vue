@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AdminServiece from "@/http/adminApi";
+import AdminService from "@/http/adminApi";
 import { onMounted, ref } from "vue";
 // components
 import TheTitle from "@/components/TheTitle.vue";
@@ -14,9 +14,7 @@ const balances = ref<IBalance[]>([]);
 const isRequest = ref(false);
 onMounted(async () => {
   isRequest.value = true;
-  const response = await AdminServiece.getBalances();
-  console.log(response.data);
-
+  const response = await AdminService.getBalances();
   balances.value = response.data.data;
   isRequest.value = false;
 });

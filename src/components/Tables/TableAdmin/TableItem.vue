@@ -1,63 +1,67 @@
 <script setup lang="ts">
 import { ref } from "vue";
-
-interface ISetting {
-  name: string;
-  value: string;
-  __v: number;
-  _id: string;
-}
+import type { ISetting } from "@/models/admin/ISetting";
+import SettingEditForm from "../../Forms/SettingEditForm.vue";
 
 interface IProps {
   setting: ISetting;
 }
 
 defineProps<IProps>();
-const emit = defineEmits(["removeSetting"]);
+const emit = defineEmits(["updateSettings"]);
 // vars
 const isEdit = ref(false);
-const newValue = ref();
 
-const edit = () => {
-  isEdit.value = true;
-};
-
-const save = () => {
+const update = () => {
   isEdit.value = false;
-};
-
-const remove = (setting: ISetting) => {
-  emit("removeSetting", setting);
-  isEdit.value = false;
+  emit("updateSettings");
 };
 </script>
 
 <template>
-  <tr>
-    <th>{{ setting.name }}</th>
-    <th style="max-width: 200px">
-      <div class="v-full overflow-hidden">
-        <template v-if="!isEdit">
-          {{ setting.value }}
-        </template>
-        <template v-else>
-          <input
-            type="text"
-            placeholder="Type here"
-            class="input input-bordered w-full max-w-xs"
-            v-model="newValue"
-          />
-        </template>
+  <tr v-if="!isEdit">
+    <td data-name="name">{{ setting.name }}</td>
+    <td data-name="value" class="value">
+      {{ setting.value }}
+    </td>
+    <td data-name="controls">
+      <div class="flex md:justify-end">
+        <button class="btn btn-sm btn-outline" @click="isEdit = true">
+          edit
+        </button>
       </div>
-    </th>
-    <th>
-      <template v-if="!isEdit">
-        <button class="btn btn-outline" @click="edit">edit</button>
-      </template>
-      <template v-else>
-        <button class="btn btn-outline mr-2" @click="save">save</button>
-        <button class="btn btn-outline" @click="remove(setting)">delete</button>
-      </template>
-    </th>
+    </td>
   </tr>
+  <SettingEditForm v-else :setting="setting" @update-settings="update" />
 </template>
+
+<style scoped lang="scss">
+@media screen and (max-width: 768px) {
+  .value {
+    max-width: 100%;
+  }
+
+  tr {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    td {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+
+      &::before {
+        content: attr(data-name);
+        color: white;
+        text-transform: capitalize;
+        margin-bottom: 10px;
+      }
+
+      &.controls {
+        display: flex;
+      }
+    }
+  }
+}
+</style>

@@ -1,7 +1,12 @@
 import { defineStore, storeToRefs } from "pinia";
 import { ref, watch } from "vue";
 // api
-import { fetchWallet, setUserAddress, withdrawForUser } from "@/http/walletApi";
+import {
+  fetchWallet,
+  setUserAddress,
+  withdrawForUser,
+  getAssets,
+} from "@/http/walletApi";
 // composables
 import {
   WalletError,
@@ -24,12 +29,14 @@ import contractABI from "@/composables/contract";
 declare let window: any;
 // models
 import type { ITransaction } from "@/models/walletModels";
+import type { IAsset } from "@/models/admin/IAsset";
 
 export const useWalletStore = defineStore("walletStore", () => {
   // var withdraws
   const contractAddress = ref();
   const hotAddress = ref();
-  //
+  const assets = ref<IAsset[]>();
+  const currentAsset = ref<string>("");
   const isWalletPage = ref(false);
   const address = ref<string | null>();
   const balance = ref<number>(0);
@@ -40,8 +47,16 @@ export const useWalletStore = defineStore("walletStore", () => {
   // store
   const modalStore = useModalStore();
   const toastStore = useToastStore();
-  // check auth
   const authStore = useAuthStore();
+  // check localstorage
+  const assetCandidate = localStorage.getItem("currentAsset");
+  if (assetCandidate) {
+    currentAsset.value = assetCandidate;
+  } else {
+    currentAsset.value = "koa";
+  }
+
+  // check auth
   const { isAuth } = storeToRefs(authStore);
   const userInterval = ref();
   if (isAuth.value) {
@@ -75,8 +90,23 @@ export const useWalletStore = defineStore("walletStore", () => {
     }
   }
 
+  function setAsset(asset: string) {
+    const candidate = assets.value?.find((x) => x.code === asset);
+    if (candidate) {
+      currentAsset.value = candidate.code;
+      localStorage.setItem("currentAsset", currentAsset.value);
+    } else {
+      currentAsset.value = "koa";
+      localStorage.setItem("currentAsset", currentAsset.value);
+    }
+    getWallet();
+  }
+
   async function getWallet() {
-    const response = await fetchWallet();
+    const { data } = await getAssets();
+    assets.value = data;
+    const response = await fetchWallet(currentAsset.value);
+
     address.value = response.address;
     decimals.value = response.decimals;
     if (balance.value) {
@@ -173,11 +203,14 @@ export const useWalletStore = defineStore("walletStore", () => {
     balance,
     transactions,
     isWalletPage,
+    assets,
+    currentAsset,
     // function
     deposit,
     disconnectWallet,
     connectWallet,
     withdraw,
     withdrawAmount,
+    setAsset,
   };
 });

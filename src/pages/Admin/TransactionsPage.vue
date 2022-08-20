@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AdminServiece from "@/http/adminApi";
+import AdminService from "@/http/adminApi";
 import { onMounted, ref } from "vue";
 import moment from "moment";
 // components
@@ -14,9 +14,7 @@ const transactions = ref<ITransaction[]>([]);
 const isRequest = ref(false);
 onMounted(async () => {
   isRequest.value = true;
-  const response = await AdminServiece.getTransactions();
-  console.log(response.data);
-
+  const response = await AdminService.getTransactions();
   transactions.value = response.data.data;
   isRequest.value = false;
 });

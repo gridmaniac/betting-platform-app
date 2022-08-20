@@ -10,6 +10,7 @@ export enum ERoutes {
   Seasons = "/api/v1/seasons/",
   Events = "/api/v1/events/",
   Bets = "/api/v1/bets",
+  Assets = "/api/v1/assets",
   // wallet
   Wallet = "/api/v1/wallet",
   WalletWithdraw = "/api/v1/wallet/withdraw",

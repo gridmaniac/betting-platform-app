@@ -1,24 +1,13 @@
 <script setup lang="ts">
 import TableItem from "./TableItem.vue";
-
-interface ISetting {
-  name: string;
-  value: string;
-  __v: number;
-  _id: string;
-}
+import type { ISetting } from "@/models/admin/ISetting";
 
 interface IProps {
   settings: ISetting[];
 }
 
-const props = defineProps<IProps>();
-const emit = defineEmits(["updateSettings"]);
-
-const removeSetting = (setting: ISetting) => {
-  const newArray = props.settings.filter((x) => x._id !== setting._id);
-  emit("updateSettings", newArray);
-};
+defineProps<IProps>();
+defineEmits(["updateSettings"]);
 </script>
 
 <template>
@@ -27,7 +16,7 @@ const removeSetting = (setting: ISetting) => {
       <tr>
         <th>name</th>
         <th>value</th>
-        <th>contols</th>
+        <th class="text-right">contols</th>
       </tr>
     </thead>
     <tbody>
@@ -35,8 +24,24 @@ const removeSetting = (setting: ISetting) => {
         v-for="setting in settings"
         :key="setting._id"
         :setting="setting"
-        @remove-setting="removeSetting"
+        @update-settings="$emit('updateSettings')"
       />
     </tbody>
   </table>
 </template>
+
+<style scoped lang="scss">
+@media screen and (max-width: 768px) {
+  table {
+    display: block;
+    width: 100%;
+  }
+  thead {
+    display: none;
+  }
+  tbody {
+    display: block;
+    width: 100%;
+  }
+}
+</style>
