@@ -13,7 +13,7 @@ import {
   CollectionIcon,
   CashIcon,
 } from "@heroicons/vue/outline";
-import NFL from "@/assets/NFL.svg"
+import NFL from "@/assets/NFL.svg";
 
 export const menu = [
   {

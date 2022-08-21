@@ -28,7 +28,6 @@ export const useAuthStore = defineStore("authStore", () => {
     });
   }
 
-
   async function login(email: string, password: string) {
     const user = {
       email: email.toLowerCase(),
@@ -42,7 +41,7 @@ export const useAuthStore = defineStore("authStore", () => {
     localStorage.setItem("token", response.data);
     token.value = response.data;
     isAuth.value = true;
-    getUserProfile()
+    getUserProfile();
     return response;
   }
 

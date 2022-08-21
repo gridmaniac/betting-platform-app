@@ -54,7 +54,7 @@ const placeBet = async () => {
   if (response.data) {
     modalStore.isModalBetVisible = false;
     toastStore.push(ToastBetSuccess);
-    await walletStore.getWallet()
+    await walletStore.getWallet();
   }
 };
 
@@ -133,9 +133,7 @@ const currentAsset = computed({
               {{ walletStore.currentAsset }}
             </span>
           </template>
-          <template v-else>
-            Loading balance...
-          </template>
+          <template v-else> Loading balance... </template>
         </span>
       </label>
     </div>

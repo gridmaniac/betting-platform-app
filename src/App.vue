@@ -14,7 +14,12 @@ const drawer = ref(false);
 <template>
   <ModalList />
   <div class="drawer drawer-mobile relative">
-    <input id="my-drawer-2" type="checkbox" class="drawer-toggle" v-model="drawer" />
+    <input
+      id="my-drawer-2"
+      type="checkbox"
+      class="drawer-toggle"
+      v-model="drawer"
+    />
     <main class="drawer-content overflow-x-hidden flex flex-col bg-base-200">
       <TheHeader />
       <div class="flex-auto mx-2 sm:mx-4 max-w-6xl mb-6">
@@ -23,7 +28,7 @@ const drawer = ref(false);
       <TheFooter class="max-w-6xl" />
     </main>
     <TheDrawer @navigate="drawer = false" />
-    <ToastList class="toast-list"/>
+    <ToastList class="toast-list" />
   </div>
 </template>
 

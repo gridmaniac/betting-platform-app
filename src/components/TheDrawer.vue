@@ -22,8 +22,6 @@ interface ILink {
   value: string;
 }
 
-
-
 const goToPage = (link: ILink) => {
   if (!link.isAuth) {
     router.push({ name: link.value });
@@ -37,8 +35,6 @@ const goToPage = (link: ILink) => {
     emit("navigate");
   }
 };
-
-
 </script>
 
 <template>
@@ -60,26 +56,33 @@ const goToPage = (link: ILink) => {
           </span>
         </li>
         <template v-for="link in section.links" :key="link.value">
-          <li v-if="link.value === 'news' || link.value === 'nfl'" class="disabled">
+          <li
+            v-if="link.value === 'news' || link.value === 'nfl'"
+            class="disabled"
+          >
             <span class="flex items-center">
               <component
                 :is="link.icon"
                 class="inline-block w-6 h-6 mr-2 stroke-current"
               />
               <div v-if="link.img" class="w-6 h-6 mr-2 stroke-current">
-                <img :src="link.img" alt=""/>
+                <img :src="link.img" alt="" />
               </div>
               {{ link.name }}
             </span>
           </li>
           <li v-else :class="{ disabled: link.isAuth && !authStore.isAuth }">
-            <a class="capitalize"  :class="{active : route.name === link.value}" @click="goToPage(link)">
+            <a
+              class="capitalize"
+              :class="{ active: route.name === link.value }"
+              @click="goToPage(link)"
+            >
               <component
                 :is="link.icon"
                 class="inline-block w-6 h-6 mr-2 stroke-current"
               />
               <div v-if="link.img" class="w-6 h-6 mr-2 stroke-current">
-                <img :src="link.img" alt=""/>
+                <img :src="link.img" alt="" />
               </div>
               {{ link.name }}
             </a>
@@ -109,7 +112,11 @@ const goToPage = (link: ILink) => {
               </span>
             </li>
             <li v-else :class="{ disabled: link.isAuth && !authStore.isAuth }">
-              <a class="capitalize" :class="{active : route.name === link.value}" @click="goToPage(link)">
+              <a
+                class="capitalize"
+                :class="{ active: route.name === link.value }"
+                @click="goToPage(link)"
+              >
                 <component
                   :is="link.icon"
                   class="inline-block w-6 h-6 mr-2 stroke-current"
