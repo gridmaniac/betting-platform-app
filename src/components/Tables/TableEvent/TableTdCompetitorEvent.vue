@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type { ICompetitor } from "@/models/sportModel";
 import { useRoute } from "vue-router";
+import { ref } from "vue";
 const route = useRoute();
 interface IProps {
   competitor: ICompetitor;
 }
-defineProps<IProps>();
+const props = defineProps<IProps>();
 
 const imgPlaceholder = (e: any) => {
   e.target.src =
@@ -13,6 +14,9 @@ const imgPlaceholder = (e: any) => {
 };
 
 const sportType = route.meta.sportType;
+const imgLoaded = ref(false);
+const imgUrl = `https://koacombat.nyc3.cdn.digitaloceanspaces.com/competitors/${sportType}/${props.competitor.name}.webp`;
+const placeholderUrl = "https://koacombat.nyc3.cdn.digitaloceanspaces.com/competitors/silhouette.png";
 </script>
 
 <template>
@@ -22,9 +26,15 @@ const sportType = route.meta.sportType;
     <div class="avatar w-10">
       <div class="w-12 h-12 mask mask-squircle">
         <img
-          :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/competitors/${sportType}/${competitor.name}.webp`"
-          alt="Avatar Tailwind CSS Component"
+          v-show="!imgLoaded"
+          :src="placeholderUrl"
+        />
+        <img
+          v-show="imgLoaded"
+          :src="imgUrl"
+          :alt="competitor.name"
           @error="imgPlaceholder"
+          @load="imgLoaded = true"
         />
       </div>
     </div>
