@@ -2,13 +2,18 @@
 import AdminService from "@/http/adminApi";
 import { onMounted, ref } from "vue";
 import moment from "moment";
+// img
+import { GlobeAltIcon } from "@heroicons/vue/outline";
 // components
 import TheTitle from "@/components/TheTitle.vue";
+import LoadingAtom from "@/components/Atoms/LoadingAtom.vue";
+import TableAtom from "@/components/Atoms/TableAtom.vue";
+import WrapperAtom from "@/components/Atoms/WrapperAtom.vue";
 // title
 import { TitleAdminTransactions } from "@/composables/titlesState";
+import { cols } from "@/composables/adminTransactions";
 // types
 import type { ITransaction } from "@/models/admin/ITransaction";
-import LoadingAtom from "../../components/Atoms/LoadingAtom.vue";
 // vars
 const transactions = ref<ITransaction[]>([]);
 const isRequest = ref(false);
@@ -23,56 +28,45 @@ onMounted(async () => {
 <template>
   <div>
     <TheTitle :title="TitleAdminTransactions" />
-    <div class="card shadow-lg compact side bg-base-100 p-3 mt-6">
+    <WrapperAtom class="mt-6">
       <LoadingAtom v-if="isRequest" />
-      <template v-else>
-        <table class="table table-compact table-zebra w-full">
-          <thead>
-            <tr>
-              <th>userId</th>
-              <th>txHash</th>
-              <th>code</th>
-              <th>amount</th>
-              <th>type</th>
-              <th>date</th>
-              <th>status</th>
-              <th>address</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="transaction in transactions" :key="transaction._id">
-              <td>{{ transaction.userId }}</td>
-              <td>
-                <a :href="transaction.txHash" target="_blank">
-                  <button
-                    class="btn btn-outline btn-sm"
-                    :disabled="!transaction.txHash"
-                  >
-                    eth
-                  </button></a
-                >
-              </td>
-              <td>{{ transaction.code }}</td>
-              <td>{{ transaction.amount }}</td>
-              <td>{{ transaction.type }}</td>
-              <td>
-                {{ moment(transaction.date).format("HH:mm:ss DD/MM/YYYY") }}
-              </td>
-              <td>{{ transaction.status }}</td>
-              <td>
-                <a :href="transaction.address" target="_blank"
-                  ><button
-                    class="btn btn-outline btn-sm"
-                    :disabled="!transaction.address"
-                  >
-                    address
-                  </button></a
-                >
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </template>
-    </div>
+      <TableAtom
+        v-else
+        :cols="cols"
+        :rows="transactions"
+        :size="5"
+        not-found="no bets"
+      >
+        <template #txHash="{ item }">
+          <div class="flex justify-center">
+            <button class="btn btn-ghost btn-sm" :disabled="!item.txHash">
+              <a
+                target="_blank"
+                :href="'https://etherscan.io/tx/' + item.txHash"
+              >
+                <component
+                  :is="GlobeAltIcon"
+                  class="inline-block w-4 h-4 stroke-current"
+                ></component>
+              </a>
+            </button>
+          </div>
+        </template>
+        <template #date="{ item }">
+          {{ moment(item.date).format("HH:mm:ss") }} <br />
+          {{ moment(item.date).format("DD/MM/YYYY") }}
+        </template>
+        <template #amount="{ item }">
+          {{ item.amount / 1000000000 }}
+        </template>
+        <template #address="{ item }">
+          <a :href="item.address" target="_blank"
+            ><button class="btn btn-outline btn-sm" :disabled="!item.address">
+              address
+            </button></a
+          >
+        </template>
+      </TableAtom>
+    </WrapperAtom>
   </div>
 </template>

@@ -3,11 +3,14 @@ import AdminService from "@/http/adminApi";
 import { onMounted, ref } from "vue";
 // components
 import TheTitle from "@/components/TheTitle.vue";
+import TableAtom from "@/components/Atoms/TableAtom.vue";
+import WrapperAtom from "@/components/Atoms/WrapperAtom.vue";
+import LoadingAtom from "@/components/Atoms/LoadingAtom.vue";
 // title
 import { TitleAdminBalances } from "@/composables/titlesState";
+import { cols } from "@/composables/adminBalances";
 // types
 import type { IBalance } from "@/models/admin/IBalance";
-import LoadingAtom from "../../components/Atoms/LoadingAtom.vue";
 
 // vars
 const balances = ref<IBalance[]>([]);
@@ -21,30 +24,15 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
-    <TheTitle :title="TitleAdminBalances" />
-    <div class="card shadow-lg compact side bg-base-100 p-3 mt-6">
-      <LoadingAtom v-if="isRequest" />
-      <template v-else>
-        <table class="table table-compact table-zebra w-full">
-          <thead>
-            <tr>
-              <th>code</th>
-              <th>user id</th>
-              <th>amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="balance in balances" :key="balance._id">
-              <td>{{ balance.code }}</td>
-              <td>{{ balance.userId }}</td>
-              <td>
-                {{ balance.amount }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </template>
-    </div>
-  </div>
+  <TheTitle :title="TitleAdminBalances" />
+  <WrapperAtom class="mt-6">
+    <LoadingAtom v-if="isRequest" />
+    <TableAtom
+      v-else
+      :cols="cols"
+      :rows="balances"
+      :size="12"
+      not-found="no balances"
+    />
+  </WrapperAtom>
 </template>

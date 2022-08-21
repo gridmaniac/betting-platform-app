@@ -1,14 +1,18 @@
 <script setup lang="ts">
-import AdminService from "@/http/adminApi";
 import { onMounted, ref } from "vue";
 import moment from "moment";
+// api
+import AdminService from "@/http/adminApi";
 // components
 import TheTitle from "@/components/TheTitle.vue";
+import LoadingAtom from "@/components/Atoms/LoadingAtom.vue";
+import WrapperAtom from "@/components/Atoms/WrapperAtom.vue";
+import TableAtom from "@/components/Atoms/TableAtom.vue";
 // title
 import { TitleAdminBets } from "@/composables/titlesState";
+import { cols } from "@/composables/adminBets";
 // types
 import type { IBet } from "@/models/Bet";
-import LoadingAtom from "../../components/Atoms/LoadingAtom.vue";
 
 // vars
 const bets = ref<IBet[]>([]);
@@ -22,51 +26,48 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
-    <TheTitle :title="TitleAdminBets" />
-    <div class="card shadow-lg compact side bg-base-100 p-3 mt-6">
-      <LoadingAtom v-if="isRequest" />
-      <template v-else>
-        <table class="table table-compact table-zebra">
-          <thead>
-            <tr>
-              <th>sport</th>
-              <th>season</th>
-              <th>event id</th>
-              <!-- <th>start time</th> -->
-              <th>amount</th>
-              <th>date</th>
-              <th>status</th>
-              <th>type</th>
-              <th>userId</th>
-              <th>winner</th>
-              <th>winner id</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="bet in bets" :key="bet._id">
-              <td>{{ bet.sport }}</td>
-              <td>{{ bet.season }}</td>
-              <td>{{ bet.eventId }}</td>
-              <!-- <td>{{ moment(bet.startTime).format("HH:mm:ss") }} <br> {{ moment(bet.startTime).format("DD/MM/YYYY") }}</td> -->
-              <td>{{ bet.amount / 1000000000 }}</td>
-              <td>
-                {{ moment(bet.date).format("HH:mm:ss") }} <br />
-                {{ moment(bet.date).format("DD/MM/YYYY") }}
-              </td>
-              <td>{{ bet.status }}</td>
-              <td>{{ bet.type }}</td>
-              <td>
-                <div class="test">{{ bet.userId }}</div>
-              </td>
-              <td>{{ bet.winner }}</td>
-              <td>{{ bet.winnerId }}</td>
-            </tr>
-          </tbody>
-        </table>
+  <TheTitle :title="TitleAdminBets" />
+  <WrapperAtom class="mt-6">
+    <LoadingAtom v-if="isRequest" />
+    <TableAtom v-else :cols="cols" :rows="bets" :size="12" not-found="no bets">
+      <template #amount="{ item }">
+        {{ item.amount / 1000000000 }}
       </template>
-    </div>
-  </div>
+      <template #startTime="{ item }">
+        {{ moment(item.startTime).format("HH:mm:ss") }} <br />
+        {{ moment(item.startTime).format("DD/MM/YYYY") }}
+      </template>
+      <template #date="{ item }">
+        {{ moment(item.date).format("HH:mm:ss") }} <br />
+        {{ moment(item.date).format("DD/MM/YYYY") }}
+      </template>
+      <template #season="{ item }">
+        <div class="test">
+          {{ item.season }}
+        </div>
+      </template>
+      <template #userId="{ item }">
+        <div class="test">
+          {{ item.userId }}
+        </div>
+      </template>
+      <template #eventId="{ item }">
+        <div class="test">
+          {{ item.eventId }}
+        </div>
+      </template>
+      <template #winner="{ item }">
+        <div class="test">
+          {{ item.winner }}
+        </div>
+      </template>
+      <template #winnerId="{ item }">
+        <div class="test">
+          {{ item.winnerId }}
+        </div>
+      </template>
+    </TableAtom>
+  </WrapperAtom>
 </template>
 
 <style scoped lang="scss">

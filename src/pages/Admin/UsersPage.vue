@@ -1,13 +1,17 @@
 <script setup lang="ts">
-import AdminService from "@/http/adminApi";
 import { onMounted, ref } from "vue";
+// api
+import AdminService from "@/http/adminApi";
 // components
 import TheTitle from "@/components/TheTitle.vue";
-// title
+import WrapperAtom from "@/components/Atoms/WrapperAtom.vue";
+import TableAtom from "@/components/Atoms/TableAtom.vue";
+import LoadingAtom from "@/components/Atoms/LoadingAtom.vue";
+// composables
 import { TitleAdminUsers } from "@/composables/titlesState";
+import { cols } from "@/composables/adminUsers";
 // types
 import type { IUser } from "@/models/admin/IUser";
-import LoadingAtom from "../../components/Atoms/LoadingAtom.vue";
 
 // vars
 const users = ref<IUser[]>([]);
@@ -21,30 +25,15 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
-    <TheTitle :title="TitleAdminUsers" />
-    <div class="card shadow-lg compact side bg-base-100 p-3 mt-6">
-      <LoadingAtom v-if="isRequest" />
-      <template v-else>
-        <table class="table table-compact table-zebra w-full">
-          <thead>
-            <tr>
-              <th>id</th>
-              <th>email</th>
-              <th>address</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="user in users" :key="user._id">
-              <td>{{ user._id }}</td>
-              <td>{{ user.email }}</td>
-              <td>
-                {{ user.address }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </template>
-    </div>
-  </div>
+  <TheTitle :title="TitleAdminUsers" />
+  <WrapperAtom class="mt-6">
+    <LoadingAtom v-if="isRequest" />
+    <TableAtom
+      v-else
+      :cols="cols"
+      :rows="users"
+      :size="12"
+      not-found="no users"
+    />
+  </WrapperAtom>
 </template>

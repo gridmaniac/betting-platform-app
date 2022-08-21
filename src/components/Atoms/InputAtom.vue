@@ -5,8 +5,9 @@ interface IProps {
   modelValue: string | number;
   type?: string;
   title?: string;
+  placeholder?: string;
   error?: string;
-  size?: boolean;
+  small?: boolean;
 }
 
 const props = defineProps<IProps>();
@@ -28,8 +29,9 @@ const active = computed({
     <input
       :type="type"
       class="input input-bordered w-full"
-      :class="{ 'input-sm': size }"
+      :class="{ 'input-sm': small }"
       v-model="active"
+      :placeholder="placeholder"
     />
     <label class="label" v-if="error">
       <span class="label-text-alt">{{ error }}</span>

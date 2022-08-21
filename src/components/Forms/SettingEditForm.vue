@@ -75,7 +75,7 @@ const deleteSetting = async (setting: ISetting) => {
         v-model="settingName"
         :title="!isDesktop ? 'Name' : ''"
         :error="settingNameError"
-        :size="true"
+        :small="true"
       />
     </td>
     <td>
@@ -83,7 +83,7 @@ const deleteSetting = async (setting: ISetting) => {
         v-model="settingValue"
         :title="!isDesktop ? 'Value' : ''"
         :error="settingValueError"
-        :size="true"
+        :small="true"
       />
     </td>
     <td>
