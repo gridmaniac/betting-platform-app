@@ -38,8 +38,6 @@ const placeBet = async () => {
   };
   isRequest.value = true;
   const response = await setBet(bet);
-  console.log(response);
-
   isRequest.value = false;
   // check data
   if (!response.data) {
