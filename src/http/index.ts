@@ -13,3 +13,13 @@ export const getAuth = () => {
     },
   };
 };
+
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response.status === 401) {
+      const authStore = useAuthStore();
+      authStore.logout();
+    }
+  }
+);
