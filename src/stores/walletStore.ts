@@ -59,16 +59,16 @@ export const useWalletStore = defineStore("walletStore", () => {
   const { isAuth } = storeToRefs(authStore);
   const userInterval = ref();
   if (isAuth.value) {
-    getWallet();
+    getWallet(true);
     userInterval.value = setInterval(() => {
-      getWallet();
+      getWallet(true);
     }, 30000);
   }
   watch(isAuth, () => {
     if (isAuth.value) {
-      getWallet();
+      getWallet(true);
       userInterval.value = setInterval(() => {
-        getWallet();
+        getWallet(true);
       }, 30000);
     } else {
       clearInterval(userInterval.value);
@@ -90,6 +90,7 @@ export const useWalletStore = defineStore("walletStore", () => {
   }
 
   async function setAsset(asset: string) {
+    clearInterval(userInterval.value);
     isWalletPage.value = false;
     const candidate = assets.value?.find((x) => x.code === asset);
     if (candidate) {
@@ -99,17 +100,20 @@ export const useWalletStore = defineStore("walletStore", () => {
       currentAsset.value = "koa";
       localStorage.setItem("currentAsset", currentAsset.value);
     }
-    return await getWallet();
+    await getWallet(false);
+    userInterval.value = setInterval(() => {
+      getWallet(true);
+    }, 30000);
   }
 
-  async function getWallet() {
+  async function getWallet(poll: boolean) {
     const { data } = await getAssets();
     assets.value = data;
     const response = await fetchWallet(currentAsset.value);
 
     address.value = response.address;
     decimals.value = response.decimals;
-    if (balance.value) {
+    if (balance.value && poll) {
       if (
         balance.value !==
         response.balance.toString().slice(0, -response.decimals)
