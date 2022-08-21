@@ -22,7 +22,7 @@ const sportType = route.meta.sportType;
     <div class="avatar w-10">
       <div class="w-12 h-12 mask mask-squircle">
         <img
-          :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/competitors/${sportType}/${competitor.name}.png`"
+          :src="`https://koacombat.nyc3.cdn.digitaloceanspaces.com/competitors/${sportType}/${competitor.name}.webp`"
           alt="Avatar Tailwind CSS Component"
           @error="imgPlaceholder"
         />
