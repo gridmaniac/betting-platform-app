@@ -71,9 +71,9 @@ const currentAsset = computed({
 </script>
 
 <template>
-  <div class="flex items-start flex-col mb-6">
+  <div class="flex items-start sm:items-center flex-col mb-6">
     <h2
-      class="font-bold mb-2 text-2xl text-primary justify-start sm:justify-center"
+      class="font-bold text-left sm:text-center mb-2 text-2xl text-primary justify-start sm:justify-center"
     >
       {{ modalStore.ModalBetContent!.season.name }}
     </h2>
