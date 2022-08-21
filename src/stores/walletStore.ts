@@ -90,6 +90,7 @@ export const useWalletStore = defineStore("walletStore", () => {
   }
 
   async function setAsset(asset: string) {
+    isWalletPage.value = false;
     const candidate = assets.value?.find((x) => x.code === asset);
     if (candidate) {
       currentAsset.value = candidate.code;
@@ -102,7 +103,6 @@ export const useWalletStore = defineStore("walletStore", () => {
   }
 
   async function getWallet() {
-    isWalletPage.value = false;
     const { data } = await getAssets();
     assets.value = data;
     const response = await fetchWallet(currentAsset.value);
@@ -216,5 +216,6 @@ export const useWalletStore = defineStore("walletStore", () => {
     withdraw,
     withdrawAmount,
     setAsset,
+    getWallet,
   };
 });
