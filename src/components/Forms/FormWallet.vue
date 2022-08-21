@@ -6,6 +6,7 @@ import { WithdrawMoney } from "@/composables/ModalNotifications";
 // store
 import { useWalletStore } from "@/stores/walletStore";
 import { useModalStore } from "@/stores/modalStore";
+import { watch } from "vue";
 const walletStore = useWalletStore();
 const modalStore = useModalStore();
 
@@ -53,6 +54,12 @@ const createWithdraw = () => {
     // TASK! подумать как удалить value после закрытия модалки
   }
 };
+
+watch(modalStore, () => {
+  if (!modalStore.isModalWithdraw) {
+    withdraw.value = null;
+  }
+});
 </script>
 
 <template>
