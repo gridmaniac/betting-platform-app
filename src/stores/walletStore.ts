@@ -89,7 +89,7 @@ export const useWalletStore = defineStore("walletStore", () => {
     }
   }
 
-  function setAsset(asset: string) {
+  async function setAsset(asset: string) {
     const candidate = assets.value?.find((x) => x.code === asset);
     if (candidate) {
       currentAsset.value = candidate.code;
@@ -98,10 +98,11 @@ export const useWalletStore = defineStore("walletStore", () => {
       currentAsset.value = "koa";
       localStorage.setItem("currentAsset", currentAsset.value);
     }
-    getWallet();
+    return await getWallet();
   }
 
   async function getWallet() {
+    isWalletPage.value = false;
     const { data } = await getAssets();
     assets.value = data;
     const response = await fetchWallet(currentAsset.value);
@@ -133,6 +134,7 @@ export const useWalletStore = defineStore("walletStore", () => {
       (x) => (x.amount = x.amount.toString().slice(0, -response.decimals))
     );
     isWalletPage.value = true;
+    return true;
   }
 
   async function disconnectWallet() {

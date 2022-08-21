@@ -126,13 +126,18 @@ const currentAsset = computed({
         </select>
       </label>
       <label class="label justify-end">
-        <span class="label-text"
-          >Balance:
-          <span class="font-bold uppercase"
-            >{{ balanceFormat(walletStore.balance) }}
-            {{ walletStore.currentAsset }}</span
-          ></span
-        >
+        <span class="label-text">
+          <template v-if="walletStore.isWalletPage">
+            Balance:
+            <span class="font-bold uppercase">
+              {{ balanceFormat(walletStore.balance) }}
+              {{ walletStore.currentAsset }}
+            </span>
+          </template>
+          <template v-else>
+            <div class="btn btn-sm btn-ghost loading">loading balance</div>
+          </template>
+        </span>
       </label>
     </div>
   </div>

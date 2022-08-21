@@ -19,7 +19,9 @@ onMounted(() => {
 
 const currentAsset = computed({
   get: () => walletStore.currentAsset,
-  set: (value) => walletStore.setAsset(value),
+  set: (value) => {
+    walletStore.setAsset(value);
+  },
 });
 </script>
 
