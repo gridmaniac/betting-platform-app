@@ -105,7 +105,7 @@ watch(modalStore, () => {
         Deposit
       </button>
     </div>
-    <label class="label">
+    <label v-if="depositError" class="label">
       <span class="label-text">{{ depositError }}</span>
     </label>
   </div>
@@ -126,7 +126,7 @@ watch(modalStore, () => {
         Withdraw
       </button>
     </div>
-    <label class="label">
+    <label v-if="withdrawError" class="label">
       <span class="label-text">{{ withdrawError }}</span>
     </label>
   </div>

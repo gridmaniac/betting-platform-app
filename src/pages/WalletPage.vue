@@ -53,7 +53,7 @@ const currentAsset = computed({
           <FormWallet />
         </div>
       </div>
-      <div class="shadow stats stats-vertical" style="min-width: 300px">
+      <div class="shadow stats stats-vertical" style="min-width: 350px">
         <div class="stat">
           <div class="stat-title">Balance</div>
           <div class="stat-value">

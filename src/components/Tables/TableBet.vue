@@ -60,7 +60,7 @@ const { page, pages, setPage, paginate } = usePagination<IBet>({
           </div>
         </td>
         <td class="text-center" data-name="amount: ">
-          <span>
+          <span class="flex items-center">
             <img class="inline-block mr-1 h-4" :src="token" />
             {{ balanceFormat(bet.amount) }}
           </span>

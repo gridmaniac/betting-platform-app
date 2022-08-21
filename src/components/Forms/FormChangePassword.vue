@@ -77,7 +77,7 @@ const onSubmit = handleSubmit(async () => {
           v-model="password"
           autocomplete="new-password"
         />
-        <label class="label">
+        <label class="label" v-if="passwordError || errors['password']">
           <span class="label-text-alt">
             {{ passwordError || errors["password"] }}
           </span>
@@ -93,7 +93,10 @@ const onSubmit = handleSubmit(async () => {
           class="input input-bordered w-full"
           autocomplete="new-password"
         />
-        <label class="label">
+        <label
+          class="label"
+          v-if="confirmPasswordError || errors['confirmPassword']"
+        >
           <span class="label-text-alt">
             {{ confirmPasswordError || errors["confirmPassword"] }}
           </span>
