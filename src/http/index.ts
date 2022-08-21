@@ -14,11 +14,12 @@ export const getAuth = () => {
   };
 };
 
-axios.interceptors.response.use(
+$host.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response.status === 401) {
       const authStore = useAuthStore();
+      console.log('test');
       authStore.logout();
     }
   }
