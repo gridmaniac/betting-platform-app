@@ -60,6 +60,7 @@ export const useWalletStore = defineStore("walletStore", () => {
   const userInterval = ref();
   if (isAuth.value) {
     getWallet(true);
+    getAllAssets()
     userInterval.value = setInterval(() => {
       getWallet(true);
     }, 30000);
@@ -67,6 +68,7 @@ export const useWalletStore = defineStore("walletStore", () => {
   watch(isAuth, () => {
     if (isAuth.value) {
       getWallet(true);
+      getAllAssets()
       userInterval.value = setInterval(() => {
         getWallet(true);
       }, 30000);
@@ -80,6 +82,11 @@ export const useWalletStore = defineStore("walletStore", () => {
       decimals.value = 9;
     }
   });
+
+  async function getAllAssets() {
+    const { data } = await getAssets();
+    assets.value = data;
+  }
 
   function checkMetamask() {
     if (!window.ethereum) {
@@ -107,8 +114,6 @@ export const useWalletStore = defineStore("walletStore", () => {
   }
 
   async function getWallet(poll: boolean) {
-    const { data } = await getAssets();
-    assets.value = data;
     const response = await fetchWallet(currentAsset.value);
 
     address.value = response.address;
