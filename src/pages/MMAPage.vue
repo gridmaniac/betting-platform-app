@@ -23,6 +23,8 @@ provide("seasons", {
 });
 
 onMounted(async () => {
+  document.querySelector("main")?.scrollTo(0, 0);
+  
   const { data } = await fetchSeasons("mma");
   seasonsResponse.value = data;
   const { upcoming, completed } = checkData(data);
@@ -44,13 +46,15 @@ const changeTab = (status: boolean) => {
 </script>
 
 <template>
-  <TitleMMA @change-tab="changeTab" :active-tab="isUpcoming" />
-  <CollapsesSeason
-    v-if="isReady"
-    :seasons="seasons"
-    :is-upcoming="isUpcoming"
-  />
-  <div class="mt-6" v-else>
-    <TheSpinner />
+  <div class="flex flex-col h-full">
+    <TitleMMA @change-tab="changeTab" :active-tab="isUpcoming" />
+    <CollapsesSeason
+      v-if="isReady"
+      :seasons="seasons"
+      :is-upcoming="isUpcoming"
+    />
+    <div class="flex items-center mt-10 flex-1" v-else>
+      <TheSpinner />
+    </div>
   </div>
 </template>

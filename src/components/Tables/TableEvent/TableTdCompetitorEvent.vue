@@ -2,6 +2,7 @@
 import type { ICompetitor } from "@/models/sportModel";
 import { useRoute } from "vue-router";
 import { ref } from "vue";
+
 const route = useRoute();
 interface IProps {
   competitor: ICompetitor;

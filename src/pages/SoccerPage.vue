@@ -19,6 +19,8 @@ const isUpcoming = ref(true);
 const isReady = ref(false);
 
 onMounted(async () => {
+  document.querySelector("main")?.scrollTo(0, 0);
+  
   const { data } = await fetchSeasons("soccer");
   seasonsResponse.value = data;
   const { upcoming, completed } = checkData(data);
@@ -40,14 +42,14 @@ const changeTab = (status: boolean) => {
 </script>
 
 <template>
-  <div class="flex flex-col h-auto">
+  <div class="flex flex-col h-full">
     <TitleSoccer @change-tab="changeTab" :active-tab="isUpcoming" />
     <CollapsesSeason
       v-if="isReady"
       :seasons="seasons"
       :is-upcoming="isUpcoming"
     />
-    <div class="mt-10 flex-1" v-else>
+    <div class="flex items-center mt-10 flex-1" v-else>
       <TheSpinner />
     </div>
   </div>

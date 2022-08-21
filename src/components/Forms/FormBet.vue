@@ -71,9 +71,9 @@ const currentAsset = computed({
 </script>
 
 <template>
-  <div class="flex items-center flex-col mb-6">
+  <div class="flex items-start flex-col mb-6">
     <h2
-      class="font-bold text-center mb-2 text-2xl text-primary justify-start sm:justify-center"
+      class="font-bold mb-2 text-2xl text-primary justify-start sm:justify-center"
     >
       {{ modalStore.ModalBetContent!.season.name }}
     </h2>
@@ -86,7 +86,7 @@ const currentAsset = computed({
     </p>
   </div>
   <div class="divider"></div>
-  <div class="justify-between hidden sm:flex mb-6">
+  <div class="justify-between flex mb-6">
     <CompetitorModal
       :competitor="modalStore.ModalBetContent!.event.competitors[0]"
       side="left"
@@ -97,7 +97,7 @@ const currentAsset = computed({
     />
   </div>
   <div class="flex flex-col justify-between">
-    <div class="flex flex-row mb-2">
+    <div class="flex flex-row mb-5 justify-end">
       <p class="text-base-content text-opacity-40 mr-2">Winner:</p>
       <p
         class="text-base-content text-bold flex justify-between items-center ml-0"
@@ -106,7 +106,7 @@ const currentAsset = computed({
       </p>
     </div>
     <div class="form-control">
-      <label class="input-group sm:justify-end">
+      <label class="input-group input-group-md justify-end">
         <input
           type="number"
           class="input input-bordered input-lg px-5"
