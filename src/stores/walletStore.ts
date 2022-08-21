@@ -60,7 +60,7 @@ export const useWalletStore = defineStore("walletStore", () => {
   const userInterval = ref();
   if (isAuth.value) {
     getWallet(true);
-    getAllAssets()
+    getAllAssets();
     userInterval.value = setInterval(() => {
       getWallet(true);
     }, 30000);
@@ -68,7 +68,7 @@ export const useWalletStore = defineStore("walletStore", () => {
   watch(isAuth, () => {
     if (isAuth.value) {
       getWallet(true);
-      getAllAssets()
+      getAllAssets();
       userInterval.value = setInterval(() => {
         getWallet(true);
       }, 30000);

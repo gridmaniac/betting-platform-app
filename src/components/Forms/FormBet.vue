@@ -54,7 +54,7 @@ const placeBet = async () => {
   if (response.data) {
     modalStore.isModalBetVisible = false;
     toastStore.push(ToastBetSuccess);
-    await walletStore.getWallet();
+    await walletStore.getWallet(true);
   }
 };
 

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { nextTick, ref } from "vue";
+import { nextTick, ref, watch } from "vue";
 import {
   fetchUser,
   changeUserPassword,
@@ -18,15 +18,15 @@ export const useAuthStore = defineStore("authStore", () => {
   if (token.value) {
     isAuth.value = true;
     nextTick(async () => {
-      const profile = await getProfile();
-      if (profile.role) {
-        isAdmin.value = true;
-      }
-      if (profile.email) {
-        userEmail.value = profile.email;
-      }
+      getUserProfile();
     });
   }
+
+  watch(isAuth, () => {
+    if (isAuth.value) {
+      getUserProfile();
+    }
+  });
 
   async function login(email: string, password: string) {
     const user = {
@@ -47,10 +47,12 @@ export const useAuthStore = defineStore("authStore", () => {
 
   async function getUserProfile() {
     const profile = await getProfile();
-    if (profile.role) {
+    if (profile.role === "admin") {
       isAdmin.value = true;
     }
-    localStorage.setItem("userRole", JSON.stringify(isAdmin.value));
+    if (profile.email) {
+      userEmail.value = profile.email;
+    }
   }
 
   async function register(
