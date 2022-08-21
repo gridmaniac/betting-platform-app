@@ -42,27 +42,27 @@ onMounted(async () => {
         {{ moment(item.date).format("DD/MM/YYYY") }}
       </template>
       <template #season="{ item }">
-        <div class="test">
+        <div class="no-wrap">
           {{ item.season }}
         </div>
       </template>
       <template #userId="{ item }">
-        <div class="test">
+        <div class="no-wrap">
           {{ item.userId }}
         </div>
       </template>
       <template #eventId="{ item }">
-        <div class="test">
+        <div class="no-wrap">
           {{ item.eventId }}
         </div>
       </template>
       <template #winner="{ item }">
-        <div class="test">
+        <div class="no-wrap">
           {{ item.winner }}
         </div>
       </template>
       <template #winnerId="{ item }">
-        <div class="test">
+        <div class="no-wrap">
           {{ item.winnerId }}
         </div>
       </template>
@@ -71,7 +71,7 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="scss">
-.test {
+.no-wrap {
   white-space: nowrap;
   width: 100%;
   max-width: 100px;

@@ -55,9 +55,3 @@ async function loadSettings() {
     </WrapperAtom>
   </template>
 </template>
-
-<style scoped lang="scss">
-.test {
-  overflow: hidden;
-}
-</style>

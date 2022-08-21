@@ -112,7 +112,7 @@ async function fetchAssets() {
               <td>{{ asset.listed }}</td>
               <td>{{ asset.minStake }}</td>
               <td>{{ asset.minWithdrawal }}</td>
-              <td class="test">{{ asset.contract }}</td>
+              <td>{{ asset.contract }}</td>
               <td class="text-right">
                 <button
                   class="btn btn-sm btn-outline"
