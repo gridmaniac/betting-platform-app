@@ -13,6 +13,7 @@ import {
   CollectionIcon,
   CashIcon,
 } from "@heroicons/vue/outline";
+import NFL from "@/assets/NFL.svg"
 
 export const menu = [
   {
@@ -20,6 +21,7 @@ export const menu = [
     links: [
       { value: "mma", name: "MMA", icon: LightningBoltIcon, isAuth: false },
       { value: "soccer", name: "Soccer", icon: SupportIcon, isAuth: false },
+      { value: "nfl", name: "NFL", img: NFL, isAuth: false },
     ],
   },
   {
