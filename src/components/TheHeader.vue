@@ -32,7 +32,7 @@ const handleSubmit = () => {
         class="btn btn-sm btn-success btn-outline"
         @click="handleSubmit()"
       >
-        <img class="flex-0 mr-1 h-4" :src="token" />DEPOSIT
+        <img class="flex-0 mr-2 h-4" :src="token" />DEPOSIT
       </button>
     </div>
     <div class="flex-none hidden px-2 lg:flex">
