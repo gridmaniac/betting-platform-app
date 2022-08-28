@@ -20,7 +20,7 @@ const isReady = ref(false);
 
 onMounted(async () => {
   document.querySelector("main")?.scrollTo(0, 0);
-  
+
   const { data } = await fetchSeasons("soccer");
   seasonsResponse.value = data;
   const { upcoming, completed } = checkData(data);

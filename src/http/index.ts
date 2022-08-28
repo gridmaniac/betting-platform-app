@@ -2,7 +2,7 @@ import axios from "axios";
 import { useAuthStore } from "@/stores/authStore";
 
 export const $host = axios.create({
-  baseURL: "https://betting-platform-server-staging-asbin.ondigitalocean.app/",
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 export const getAuth = () => {
@@ -19,7 +19,7 @@ $host.interceptors.response.use(
   (error) => {
     if (error.response.status === 401) {
       const authStore = useAuthStore();
-      console.log('test');
+      console.log("test");
       authStore.logout();
     }
   }

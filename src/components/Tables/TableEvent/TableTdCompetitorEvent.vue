@@ -17,7 +17,8 @@ const imgPlaceholder = (e: any) => {
 const sportType = route.meta.sportType;
 const imgLoaded = ref(false);
 const imgUrl = `https://koacombat.nyc3.cdn.digitaloceanspaces.com/competitors/${sportType}/${props.competitor.name}.webp`;
-const placeholderUrl = "https://koacombat.nyc3.cdn.digitaloceanspaces.com/competitors/silhouette.png";
+const placeholderUrl =
+  "https://koacombat.nyc3.cdn.digitaloceanspaces.com/competitors/silhouette.png";
 </script>
 
 <template>
@@ -26,10 +27,7 @@ const placeholderUrl = "https://koacombat.nyc3.cdn.digitaloceanspaces.com/compet
   >
     <div class="avatar w-10">
       <div class="w-12 h-12 mask mask-squircle">
-        <img
-          v-show="!imgLoaded"
-          :src="placeholderUrl"
-        />
+        <img v-show="!imgLoaded" :src="placeholderUrl" />
         <img
           v-show="imgLoaded"
           :src="imgUrl"

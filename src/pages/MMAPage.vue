@@ -24,7 +24,7 @@ provide("seasons", {
 
 onMounted(async () => {
   document.querySelector("main")?.scrollTo(0, 0);
-  
+
   const { data } = await fetchSeasons("mma");
   seasonsResponse.value = data;
   const { upcoming, completed } = checkData(data);
