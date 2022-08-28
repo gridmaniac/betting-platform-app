@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRouter, useRoute } from "vue-router";
+import { useRoute } from "vue-router";
 import { menu, adminMenu } from "@/composables/links";
 // store
 import { useAuthStore } from "@/stores/authStore";
@@ -9,10 +9,9 @@ import AuthControl from "./AuthControl.vue";
 const authStore = useAuthStore();
 const modalStore = useModalStore();
 
-const router = useRouter();
 const route = useRoute();
 
-const emit = defineEmits(["navigate"]);
+defineEmits(["navigate"]);
 
 interface ILink {
   icon?: any;
@@ -23,16 +22,8 @@ interface ILink {
 }
 
 const goToPage = (link: ILink) => {
-  if (!link.isAuth) {
-    router.push({ name: link.value });
-    emit("navigate");
-  }
   if (!authStore.isAuth && link.isAuth) {
     modalStore.isModalAuthVisible = true;
-  }
-  if (authStore.isAuth && link.isAuth) {
-    router.push({ name: link.value });
-    emit("navigate");
   }
 };
 </script>
@@ -63,16 +54,14 @@ const goToPage = (link: ILink) => {
             <span class="flex items-center">
               <component
                 :is="link.icon"
-                class="inline-block w-6 h-6 mr-2 stroke-current"
+                class="inline-block w-6 h-6 mr-2 stroke-current fill-current"
               />
-              <div v-if="link.img" class="w-6 h-6 mr-2 stroke-current">
-                <img :src="link.img" alt="" />
-              </div>
               {{ link.name }}
             </span>
           </li>
           <li v-else :class="{ disabled: link.isAuth && !authStore.isAuth }">
-            <a
+            <RouterLink
+              :to="{ name: link.value }"
               class="capitalize"
               :class="{ active: route.name === link.value }"
               @click="goToPage(link)"
@@ -81,11 +70,8 @@ const goToPage = (link: ILink) => {
                 :is="link.icon"
                 class="inline-block w-6 h-6 mr-2 stroke-current"
               />
-              <div v-if="link.img" class="w-6 h-6 mr-2 stroke-current">
-                <img :src="link.img" alt="" />
-              </div>
               {{ link.name }}
-            </a>
+            </RouterLink>
           </li>
         </template>
       </ul>
@@ -112,17 +98,17 @@ const goToPage = (link: ILink) => {
               </span>
             </li>
             <li v-else :class="{ disabled: link.isAuth && !authStore.isAuth }">
-              <a
+              <RouterLink
+                :to="{ name: link.value }"
                 class="capitalize"
                 :class="{ active: route.name === link.value }"
-                @click="goToPage(link)"
               >
                 <component
                   :is="link.icon"
                   class="inline-block w-6 h-6 mr-2 stroke-current"
                 />
                 {{ link.name }}
-              </a>
+              </RouterLink>
             </li>
           </template>
         </ul>

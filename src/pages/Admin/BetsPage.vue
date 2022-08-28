@@ -31,7 +31,7 @@ onMounted(async () => {
     <LoadingAtom v-if="isRequest" />
     <TableAtom v-else :cols="cols" :rows="bets" :size="12" not-found="no bets">
       <template #amount="{ item }">
-        {{ item.amount / 1000000000 }}
+        {{ item.amount }}
       </template>
       <template #startTime="{ item }">
         {{ moment(item.startTime).format("HH:mm:ss") }} <br />

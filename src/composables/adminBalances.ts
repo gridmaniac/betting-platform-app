@@ -11,4 +11,8 @@ export const cols = [
     name: "amount",
     value: "amount",
   },
+  {
+    name: "code",
+    value: "code",
+  },
 ];
