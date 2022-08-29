@@ -9,6 +9,7 @@ import {
   CollectionIcon,
   CashIcon,
 } from "@heroicons/vue/outline";
+import IconNFL from "@/components/Atoms/Icon/IconNFL.vue";
 
 export const TitleMMA = {
   icon: LightningBoltIcon,
@@ -18,6 +19,11 @@ export const TitleMMA = {
 export const TitleSoccer = {
   icon: SupportIcon,
   name: "Soccer",
+};
+
+export const TitleNFL = {
+  icon: IconNFL,
+  name: "NFL",
 };
 
 export const TitleMyBets = {

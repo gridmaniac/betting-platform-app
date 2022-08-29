@@ -11,7 +11,7 @@ const modalStore = useModalStore();
 
 const route = useRoute();
 
-defineEmits(["navigate"]);
+const emit = defineEmits(["navigate"]);
 
 interface ILink {
   icon?: any;
@@ -25,6 +25,7 @@ const goToPage = (link: ILink) => {
   if (!authStore.isAuth && link.isAuth) {
     modalStore.isModalAuthVisible = true;
   }
+  emit("navigate");
 };
 </script>
 

@@ -2,7 +2,7 @@
 import { fetchSeasons } from "@/http/sportsApi";
 import { onMounted, ref, computed } from "vue";
 // components
-import TitleSoccer from "@/components/Titles/TitleSoccer.vue";
+import TitleNFL from "@/components/Titles/TitleNFL.vue";
 import CollapsesSeason from "@/components/Collapses/CollapsesSeason.vue";
 import TheSpinner from "@/components/TheSpinner.vue";
 // composables
@@ -43,7 +43,7 @@ const changeTab = (status: boolean) => {
 
 <template>
   <div class="flex flex-col h-full">
-    <TitleSoccer @change-tab="changeTab" :active-tab="isUpcoming" />
+    <TitleNFL @change-tab="changeTab" :active-tab="isUpcoming" />
     <CollapsesSeason
       v-if="isReady"
       :seasons="seasons"

@@ -18,6 +18,7 @@ defineProps<IProps>();
         <component
           :is="title.icon"
           class="inline-block w-6 h-6 mr-2 stroke-current"
+          svg-class="fill-current"
         />
         <h1 class="font-bold text-2xl text-primary">{{ title.name }}</h1>
       </div>
