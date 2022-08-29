@@ -1,4 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+interface IProps {
+  svgClass: string;
+}
+defineProps<IProps>();
+</script>
 
 <template>
   <svg
@@ -8,10 +13,10 @@
     height="512.000000pt"
     viewBox="0 0 512.000000 512.000000"
     preserveAspectRatio="xMidYMid meet"
+    :class="svgClass"
   >
     <g
       transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-      fill="#332c12"
       stroke="none"
     >
       <path

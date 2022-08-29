@@ -47,10 +47,7 @@ const goToPage = (link: ILink) => {
           </span>
         </li>
         <template v-for="link in section.links" :key="link.value">
-          <li
-            v-if="link.value === 'news' || link.value === 'nfl'"
-            class="disabled"
-          >
+          <li v-if="link.value === 'news'" class="disabled">
             <span class="flex items-center">
               <component
                 :is="link.icon"
@@ -69,6 +66,7 @@ const goToPage = (link: ILink) => {
               <component
                 :is="link.icon"
                 class="inline-block w-6 h-6 mr-2 stroke-current"
+                svg-class="fill-current"
               />
               {{ link.name }}
             </RouterLink>

@@ -1,4 +1,4 @@
-export type TSportType = "mma" | "soccer";
+export type TSportType = "mma" | "soccer" | "nfl";
 
 export interface ISeason {
   competitionId: string;

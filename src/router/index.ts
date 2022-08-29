@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "../pages/HomePage.vue";
 import MMAPage from "../pages/MMAPage.vue";
 import SoccerPage from "../pages/SoccerPage.vue";
+import NFLPage from "../pages/NFLPage.vue";
 import BetsPage from "../pages/BetsPage.vue";
 import WalletPage from "../pages/WalletPage.vue";
 import ProfilePage from "../pages/ProfilePage.vue";
@@ -40,6 +41,14 @@ const router = createRouter({
       component: MMAPage,
       meta: {
         sportType: "MMA",
+      },
+    },
+    {
+      path: "/nfl",
+      name: "nfl",
+      component: NFLPage,
+      meta: {
+        sportType: "NFL",
       },
     },
     {
