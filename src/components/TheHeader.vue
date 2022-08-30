@@ -24,7 +24,7 @@ const handleSubmit = () => {
 
 <template>
   <div
-    class="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box sticky top-0 z-50"
+    class="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-b-lg sticky top-0 z-50"
   >
     <TheLogo class="lg:hidden" />
     <div class="flex-1 px-2 hidden lg:inline-block">

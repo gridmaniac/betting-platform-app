@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from "vue";
 // valid
 import { useForm, useField } from "vee-validate";
 // composables
@@ -9,6 +10,8 @@ import { useModalStore } from "@/stores/modalStore";
 import { watch } from "vue";
 const walletStore = useWalletStore();
 const modalStore = useModalStore();
+
+const isDepositRequest = ref(false);
 
 const setMoney = (money: number) => {
   deposit.value = money;
@@ -39,9 +42,11 @@ const { value: withdraw, errorMessage: withdrawError } = useField<
   number | null
 >("withdraw");
 
-const createDeposit = () => {
+const createDeposit = async () => {
   if (deposit.value) {
-    walletStore.deposit(deposit.value);
+    isDepositRequest.value = true;
+    await walletStore.deposit(deposit.value);
+    isDepositRequest.value = false;
     deposit.value = null;
   }
 };
@@ -99,7 +104,8 @@ watch(modalStore, () => {
       />
       <button
         class="btn btn-outline btn-md sm:btn-lg w-auto sm:w-56"
-        :disabled="!deposit || !!depositError"
+        :class="{ loading: isDepositRequest }"
+        :disabled="!deposit || !!depositError || isDepositRequest"
         @click="createDeposit()"
       >
         Deposit

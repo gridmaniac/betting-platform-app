@@ -1,5 +1,6 @@
 import { defineStore, storeToRefs } from "pinia";
 import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
 // api
 import {
   fetchWallet,
@@ -32,6 +33,7 @@ import type { IAsset } from "@/models/admin/IAsset";
 
 export const useWalletStore = defineStore("walletStore", () => {
   // var withdraws
+  const router = useRouter();
   const contractAddress = ref();
   const hotAddress = ref();
   const assets = ref<IAsset[]>();
@@ -146,6 +148,10 @@ export const useWalletStore = defineStore("walletStore", () => {
     return true;
   }
 
+  function isMobileDevice() {
+    return "ontouchstart" in window || "onmsgesturechange" in window;
+  }
+
   async function disconnectWallet() {
     const response = await setUserAddress("");
     address.value = null;
@@ -154,6 +160,19 @@ export const useWalletStore = defineStore("walletStore", () => {
 
   async function connectWallet() {
     try {
+      if (isMobileDevice() && !window.ethereum) {
+        const hash = btoa(
+          JSON.stringify({
+            token: authStore.token,
+            code: currentAsset.value,
+          })
+        );
+        const dappUrl = import.meta.env.VITE_DOMAIN + `/connect/${hash}`;
+        const metamaskAppDeepLink = "https://metamask.app.link/dapp/" + dappUrl;
+        window.open(metamaskAppDeepLink);
+        router.push({ name: "mma" });
+        return;
+      }
       checkMetamask();
       const [etheriumWallet] = await window.ethereum.request({
         method: "eth_requestAccounts",
@@ -173,15 +192,31 @@ export const useWalletStore = defineStore("walletStore", () => {
 
   async function deposit(deposit: number) {
     try {
+      if (isMobileDevice() && !window.ethereum) {
+        const hash = btoa(
+          JSON.stringify({
+            token: authStore.token,
+            code: currentAsset.value,
+            deposit,
+          })
+        );
+        const dappUrl = import.meta.env.VITE_DOMAIN + `/connect/${hash}`;
+        const metamaskAppDeepLink = "https://metamask.app.link/dapp/" + dappUrl;
+        window.open(metamaskAppDeepLink);
+        router.push({ name: "mma" });
+        return;
+      }
       checkMetamask();
       const [etheriumWallet] = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
+      await getWallet(true);
       if (etheriumWallet !== address.value) {
         modalStore.modalNotificationContent = DepositError;
         modalStore.isModalNotification = true;
         return;
       }
+
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
@@ -189,8 +224,15 @@ export const useWalletStore = defineStore("walletStore", () => {
         contractABI,
         signer
       );
-
-      await contract.transfer(hotAddress.value, deposit + "000000000");
+      const gasLimit = await contract.estimateGas.transfer(
+        hotAddress.value,
+        deposit + "000000000"
+      );
+      const gasPrice = await provider.getGasPrice();
+      await contract.transfer(hotAddress.value, deposit + "000000000", {
+        gasLimit: gasLimit,
+        gasPrice: gasPrice,
+      });
 
       modalStore.modalNotificationContent = DepositSuccess;
       modalStore.isModalNotification = true;

@@ -50,18 +50,20 @@ const placeholderUrl =
 </template>
 
 <style scoped lang="scss">
-.competitor {
-  overflow: hidden;
-  max-width: 100%;
-  width: 100%;
-  &-name {
-    width: 100%;
-    max-width: 150px;
+@media screen and (max-width: 640px) {
+  .competitor {
     overflow: hidden;
-    p {
-      white-space: nowrap; /* Запрещаем перенос строк */
-      overflow: hidden; /* Обрезаем все, что не помещается в область */
-      text-overflow: ellipsis; /* Добавляем многоточие */
+    max-width: 100%;
+    width: 100%;
+    &-name {
+      width: 100%;
+      max-width: 100px;
+      overflow: hidden;
+      p {
+        white-space: nowrap; /* Запрещаем перенос строк */
+        overflow: hidden; /* Обрезаем все, что не помещается в область */
+        text-overflow: ellipsis; /* Добавляем многоточие */
+      }
     }
   }
 }
