@@ -39,9 +39,9 @@ const { value: withdraw, errorMessage: withdrawError } = useField<
   number | null
 >("withdraw");
 
-const createDeposit = () => {
+const createDeposit = async () => {
   if (deposit.value) {
-    walletStore.deposit(deposit.value);
+    await walletStore.deposit(deposit.value);
     deposit.value = null;
   }
 };
