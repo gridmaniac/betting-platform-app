@@ -71,7 +71,7 @@ watch(modalStore, () => {
   <div class="flex flex-col sm:flex-row sm:justify-between">
     <div class="forAddress">
       <span class="font-bold">Connected:</span>
-      <p class="text-primary">
+      <p class="text-primary text-xs md:text-base">
         {{ walletStore.address }}
       </p>
     </div>
