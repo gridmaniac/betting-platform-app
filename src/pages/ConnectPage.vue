@@ -13,6 +13,7 @@ authStore.token = userData.token;
 localStorage.setItem("token", userData.token);
 authStore.isAuth = true;
 walletStore.currentAsset = userData.code;
+await walletStore.getWallet(true)
 if (userData.deposit) {
   walletStore.deposit(userData.deposit)
 } else {
@@ -22,5 +23,5 @@ router.push({ name: "wallet" });
 </script>
 
 <template>
-  <h1 class="text-3xl">BOBKA</h1>
+  <div></div>
 </template>
