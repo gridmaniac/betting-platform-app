@@ -216,6 +216,7 @@ export const useWalletStore = defineStore("walletStore", () => {
         modalStore.isModalNotification = true;
         return;
       }
+
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
       const contract = new ethers.Contract(
@@ -223,8 +224,15 @@ export const useWalletStore = defineStore("walletStore", () => {
         contractABI,
         signer
       );
-
-      await contract.transfer(hotAddress.value, deposit + "000000000");
+      const gasLimit = await contract.estimateGas.transfer(
+        hotAddress.value,
+        deposit + "000000000"
+      );
+      const gasPrice = await provider.getGasPrice();
+      await contract.transfer(hotAddress.value, deposit + "000000000", {
+        gasLimit: gasLimit,
+        gasPrice: gasPrice,
+      });
 
       modalStore.modalNotificationContent = DepositSuccess;
       modalStore.isModalNotification = true;
