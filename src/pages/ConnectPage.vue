@@ -6,18 +6,21 @@ const authStore = useAuthStore();
 const walletStore = useWalletStore();
 const { params } = useRoute();
 const router = useRouter();
-const payload = atob(params.payload as string);
-const userData = JSON.parse(payload);
-authStore.token = userData.token;
-localStorage.setItem("token", userData.token);
-authStore.isAuth = true;
-walletStore.currentAsset = userData.code;
-if (userData.deposit) {
-  walletStore.deposit(userData.deposit);
-} else {
-  walletStore.connectWallet();
-}
-router.push({ name: "wallet" });
+const connect = async () => {
+  const payload = atob(params.payload as string);
+  const userData = JSON.parse(payload);
+  authStore.token = userData.token;
+  localStorage.setItem("token", userData.token);
+  authStore.isAuth = true;
+  walletStore.currentAsset = userData.code;
+  if (userData.deposit) {
+    await walletStore.deposit(userData.deposit);
+  } else {
+    await walletStore.connectWallet();
+  }
+  router.push({ name: "wallet" });
+};
+connect()
 </script>
 
 <template>
