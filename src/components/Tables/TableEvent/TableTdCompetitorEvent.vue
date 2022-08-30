@@ -56,7 +56,7 @@ const placeholderUrl =
   width: 100%;
   &-name {
     width: 100%;
-    max-width: 150px;
+    max-width: 120px;
     overflow: hidden;
     p {
       white-space: nowrap; /* Запрещаем перенос строк */
