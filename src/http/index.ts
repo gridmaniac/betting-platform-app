@@ -19,7 +19,6 @@ $host.interceptors.response.use(
   (error) => {
     if (error.response.status === 401) {
       const authStore = useAuthStore();
-      console.log("test");
       authStore.logout();
     }
   }

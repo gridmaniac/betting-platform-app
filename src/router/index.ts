@@ -6,6 +6,7 @@ import NFLPage from "../pages/NFLPage.vue";
 import BetsPage from "../pages/BetsPage.vue";
 import WalletPage from "../pages/WalletPage.vue";
 import ProfilePage from "../pages/ProfilePage.vue";
+import ConnectPage from "../pages/ConnectPage.vue";
 import NewsPage from "../pages/NewsPage.vue";
 // admin
 import AdminAssetsPage from "@/pages/Admin/AssetsPage.vue";
@@ -73,6 +74,11 @@ const router = createRouter({
       path: "/profile",
       name: "profile",
       component: ProfilePage,
+    },
+    {
+      path: "/connect/:payload",
+      name: "connect",
+      component: ConnectPage,
     },
     {
       path: "/news",
