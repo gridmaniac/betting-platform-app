@@ -199,7 +199,6 @@ export const useWalletStore = defineStore("walletStore", () => {
         );
         const dappUrl = import.meta.env.VITE_DOMAIN + `/connect/${hash}`;
         const metamaskAppDeepLink = "https://metamask.app.link/dapp/" + dappUrl;
-        alert(metamaskAppDeepLink)
         window.open(metamaskAppDeepLink);
         return;
       }
