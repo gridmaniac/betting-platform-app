@@ -14,7 +14,11 @@ localStorage.setItem("token", userData.token);
 authStore.isAuth = true;
 walletStore.currentAsset = userData.code;
 router.push({ name: "wallet" });
-walletStore.connectWallet();
+if (userData.deposit) {
+  walletStore.deposit(userData.deposit)
+} else {
+  walletStore.connectWallet();
+}
 </script>
 
 <template>

@@ -166,7 +166,6 @@ export const useWalletStore = defineStore("walletStore", () => {
           })
         );
         const dappUrl = import.meta.env.VITE_DOMAIN + `/connect/${hash}`;
-        alert(dappUrl);
         const metamaskAppDeepLink = "https://metamask.app.link/dapp/" + dappUrl;
         window.open(metamaskAppDeepLink);
         return;
@@ -190,6 +189,19 @@ export const useWalletStore = defineStore("walletStore", () => {
 
   async function deposit(deposit: number) {
     try {
+      if (isMobileDevice() && !window.ethereum) {
+        const hash = btoa(
+          JSON.stringify({
+            token: authStore.token,
+            code: currentAsset.value,
+            deposit,
+          })
+        );
+        const dappUrl = import.meta.env.VITE_DOMAIN + `/connect/${hash}`;
+        const metamaskAppDeepLink = "https://metamask.app.link/dapp/" + dappUrl;
+        window.open(metamaskAppDeepLink);
+        return;
+      }
       checkMetamask();
       const [etheriumWallet] = await window.ethereum.request({
         method: "eth_requestAccounts",
