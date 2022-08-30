@@ -189,6 +189,7 @@ export const useWalletStore = defineStore("walletStore", () => {
 
   async function deposit(deposit: number) {
     try {
+      await getWallet(true);
       if (isMobileDevice() && !window.ethereum) {
         const hash = btoa(
           JSON.stringify({
