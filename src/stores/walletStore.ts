@@ -189,7 +189,6 @@ export const useWalletStore = defineStore("walletStore", () => {
 
   async function deposit(deposit: number) {
     try {
-      await getWallet(true);
       if (isMobileDevice() && !window.ethereum) {
         const hash = btoa(
           JSON.stringify({
@@ -200,6 +199,7 @@ export const useWalletStore = defineStore("walletStore", () => {
         );
         const dappUrl = import.meta.env.VITE_DOMAIN + `/connect/${hash}`;
         const metamaskAppDeepLink = "https://metamask.app.link/dapp/" + dappUrl;
+        alert(metamaskAppDeepLink)
         window.open(metamaskAppDeepLink);
         return;
       }
@@ -207,6 +207,7 @@ export const useWalletStore = defineStore("walletStore", () => {
       const [etheriumWallet] = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
+      await getWallet(true);
       if (etheriumWallet !== address.value) {
         modalStore.modalNotificationContent = DepositError;
         modalStore.isModalNotification = true;
