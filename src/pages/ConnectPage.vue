@@ -20,7 +20,7 @@ const connect = async () => {
   }
   router.push({ name: "wallet" });
 };
-connect()
+connect();
 </script>
 
 <template>

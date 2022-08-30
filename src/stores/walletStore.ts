@@ -1,5 +1,6 @@
 import { defineStore, storeToRefs } from "pinia";
 import { ref, watch } from "vue";
+import { useRouter } from "vue-router";
 // api
 import {
   fetchWallet,
@@ -32,6 +33,7 @@ import type { IAsset } from "@/models/admin/IAsset";
 
 export const useWalletStore = defineStore("walletStore", () => {
   // var withdraws
+  const router = useRouter();
   const contractAddress = ref();
   const hotAddress = ref();
   const assets = ref<IAsset[]>();
@@ -168,6 +170,7 @@ export const useWalletStore = defineStore("walletStore", () => {
         const dappUrl = import.meta.env.VITE_DOMAIN + `/connect/${hash}`;
         const metamaskAppDeepLink = "https://metamask.app.link/dapp/" + dappUrl;
         window.open(metamaskAppDeepLink);
+        router.push({ name: "mma" });
         return;
       }
       checkMetamask();
@@ -200,6 +203,7 @@ export const useWalletStore = defineStore("walletStore", () => {
         const dappUrl = import.meta.env.VITE_DOMAIN + `/connect/${hash}`;
         const metamaskAppDeepLink = "https://metamask.app.link/dapp/" + dappUrl;
         window.open(metamaskAppDeepLink);
+        router.push({ name: "mma" });
         return;
       }
       checkMetamask();
