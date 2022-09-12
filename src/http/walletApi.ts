@@ -18,7 +18,7 @@ export const setUserAddress = async (address: string) => {
 };
 
 // set user wallet address
-export const withdrawForUser = async (amount: number, code: string) => {
+export const withdrawForUser = async (amount: string, code: string) => {
   const { data } = await $host.post(
     ERoutes.WalletWithdraw,
     { amount, code: code },
