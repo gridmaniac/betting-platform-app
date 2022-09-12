@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import moment from "moment";
+import { BigNumber } from "ethers";
 // composables
 import { ToastBetSuccess } from "@/composables/toastNotification";
 import { balanceFormat } from "@/composables/functions";
@@ -15,6 +16,7 @@ import { useModalStore } from "@/stores/modalStore";
 import { useWalletStore } from "@/stores/walletStore";
 import { useToastStore } from "@/stores/toastStore";
 import type { IToast } from "@/models/notificationModel";
+
 const modalStore = useModalStore();
 const walletStore = useWalletStore();
 const toastStore = useToastStore();
@@ -30,7 +32,9 @@ onMounted(() => {
 
 const placeBet = async () => {
   const bet: IUserBet = {
-    amount: amount.value + Math.pow(10, walletStore.decimals).toString(),
+    amount: BigNumber.from(amount.value)
+      .mul(Math.pow(10, walletStore.decimals))
+      .toString(),
     winnerId: modalStore.ModalBetContent?.winner.id,
     eventId: modalStore.ModalBetContent?.event.id,
     type: "winner",

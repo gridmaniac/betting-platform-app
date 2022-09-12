@@ -226,12 +226,16 @@ export const useWalletStore = defineStore("walletStore", () => {
       );
       const gasLimit = await contract.estimateGas.transfer(
         hotAddress.value,
-        deposit + Math.pow(10, decimals.value).toString()
+        ethers.BigNumber.from(deposit)
+          .mul(Math.pow(10, decimals.value))
+          .toString()
       );
       const gasPrice = await provider.getGasPrice();
       await contract.transfer(
         hotAddress.value,
-        deposit + Math.pow(10, decimals.value).toString(),
+        ethers.BigNumber.from(deposit)
+          .mul(Math.pow(10, decimals.value))
+          .toString(),
         {
           gasLimit: gasLimit,
           gasPrice: gasPrice,
@@ -249,7 +253,9 @@ export const useWalletStore = defineStore("walletStore", () => {
   async function withdraw() {
     if (withdrawAmount.value) {
       const response = await withdrawForUser(
-        withdrawAmount.value + Math.pow(10, decimals.value).toString(),
+        ethers.BigNumber.from(withdrawAmount.value)
+          .mul(Math.pow(10, decimals.value))
+          .toString(),
         currentAsset.value
       );
       return response;
