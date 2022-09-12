@@ -30,7 +30,7 @@ onMounted(() => {
 
 const placeBet = async () => {
   const bet: IUserBet = {
-    amount: (amount.value * 1000000000).toString(),
+    amount: amount.value + Math.pow(10, walletStore.decimals).toString(),
     winnerId: modalStore.ModalBetContent?.winner.id,
     eventId: modalStore.ModalBetContent?.event.id,
     type: "winner",
