@@ -60,12 +60,12 @@ const currentAsset = computed({
           <div class="stat">
             <div class="stat-title">Balance</div>
             <div class="stat-value overflow-hidden flex gap-1">
-              <span class="truncate">{{
-                balanceFormat(walletStore.balance)
-              }}</span>
-              <span class="text-primary uppercase">{{
-                walletStore.currentAsset
-              }}</span>
+              <span class="truncate" :title="walletStore.balance">
+                {{ balanceFormat(walletStore.balance) }}
+              </span>
+              <span class="text-primary uppercase">
+                {{ walletStore.currentAsset }}
+              </span>
             </div>
             <div class="stat-desc" v-if="currentAsset !== 'eth'">
               In Bets: {{ balanceFormat(walletStore.inBets) }}
@@ -104,7 +104,11 @@ const currentAsset = computed({
                 class="truncate"
                 :title="ethers.utils.formatUnits(walletStore.ethBalance)"
               >
-                {{ ethers.utils.formatUnits(walletStore.ethBalance) }}
+                {{
+                  balanceFormat(
+                    ethers.utils.formatUnits(walletStore.ethBalance)
+                  )
+                }}
               </span>
               <span class="text-primary">ETH</span>
             </div>

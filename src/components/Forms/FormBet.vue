@@ -32,7 +32,7 @@ const amountInput = ref();
 //valid
 const validationSchema = {
   amount(value: string) {
-    if (value != null && value.toLocaleString().length >= 50) {
+    if (value != null && value.toString().length >= 50) {
       return `Limit exceeded`;
     }
     return true;
@@ -49,7 +49,7 @@ onMounted(() => {
 const placeBet = async () => {
   const bet: IUserBet = {
     amount: ethers.utils
-      .parseUnits(amount.value, walletStore.decimals)
+      .parseUnits(amount.value.toString(), walletStore.decimals)
       .toString(),
     winnerId: modalStore.ModalBetContent?.winner.id,
     eventId: modalStore.ModalBetContent?.event.id,
