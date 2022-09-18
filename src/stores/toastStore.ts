@@ -10,7 +10,7 @@ export const useToastStore = defineStore("toastStore", () => {
     toasts.value.push(toast);
     setTimeout(() => {
       remove(toast);
-    }, 5000);
+    }, 8000);
   };
 
   const remove = (toast: IToast) => {
