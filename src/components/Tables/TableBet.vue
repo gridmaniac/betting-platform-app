@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 //
-import token from "@/assets/koa-token.png";
+import token from "@/assets/koa.png";
 import moment from "moment";
 // composables
 import { balanceFormat } from "@/composables/functions";

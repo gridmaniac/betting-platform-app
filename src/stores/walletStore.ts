@@ -41,6 +41,7 @@ export const useWalletStore = defineStore("walletStore", () => {
   const isWalletPage = ref(false);
   const address = ref<string | null>();
   const balance = ref<number>(0);
+  const ethBalance = ref<number>(0);
   const inBets = ref<number>(0);
   const withdrawAmount = ref<number | null>();
   const transactions = ref<ITransaction[]>([]);
@@ -51,7 +52,7 @@ export const useWalletStore = defineStore("walletStore", () => {
   const authStore = useAuthStore();
   // check localstorage
   const assetCandidate = localStorage.getItem("currentAsset");
-  if (assetCandidate) {
+  if (assetCandidate && assetCandidate !== "eth") {
     currentAsset.value = assetCandidate;
   } else {
     currentAsset.value = "koa";
@@ -120,6 +121,7 @@ export const useWalletStore = defineStore("walletStore", () => {
 
     address.value = response.address;
     decimals.value = response.decimals;
+    ethBalance.value = response.ethBalance;
     if (balance.value && poll) {
       if (
         balance.value !==
@@ -266,6 +268,7 @@ export const useWalletStore = defineStore("walletStore", () => {
     address,
     inBets,
     balance,
+    ethBalance,
     transactions,
     isWalletPage,
     assets,

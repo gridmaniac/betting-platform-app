@@ -2,7 +2,7 @@
 import TheTable from "@/components/TheTable.vue";
 // icons
 import { GlobeAltIcon } from "@heroicons/vue/outline";
-import coin from "@/assets/koa-token.png";
+import coin from "@/assets/koa.png";
 // composables
 import { walletCols } from "@/composables/walletState";
 // store

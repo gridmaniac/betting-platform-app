@@ -69,17 +69,27 @@ watch(modalStore, () => {
 
 <template>
   <div class="flex flex-col sm:flex-row sm:justify-between">
-    <div class="forAddress">
+    <div>
       <span class="font-bold">Connected:</span>
-      <p class="text-primary text-xs md:text-base">
-        {{ walletStore.address }}
-      </p>
+      <div class="flex items-center">
+        <span class="text-primary text-xs md:text-base">{{
+          walletStore.address
+        }}</span>
+        <div
+          class="btn btn-xs btn-ghost ml-1"
+          @click="modalStore.isModalConfirm = true"
+        >
+          Disconnect
+        </div>
+      </div>
     </div>
     <button
-      class="btn btn-sm btn-outline ml-2 mt-2 sm:mt-0"
-      @click="modalStore.isModalConfirm = true"
+      v-if="walletStore.currentAsset !== 'eth'"
+      class="btn btn-sm btn-outline btn-info mt-2 sm:mt-0"
+      @click="walletStore.setAsset('eth')"
     >
-      disconnect
+      <img class="mr-1 h-4" src="@/assets/eth.png" />
+      Add Gas
     </button>
   </div>
   <div class="form-control mt-3">

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import token from "../assets/koa-token.png";
+import token from "../assets/koa.png";
 </script>
 
 <template>

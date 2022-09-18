@@ -11,6 +11,8 @@ import { setBet } from "@/http/walletApi";
 import CompetitorModal from "@/components/CompetitorModal.vue";
 // type
 import type { IUserBet } from "@/models/walletModels";
+//icon
+import { LockClosedIcon } from "@heroicons/vue/outline";
 // store
 import { useModalStore } from "@/stores/modalStore";
 import { useWalletStore } from "@/stores/walletStore";
@@ -144,7 +146,21 @@ const currentAsset = computed({
   </div>
   <div class="divider"></div>
   <div class="modal-action">
+    <div
+      class="tooltip"
+      data-tip="Please use tokens when placing bets."
+      v-if="walletStore.currentAsset === 'eth'"
+    >
+      <button class="btn btn-primary gap-2" disabled>
+        <component
+          :is="LockClosedIcon"
+          class="inline-block w-6 h-6 stroke-current"
+        />
+        Place a bet
+      </button>
+    </div>
     <button
+      v-else
       class="btn btn-primary"
       :class="{ loading: isRequest }"
       @click="placeBet()"
