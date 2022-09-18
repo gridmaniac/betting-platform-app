@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 //
-import token from "@/assets/koa.png";
+import koa from "@/assets/koa.png";
 import moment from "moment";
 // composables
 import { balanceFormat } from "@/composables/functions";
@@ -61,7 +61,7 @@ const { page, pages, setPage, paginate } = usePagination<IBet>({
         </td>
         <td class="text-center" data-name="amount: ">
           <span class="flex items-center">
-            <img class="inline-block mr-2 h-4" :src="token" />
+            <img class="inline-block mr-2 h-4" :src="koa" />
             {{ balanceFormat(bet.amount) }}
           </span>
         </td>

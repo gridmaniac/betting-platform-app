@@ -13,20 +13,20 @@ const modalStore = useModalStore();
 
 const isDepositRequest = ref(false);
 
-const setMoney = (money: number) => {
+const setMoney = (money: string) => {
   deposit.value = money;
 };
 
 //valid
 const validationSchema = {
-  deposit(value: number) {
-    if (value != null && value >= 1_000_000_000_000_000_000) {
+  deposit(value: string) {
+    if (value != null && value.toLocaleString().length >= 50) {
       return `Limit exceeded`;
     }
     return true;
   },
-  withdraw(value: number) {
-    if (value != null && value >= 1_000_000_000_000_000_000) {
+  withdraw(value: string) {
+    if (value != null && value.toLocaleString().length >= 50) {
       return "Limit exceeded";
     }
     return true;
@@ -35,17 +35,17 @@ const validationSchema = {
 
 useForm({ validationSchema });
 
-const { value: deposit, errorMessage: depositError } = useField<number | null>(
+const { value: deposit, errorMessage: depositError } = useField<string | null>(
   "deposit"
 );
 const { value: withdraw, errorMessage: withdrawError } = useField<
-  number | null
+  string | null
 >("withdraw");
 
 const createDeposit = async () => {
   if (deposit.value) {
     isDepositRequest.value = true;
-    await walletStore.deposit(deposit.value);
+    await walletStore.deposit(deposit.value.toString());
     isDepositRequest.value = false;
     deposit.value = null;
   }
@@ -53,10 +53,9 @@ const createDeposit = async () => {
 
 const createWithdraw = () => {
   if (withdraw.value) {
-    walletStore.withdrawAmount = withdraw.value;
+    walletStore.withdrawAmount = withdraw.value.toString();
     modalStore.modalNotificationContent = WithdrawMoney;
     modalStore.isModalWithdraw = true;
-    // TASK! подумать как удалить value после закрытия модалки
   }
 };
 
@@ -96,13 +95,13 @@ watch(modalStore, () => {
     <div class="input-group">
       <button
         class="btn btn-ghost btn-lg hidden sm:block"
-        @click="setMoney(100000)"
+        @click="setMoney('100000')"
       >
         100K
       </button>
       <button
         class="btn btn-ghost btn-lg hidden sm:block"
-        @click="setMoney(1000000)"
+        @click="setMoney('1000000')"
       >
         1M
       </button>
@@ -136,14 +135,11 @@ watch(modalStore, () => {
       />
       <button
         class="btn btn-outline w-auto sm:w-56"
-        :disabled="!withdraw"
+        :disabled="!withdraw || !!withdrawError"
         @click="createWithdraw()"
       >
         Withdraw
       </button>
     </div>
-    <label v-if="withdrawError" class="label flex justify-end">
-      <span class="label-text">{{ withdrawError }}</span>
-    </label>
   </div>
 </template>

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
+import { ethers } from "ethers";
 import moment from "moment";
-import { BigNumber } from "ethers";
+// valid
+import { useForm, useField } from "vee-validate";
 // composables
 import { ToastBetSuccess } from "@/composables/toastNotification";
 import { balanceFormat } from "@/composables/functions";
@@ -23,10 +25,22 @@ const modalStore = useModalStore();
 const walletStore = useWalletStore();
 const toastStore = useToastStore();
 
-const amount = ref();
 const errors = ref<{ [key: string]: string }>({});
 const isRequest = ref(false);
 const amountInput = ref();
+
+//valid
+const validationSchema = {
+  amount(value: string) {
+    if (value != null && value.toLocaleString().length >= 50) {
+      return `Limit exceeded`;
+    }
+    return true;
+  },
+};
+useForm({ validationSchema });
+
+const { value: amount, errorMessage: amountError } = useField<string>("amount");
 
 onMounted(() => {
   amountInput.value.focus();
@@ -34,8 +48,8 @@ onMounted(() => {
 
 const placeBet = async () => {
   const bet: IUserBet = {
-    amount: BigNumber.from(amount.value)
-      .mul(Math.pow(10, walletStore.decimals))
+    amount: ethers.utils
+      .parseUnits(amount.value, walletStore.decimals)
       .toString(),
     winnerId: modalStore.ModalBetContent?.winner.id,
     eventId: modalStore.ModalBetContent?.event.id,
@@ -61,12 +75,6 @@ const placeBet = async () => {
     modalStore.isModalBetVisible = false;
     toastStore.push(ToastBetSuccess);
     await walletStore.getWallet(true);
-  }
-};
-
-const ceilBet = () => {
-  if (amount.value) {
-    amount.value = Math.floor(amount.value);
   }
 };
 
@@ -119,7 +127,6 @@ const currentAsset = computed({
           v-model="amount"
           ref="amountInput"
           placeholder="0"
-          @blur="ceilBet"
         />
         <select
           class="select select-lg select-warning uppercase"
@@ -164,7 +171,7 @@ const currentAsset = computed({
       class="btn btn-primary"
       :class="{ loading: isRequest }"
       @click="placeBet()"
-      :disabled="!amount || isRequest || amount > 99999999999"
+      :disabled="!amount || isRequest || !!amountError"
     >
       Place a bet
     </button>

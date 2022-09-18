@@ -18,7 +18,8 @@ export function checkData(seasons: ISeason[]) {
   return { upcoming, completed };
 }
 
-export const balanceFormat = (number: number) => {
-  const num = new Intl.NumberFormat("ru-RU").format(number);
+export const balanceFormat = (number: string) => {
+  const value = parseFloat(number);
+  const num = new Intl.NumberFormat("en-US").format(value).replace(",", " ");
   return num;
 };

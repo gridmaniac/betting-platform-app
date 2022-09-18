@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, computed } from "vue";
+import { ethers } from "ethers";
 // composables
 import { balanceFormat } from "@/composables/functions";
 import { TitleWallet } from "@/composables/titlesState";
@@ -58,8 +59,10 @@ const currentAsset = computed({
         <div class="shadow stats stats-vertical" style="min-width: 350px">
           <div class="stat">
             <div class="stat-title">Balance</div>
-            <div class="stat-value">
-              {{ balanceFormat(walletStore.balance) }}
+            <div class="stat-value overflow-hidden flex gap-1">
+              <span class="truncate">{{
+                balanceFormat(walletStore.balance)
+              }}</span>
               <span class="text-primary uppercase">{{
                 walletStore.currentAsset
               }}</span>
@@ -96,8 +99,14 @@ const currentAsset = computed({
                 </div>
               </div>
             </div>
-            <div class="stat-value">
-              {{ walletStore.ethBalance }} <span class="text-primary">ETH</span>
+            <div class="stat-value flex gap-1" style="max-width: 350px">
+              <span
+                class="truncate"
+                :title="ethers.utils.formatUnits(walletStore.ethBalance)"
+              >
+                {{ ethers.utils.formatUnits(walletStore.ethBalance) }}
+              </span>
+              <span class="text-primary">ETH</span>
             </div>
           </div>
           <div class="stat" v-if="currentAsset === 'eth'">
