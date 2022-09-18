@@ -3,7 +3,7 @@ export interface IAsset {
   contract: string;
   contractABI: string;
   decimals: number;
-  listed: false;
+  listed: boolean;
   minStake: string;
   minWithdrawal: string;
   type: string;
