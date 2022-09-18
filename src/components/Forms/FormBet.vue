@@ -127,6 +127,8 @@ const currentAsset = computed({
           v-model="amount"
           ref="amountInput"
           placeholder="0"
+          maxlength="20"
+          oninput="this.value=this.value.slice(0,this.maxLength)"
         />
         <select
           class="select select-lg select-warning uppercase"

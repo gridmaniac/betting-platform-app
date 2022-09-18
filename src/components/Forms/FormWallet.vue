@@ -94,12 +94,14 @@ watch(modalStore, () => {
   <div class="form-control mt-3">
     <div class="input-group">
       <button
+        v-if="walletStore.currentAsset !== 'eth'"
         class="btn btn-ghost btn-lg hidden sm:block"
         @click="setMoney('100000')"
       >
         100K
       </button>
       <button
+        v-if="walletStore.currentAsset !== 'eth'"
         class="btn btn-ghost btn-lg hidden sm:block"
         @click="setMoney('1000000')"
       >
@@ -112,7 +114,7 @@ watch(modalStore, () => {
         class="input input-bordered input-md sm:input-lg flex-1 text-right"
       />
       <button
-        class="btn btn-outline btn-md sm:btn-lg w-auto sm:w-56"
+        class="btn btn-outline btn-md sm:btn-lg w-32 sm:w-56"
         :class="{ loading: isDepositRequest }"
         :disabled="!deposit || !!depositError || isDepositRequest"
         @click="createDeposit()"
@@ -134,7 +136,7 @@ watch(modalStore, () => {
         autocomplete="new-password"
       />
       <button
-        class="btn btn-outline w-auto sm:w-56"
+        class="btn btn-outline w-32 sm:w-56"
         :disabled="!withdraw || !!withdrawError"
         @click="createWithdraw()"
       >

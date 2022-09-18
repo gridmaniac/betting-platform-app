@@ -23,12 +23,12 @@ const cols = [
   {
     name: "amount",
     value: "amount",
-    classes: "text-center",
+    classes: "",
   },
   {
     name: "status",
     value: "status",
-    classes: "text-center text-center",
+    classes: "text-center",
   },
 ];
 
