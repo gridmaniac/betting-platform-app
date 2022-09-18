@@ -31,7 +31,7 @@ onMounted(async () => {
   array.forEach((element) => {
     element.amount = ethers.utils.formatUnits(
       element.amount,
-      walletStore.decimals
+      walletStore.getDecimals(element.code)
     );
     if (element.status === "open") {
       betsOpened.value.push(element);

@@ -8,7 +8,7 @@ import eth from "@/assets/eth.png";
 import { walletCols } from "@/composables/walletState";
 // store
 import { useWalletStore } from "@/stores/walletStore";
-import { balanceFormat } from "@/composables/functions";
+import { balanceEthFormat, balanceTokenFormat } from "@/composables/functions";
 const walletStore = useWalletStore();
 </script>
 
@@ -25,7 +25,11 @@ const walletStore = useWalletStore();
           :src="eth"
         />
         <img v-else class="inline-block mr-2 h-4" :src="koa" />
-        {{ balanceFormat(item.amount) }}
+        {{
+          walletStore.currentAsset === "eth"
+            ? balanceEthFormat(item.amount)
+            : balanceTokenFormat(item.amount)
+        }}
       </span>
     </template>
     <template #txHash="{ item }">

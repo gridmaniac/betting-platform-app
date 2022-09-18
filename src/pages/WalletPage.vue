@@ -2,7 +2,7 @@
 import { onMounted, computed } from "vue";
 import { ethers } from "ethers";
 // composables
-import { balanceFormat } from "@/composables/functions";
+import { balanceEthFormat, balanceTokenFormat } from "@/composables/functions";
 import { TitleWallet } from "@/composables/titlesState";
 // components
 import TableWallet from "@/components/Tables/TableWallet.vue";
@@ -61,14 +61,18 @@ const currentAsset = computed({
             <div class="stat-title">Balance</div>
             <div class="stat-value overflow-hidden flex gap-1">
               <span class="truncate" :title="walletStore.balance">
-                {{ balanceFormat(walletStore.balance) }}
+                {{
+                  walletStore.currentAsset === "eth"
+                    ? balanceEthFormat(walletStore.balance)
+                    : balanceTokenFormat(walletStore.balance)
+                }}
               </span>
               <span class="text-primary uppercase">
                 {{ walletStore.currentAsset }}
               </span>
             </div>
             <div class="stat-desc" v-if="currentAsset !== 'eth'">
-              In Bets: {{ balanceFormat(walletStore.inBets) }}
+              In Bets: {{ balanceTokenFormat(walletStore.inBets) }}
               <span class="text-primary uppercase">{{
                 walletStore.currentAsset
               }}</span>
@@ -105,7 +109,7 @@ const currentAsset = computed({
                 :title="ethers.utils.formatUnits(walletStore.ethBalance)"
               >
                 {{
-                  balanceFormat(
+                  balanceEthFormat(
                     ethers.utils.formatUnits(walletStore.ethBalance)
                   )
                 }}

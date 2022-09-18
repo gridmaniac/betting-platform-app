@@ -18,8 +18,17 @@ export function checkData(seasons: ISeason[]) {
   return { upcoming, completed };
 }
 
-export const balanceFormat = (number: string) => {
+export const balanceTokenFormat = (number: string) => {
   const value = parseFloat(number);
-  const num = new Intl.NumberFormat("en-US").format(value).replace(",", " ");
+  const num = new Intl.NumberFormat("jp-JP", {
+    maximumSignificantDigits: 1,
+  }).format(value);
+
+  return num;
+};
+
+export const balanceEthFormat = (number: string) => {
+  const value = parseFloat(number).toFixed(6);
+  const num = parseFloat(value);
   return num;
 };

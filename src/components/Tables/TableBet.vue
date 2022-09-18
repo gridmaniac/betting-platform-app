@@ -4,7 +4,7 @@ import { computed } from "vue";
 import koa from "@/assets/koa.png";
 import moment from "moment";
 // composables
-import { balanceFormat } from "@/composables/functions";
+import { balanceEthFormat, balanceTokenFormat } from "@/composables/functions";
 import { usePagination } from "@/composables/pagination";
 // type
 import type { IBet } from "@/models/Bet";
@@ -62,7 +62,11 @@ const { page, pages, setPage, paginate } = usePagination<IBet>({
         <td class="text-center" data-name="amount: ">
           <span class="flex items-center">
             <img class="inline-block mr-2 h-4" :src="koa" />
-            {{ balanceFormat(bet.amount) }}
+            {{
+              bet.code === "eth"
+                ? balanceEthFormat(bet.amount)
+                : balanceTokenFormat(bet.amount)
+            }}
           </span>
         </td>
         <td class="text-center" data-name="status:">

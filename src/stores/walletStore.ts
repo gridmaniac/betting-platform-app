@@ -268,6 +268,11 @@ export const useWalletStore = defineStore("walletStore", () => {
     }
   }
 
+  function getDecimals(code: string) {
+    const asset = assets.value?.find((x) => x.code === code)
+    return asset?.decimals;
+  }
+
   return {
     address,
     inBets,
@@ -286,5 +291,6 @@ export const useWalletStore = defineStore("walletStore", () => {
     withdrawAmount,
     setAsset,
     getWallet,
+    getDecimals
   };
 });

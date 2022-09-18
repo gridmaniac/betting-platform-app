@@ -6,7 +6,7 @@ import moment from "moment";
 import { useForm, useField } from "vee-validate";
 // composables
 import { ToastBetSuccess } from "@/composables/toastNotification";
-import { balanceFormat } from "@/composables/functions";
+import { balanceEthFormat, balanceTokenFormat } from "@/composables/functions";
 // api
 import { setBet } from "@/http/walletApi";
 // component
@@ -142,7 +142,11 @@ const currentAsset = computed({
           <template v-if="walletStore.isWalletPage">
             Balance:
             <span class="font-bold uppercase">
-              {{ balanceFormat(walletStore.balance) }}
+              {{
+                walletStore.currentAsset === "eth"
+                  ? balanceEthFormat(walletStore.balance)
+                  : balanceTokenFormat(walletStore.balance)
+              }}
               {{ walletStore.currentAsset }}
             </span>
           </template>
