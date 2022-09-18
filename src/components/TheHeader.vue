@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
 // assets
-import token from "@/assets/koa-token.png";
+import token from "@/assets/koa-large.png";
 // components
 import TheLogo from "./TheLogo.vue";
 import AuthControl from "./AuthControl.vue";

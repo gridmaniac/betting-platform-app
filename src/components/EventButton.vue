@@ -1,7 +1,7 @@
 <script setup lang="ts">
 //icon
 import { LockClosedIcon } from "@heroicons/vue/outline";
-import token from "@/assets/koa-token.png";
+import token from "@/assets/koa.png";
 
 defineProps({
   status: Boolean,

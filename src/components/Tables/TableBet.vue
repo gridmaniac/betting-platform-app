@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
 //
-import token from "@/assets/koa-token.png";
+import koa from "@/assets/koa.png";
 import moment from "moment";
 // composables
-import { balanceFormat } from "@/composables/functions";
+import { balanceEthFormat, balanceTokenFormat } from "@/composables/functions";
 import { usePagination } from "@/composables/pagination";
 // type
 import type { IBet } from "@/models/Bet";
@@ -23,12 +23,12 @@ const cols = [
   {
     name: "amount",
     value: "amount",
-    classes: "text-center",
+    classes: "",
   },
   {
     name: "status",
     value: "status",
-    classes: "text-center text-center",
+    classes: "text-center",
   },
 ];
 
@@ -61,8 +61,12 @@ const { page, pages, setPage, paginate } = usePagination<IBet>({
         </td>
         <td class="text-center" data-name="amount: ">
           <span class="flex items-center">
-            <img class="inline-block mr-2 h-4" :src="token" />
-            {{ balanceFormat(bet.amount) }}
+            <img class="inline-block mr-2 h-4" :src="koa" />
+            {{
+              bet.code === "eth"
+                ? balanceEthFormat(bet.amount)
+                : balanceTokenFormat(bet.amount)
+            }}
           </span>
         </td>
         <td class="text-center" data-name="status:">

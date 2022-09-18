@@ -1,6 +1,7 @@
 export interface IBet {
   sport: string;
-  amount: number;
+  code: string;
+  amount: string;
   date: string;
   eventId: string;
   season: string;

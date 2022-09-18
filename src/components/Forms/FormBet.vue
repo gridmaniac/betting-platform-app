@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
+import { ethers } from "ethers";
 import moment from "moment";
-import { BigNumber } from "ethers";
+// valid
+import { useForm, useField } from "vee-validate";
 // composables
 import { ToastBetSuccess } from "@/composables/toastNotification";
-import { balanceFormat } from "@/composables/functions";
+import { balanceEthFormat, balanceTokenFormat } from "@/composables/functions";
 // api
 import { setBet } from "@/http/walletApi";
 // component
 import CompetitorModal from "@/components/CompetitorModal.vue";
 // type
 import type { IUserBet } from "@/models/walletModels";
+//icon
+import { LockClosedIcon } from "@heroicons/vue/outline";
 // store
 import { useModalStore } from "@/stores/modalStore";
 import { useWalletStore } from "@/stores/walletStore";
@@ -21,10 +25,22 @@ const modalStore = useModalStore();
 const walletStore = useWalletStore();
 const toastStore = useToastStore();
 
-const amount = ref();
 const errors = ref<{ [key: string]: string }>({});
 const isRequest = ref(false);
 const amountInput = ref();
+
+//valid
+const validationSchema = {
+  amount(value: string) {
+    if (value != null && value.toString().length >= 50) {
+      return `Limit exceeded`;
+    }
+    return true;
+  },
+};
+useForm({ validationSchema });
+
+const { value: amount, errorMessage: amountError } = useField<string>("amount");
 
 onMounted(() => {
   amountInput.value.focus();
@@ -32,8 +48,8 @@ onMounted(() => {
 
 const placeBet = async () => {
   const bet: IUserBet = {
-    amount: BigNumber.from(amount.value)
-      .mul(Math.pow(10, walletStore.decimals))
+    amount: ethers.utils
+      .parseUnits(amount.value.toString(), walletStore.decimals)
       .toString(),
     winnerId: modalStore.ModalBetContent?.winner.id,
     eventId: modalStore.ModalBetContent?.event.id,
@@ -59,12 +75,6 @@ const placeBet = async () => {
     modalStore.isModalBetVisible = false;
     toastStore.push(ToastBetSuccess);
     await walletStore.getWallet(true);
-  }
-};
-
-const ceilBet = () => {
-  if (amount.value) {
-    amount.value = Math.floor(amount.value);
   }
 };
 
@@ -117,7 +127,8 @@ const currentAsset = computed({
           v-model="amount"
           ref="amountInput"
           placeholder="0"
-          @blur="ceilBet"
+          maxlength="20"
+          oninput="this.value=this.value.slice(0,this.maxLength)"
         />
         <select
           class="select select-lg select-warning uppercase"
@@ -133,7 +144,11 @@ const currentAsset = computed({
           <template v-if="walletStore.isWalletPage">
             Balance:
             <span class="font-bold uppercase">
-              {{ balanceFormat(walletStore.balance) }}
+              {{
+                walletStore.currentAsset === "eth"
+                  ? balanceEthFormat(walletStore.balance)
+                  : balanceTokenFormat(walletStore.balance)
+              }}
               {{ walletStore.currentAsset }}
             </span>
           </template>
@@ -144,11 +159,25 @@ const currentAsset = computed({
   </div>
   <div class="divider"></div>
   <div class="modal-action">
+    <div
+      class="tooltip"
+      data-tip="Please use tokens when placing bets."
+      v-if="walletStore.currentAsset === 'eth'"
+    >
+      <button class="btn btn-primary gap-2" disabled>
+        <component
+          :is="LockClosedIcon"
+          class="inline-block w-6 h-6 stroke-current"
+        />
+        Place a bet
+      </button>
+    </div>
     <button
+      v-else
       class="btn btn-primary"
       :class="{ loading: isRequest }"
       @click="placeBet()"
-      :disabled="!amount || isRequest || amount > 99999999999"
+      :disabled="!amount || isRequest || !!amountError"
     >
       Place a bet
     </button>

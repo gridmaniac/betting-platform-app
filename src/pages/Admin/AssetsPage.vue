@@ -136,7 +136,7 @@ async function fetchAssets() {
         v-if="currentAsset"
         class="card shadow-lg compact side bg-base-100 p-3 mt-6"
       >
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div class="grid grid-cols-1 gap-2">
           <InputAtom title="Code" v-model="currentAsset.code" />
           <InputAtom title="Decimals" v-model="currentAsset.decimals" />
           <SelectAtom
@@ -153,6 +153,7 @@ async function fetchAssets() {
           <InputAtom title="Type" v-model="currentAsset.type" />
           <InputAtom title="Contract" v-model="currentAsset.contract" />
           <InputAtom title="Contract ABI" v-model="currentAsset.contractABI" />
+          <InputAtom title="ETH Tax (USD)" v-model="currentAsset.ethTax" />
           <div>
             <button
               class="btn btn-outline mt-6"

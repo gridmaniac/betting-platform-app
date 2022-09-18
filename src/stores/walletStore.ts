@@ -40,18 +40,19 @@ export const useWalletStore = defineStore("walletStore", () => {
   const currentAsset = ref<string>("");
   const isWalletPage = ref(false);
   const address = ref<string | null>();
-  const balance = ref<number>(0);
-  const inBets = ref<number>(0);
-  const withdrawAmount = ref<number | null>();
+  const balance = ref<string>("");
+  const ethBalance = ref<number>(0);
+  const inBets = ref<string>("");
+  const withdrawAmount = ref<string>("");
   const transactions = ref<ITransaction[]>([]);
-  const decimals = ref<number>(9);
+  const decimals = ref<number>(0);
   // store
   const modalStore = useModalStore();
   const toastStore = useToastStore();
   const authStore = useAuthStore();
   // check localstorage
   const assetCandidate = localStorage.getItem("currentAsset");
-  if (assetCandidate) {
+  if (assetCandidate && assetCandidate !== "eth") {
     currentAsset.value = assetCandidate;
   } else {
     currentAsset.value = "koa";
@@ -78,10 +79,10 @@ export const useWalletStore = defineStore("walletStore", () => {
       clearInterval(userInterval.value);
       isWalletPage.value = false;
       address.value = null;
-      balance.value = 0;
-      inBets.value = 0;
+      balance.value = "";
+      inBets.value = "";
       transactions.value = [];
-      decimals.value = 9;
+      decimals.value = 0;
     }
   });
 
@@ -117,32 +118,33 @@ export const useWalletStore = defineStore("walletStore", () => {
 
   async function getWallet(poll: boolean) {
     const response = await fetchWallet(currentAsset.value);
-
+    if (!response.listed) {
+      setAsset("koa");
+    }
     address.value = response.address;
     decimals.value = response.decimals;
+    ethBalance.value = response.ethBalance;
     if (balance.value && poll) {
       if (
         balance.value !==
-        response.balance.toString().slice(0, -response.decimals)
+        ethers.utils.formatUnits(response.balance, response.decimals)
       ) {
         toastStore.push(ToastTransaction);
       }
     }
-    balance.value =
-      response.balance === 0
-        ? response.balance
-        : response.balance.toString().slice(0, -response.decimals);
-    inBets.value =
-      +response.inBets === 0
-        ? +response.inBets
-        : response.inBets.slice(0, -response.decimals);
+
+    balance.value = ethers.utils.formatUnits(
+      response.balance,
+      response.decimals
+    );
+    inBets.value = ethers.utils.formatUnits(response.inBets, response.decimals);
     // for deposit
     contractAddress.value = response.contractAddress;
     hotAddress.value = response.hotAddress;
     // transaction
     transactions.value = response.transactions;
     transactions.value.map(
-      (x) => (x.amount = x.amount.toString().slice(0, -response.decimals))
+      (x) => (x.amount = ethers.utils.formatUnits(x.amount, response.decimals))
     );
     isWalletPage.value = true;
     return true;
@@ -190,7 +192,7 @@ export const useWalletStore = defineStore("walletStore", () => {
     }
   }
 
-  async function deposit(deposit: number) {
+  async function deposit(deposit: string) {
     try {
       if (isMobileDevice() && !window.ethereum) {
         const hash = btoa(
@@ -219,28 +221,32 @@ export const useWalletStore = defineStore("walletStore", () => {
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-      const contract = new ethers.Contract(
-        contractAddress.value,
-        contractABI,
-        signer
-      );
-      const gasLimit = await contract.estimateGas.transfer(
-        hotAddress.value,
-        ethers.BigNumber.from(deposit)
-          .mul(Math.pow(10, decimals.value))
-          .toString()
-      );
-      const gasPrice = await provider.getGasPrice();
-      await contract.transfer(
-        hotAddress.value,
-        ethers.BigNumber.from(deposit)
-          .mul(Math.pow(10, decimals.value))
-          .toString(),
-        {
-          gasLimit: gasLimit,
-          gasPrice: gasPrice,
-        }
-      );
+      if (currentAsset.value === "eth") {
+        await signer.sendTransaction({
+          to: hotAddress.value,
+          value: ethers.utils.parseUnits(deposit),
+        });
+      } else {
+        const contract = new ethers.Contract(
+          contractAddress.value,
+          contractABI,
+          signer
+        );
+
+        const gasLimit = await contract.estimateGas.transfer(
+          hotAddress.value,
+          ethers.utils.parseUnits(deposit, decimals.value).toString()
+        );
+        const gasPrice = await provider.getGasPrice();
+        await contract.transfer(
+          hotAddress.value,
+          ethers.utils.parseUnits(deposit, decimals.value).toString(),
+          {
+            gasLimit: gasLimit,
+            gasPrice: gasPrice,
+          }
+        );
+      }
 
       modalStore.modalNotificationContent = DepositSuccess;
       modalStore.isModalNotification = true;
@@ -253,8 +259,8 @@ export const useWalletStore = defineStore("walletStore", () => {
   async function withdraw() {
     if (withdrawAmount.value) {
       const response = await withdrawForUser(
-        ethers.BigNumber.from(withdrawAmount.value)
-          .mul(Math.pow(10, decimals.value))
+        ethers.utils
+          .parseUnits(withdrawAmount.value, decimals.value)
           .toString(),
         currentAsset.value
       );
@@ -262,10 +268,16 @@ export const useWalletStore = defineStore("walletStore", () => {
     }
   }
 
+  function getDecimals(code: string) {
+    const asset = assets.value?.find((x) => x.code === code)
+    return asset?.decimals;
+  }
+
   return {
     address,
     inBets,
     balance,
+    ethBalance,
     transactions,
     isWalletPage,
     assets,
@@ -279,5 +291,6 @@ export const useWalletStore = defineStore("walletStore", () => {
     withdrawAmount,
     setAsset,
     getWallet,
+    getDecimals
   };
 });

@@ -2,12 +2,13 @@
 import TheTable from "@/components/TheTable.vue";
 // icons
 import { GlobeAltIcon } from "@heroicons/vue/outline";
-import coin from "@/assets/koa-token.png";
+import koa from "@/assets/koa.png";
+import eth from "@/assets/eth.png";
 // composables
 import { walletCols } from "@/composables/walletState";
 // store
 import { useWalletStore } from "@/stores/walletStore";
-import { balanceFormat } from "@/composables/functions";
+import { balanceEthFormat, balanceTokenFormat } from "@/composables/functions";
 const walletStore = useWalletStore();
 </script>
 
@@ -18,8 +19,17 @@ const walletStore = useWalletStore();
     >
     <template #amount="{ item }">
       <span class="flex items-center">
-        <img class="inline-block mr-2 h-4" :src="coin" />
-        {{ balanceFormat(item.amount) }}
+        <img
+          v-if="walletStore.currentAsset === 'eth'"
+          class="inline-block mr-2 h-4"
+          :src="eth"
+        />
+        <img v-else class="inline-block mr-2 h-4" :src="koa" />
+        {{
+          walletStore.currentAsset === "eth"
+            ? balanceEthFormat(item.amount)
+            : balanceTokenFormat(item.amount)
+        }}
       </span>
     </template>
     <template #txHash="{ item }">

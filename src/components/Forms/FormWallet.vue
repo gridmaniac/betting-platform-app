@@ -13,20 +13,20 @@ const modalStore = useModalStore();
 
 const isDepositRequest = ref(false);
 
-const setMoney = (money: number) => {
+const setMoney = (money: string) => {
   deposit.value = money;
 };
 
 //valid
 const validationSchema = {
-  deposit(value: number) {
-    if (value != null && value >= 1_000_000_000_000_000_000) {
+  deposit(value: string) {
+    if (value != null && value.toLocaleString().length >= 50) {
       return `Limit exceeded`;
     }
     return true;
   },
-  withdraw(value: number) {
-    if (value != null && value >= 1_000_000_000_000_000_000) {
+  withdraw(value: string) {
+    if (value != null && value.toLocaleString().length >= 50) {
       return "Limit exceeded";
     }
     return true;
@@ -35,17 +35,17 @@ const validationSchema = {
 
 useForm({ validationSchema });
 
-const { value: deposit, errorMessage: depositError } = useField<number | null>(
+const { value: deposit, errorMessage: depositError } = useField<string | null>(
   "deposit"
 );
 const { value: withdraw, errorMessage: withdrawError } = useField<
-  number | null
+  string | null
 >("withdraw");
 
 const createDeposit = async () => {
   if (deposit.value) {
     isDepositRequest.value = true;
-    await walletStore.deposit(deposit.value);
+    await walletStore.deposit(deposit.value.toString());
     isDepositRequest.value = false;
     deposit.value = null;
   }
@@ -53,10 +53,9 @@ const createDeposit = async () => {
 
 const createWithdraw = () => {
   if (withdraw.value) {
-    walletStore.withdrawAmount = withdraw.value;
+    walletStore.withdrawAmount = withdraw.value.toString();
     modalStore.modalNotificationContent = WithdrawMoney;
     modalStore.isModalWithdraw = true;
-    // TASK! подумать как удалить value после закрытия модалки
   }
 };
 
@@ -69,30 +68,42 @@ watch(modalStore, () => {
 
 <template>
   <div class="flex flex-col sm:flex-row sm:justify-between">
-    <div class="forAddress">
+    <div>
       <span class="font-bold">Connected:</span>
-      <p class="text-primary text-xs md:text-base">
-        {{ walletStore.address }}
-      </p>
+      <div class="flex items-center">
+        <span class="text-primary text-xs md:text-base">{{
+          walletStore.address
+        }}</span>
+        <div
+          class="btn btn-xs btn-ghost ml-1"
+          @click="modalStore.isModalConfirm = true"
+        >
+          Disconnect
+        </div>
+      </div>
     </div>
     <button
-      class="btn btn-sm btn-outline ml-2 mt-2 sm:mt-0"
-      @click="modalStore.isModalConfirm = true"
+      v-if="walletStore.currentAsset !== 'eth'"
+      class="btn btn-sm btn-outline btn-info mt-2 sm:mt-0"
+      @click="walletStore.setAsset('eth')"
     >
-      disconnect
+      <img class="mr-1 h-4" src="@/assets/eth.png" />
+      Add Gas
     </button>
   </div>
   <div class="form-control mt-3">
     <div class="input-group">
       <button
+        v-if="walletStore.currentAsset !== 'eth'"
         class="btn btn-ghost btn-lg hidden sm:block"
-        @click="setMoney(100000)"
+        @click="setMoney('100000')"
       >
         100K
       </button>
       <button
+        v-if="walletStore.currentAsset !== 'eth'"
         class="btn btn-ghost btn-lg hidden sm:block"
-        @click="setMoney(1000000)"
+        @click="setMoney('1000000')"
       >
         1M
       </button>
@@ -103,7 +114,7 @@ watch(modalStore, () => {
         class="input input-bordered input-md sm:input-lg flex-1 text-right"
       />
       <button
-        class="btn btn-outline btn-md sm:btn-lg w-auto sm:w-56"
+        class="btn btn-outline btn-md sm:btn-lg w-32 sm:w-56"
         :class="{ loading: isDepositRequest }"
         :disabled="!deposit || !!depositError || isDepositRequest"
         @click="createDeposit()"
@@ -125,15 +136,12 @@ watch(modalStore, () => {
         autocomplete="new-password"
       />
       <button
-        class="btn btn-outline w-auto sm:w-56"
-        :disabled="!withdraw"
+        class="btn btn-outline w-32 sm:w-56"
+        :disabled="!withdraw || !!withdrawError"
         @click="createWithdraw()"
       >
         Withdraw
       </button>
     </div>
-    <label v-if="withdrawError" class="label flex justify-end">
-      <span class="label-text">{{ withdrawError }}</span>
-    </label>
   </div>
 </template>

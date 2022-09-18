@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 //src
-import token from "@/assets/koa-token.png";
+import token from "@/assets/koa-large.png";
 //modules
 import { useForm, useField } from "vee-validate";
 //store

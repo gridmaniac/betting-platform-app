@@ -7,6 +7,7 @@ export interface IAsset {
   minStake: string;
   minWithdrawal: string;
   type: string;
+  ethTax: string;
 }
 
 export interface IAssetResponse extends IAsset {
