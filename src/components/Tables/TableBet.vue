@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
+import { storeToRefs } from "pinia";
 //
+import { ethers } from "ethers";
+import { useWalletStore } from "@/stores/walletStore";
 import koa from "@/assets/koa.png";
 import moment from "moment";
 // composables
@@ -12,6 +15,9 @@ import type { IBet } from "@/models/Bet";
 interface IProps {
   rows: IBet[];
 }
+
+const walletStore = useWalletStore();
+const { assets } = storeToRefs(walletStore);
 const props = defineProps<IProps>();
 // vars
 const cols = [
@@ -23,6 +29,11 @@ const cols = [
   {
     name: "amount",
     value: "amount",
+    classes: "",
+  },
+  {
+    name: "return",
+    value: "profit",
     classes: "",
   },
   {
@@ -39,6 +50,17 @@ const { page, pages, setPage, paginate } = usePagination<IBet>({
   totalRecords,
   pageSize: size,
 });
+
+const items = computed(() =>
+  props.rows.map((bet) => {
+    const asset = assets.value.find((x) => x.code === bet.code);
+    return {
+      ...bet,
+      amount: ethers.utils.formatUnits(bet.amount, asset?.decimals),
+      profit: ethers.utils.formatUnits(bet.profit, asset?.decimals),
+    };
+  })
+);
 </script>
 
 <template>
@@ -51,7 +73,7 @@ const { page, pages, setPage, paginate } = usePagination<IBet>({
       </tr>
     </thead>
     <tbody>
-      <tr v-for="bet in paginate(rows)" :key="bet._id">
+      <tr v-for="bet in paginate(items)" :key="bet._id">
         <td data-name="Event: ">
           <div class="whitespace-normal">
             <strong>{{ bet.season }}</strong>
@@ -59,7 +81,7 @@ const { page, pages, setPage, paginate } = usePagination<IBet>({
             <p class="text-primary">Winner: {{ bet.winner }}</p>
           </div>
         </td>
-        <td class="text-center" data-name="amount: ">
+        <td class="text-center" data-name="amount:">
           <span class="flex items-center">
             <img class="inline-block mr-2 h-4" :src="koa" />
             {{
@@ -67,6 +89,24 @@ const { page, pages, setPage, paginate } = usePagination<IBet>({
                 ? balanceEthFormat(bet.amount)
                 : balanceTokenFormat(bet.amount)
             }}
+          </span>
+        </td>
+        <td class="text-center" data-name="return:">
+          <span class="flex items-center">
+            <template v-if="bet.status === 'settled'">
+              <div
+                v-if="bet.profit != '0.0'"
+                class="badge badge-warning gap-2 font-bold"
+              >
+                <img class="inline-block h-4" :src="koa" />
+                {{
+                  bet.code === "eth"
+                    ? balanceEthFormat(bet.profit)
+                    : balanceTokenFormat(bet.profit)
+                }}
+              </div>
+              <div v-else class="badge badge-outline">No Return</div>
+            </template>
           </span>
         </td>
         <td class="text-center" data-name="status:">

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
 import { TitleMyBets } from "@/composables/titlesState";
-import { ethers } from "ethers";
 // type
 import type { IBet, IBetType } from "@/models/Bet";
 //composables
@@ -9,8 +8,7 @@ import { fetchBets } from "@/http/walletApi";
 // components
 import TheTitle from "../components/TheTitle.vue";
 import TableBet from "../components/Tables/TableBet.vue";
-import { useWalletStore } from "@/stores/walletStore";
-const walletStore = useWalletStore();
+
 const betType = ref<IBetType>("all");
 
 const bets = ref<IBet[]>([]);
@@ -29,10 +27,6 @@ onMounted(async () => {
   isRequest.value = false;
   const array: IBet[] = response.data;
   array.forEach((element) => {
-    element.amount = ethers.utils.formatUnits(
-      element.amount,
-      walletStore.getDecimals(element.code)
-    );
     if (element.status === "open") {
       betsOpened.value.push(element);
     }
