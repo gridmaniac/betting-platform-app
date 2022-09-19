@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from "pinia";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 // api
 import {
@@ -36,7 +36,7 @@ export const useWalletStore = defineStore("walletStore", () => {
   const router = useRouter();
   const contractAddress = ref();
   const hotAddress = ref();
-  const assets = ref<IAsset[]>();
+  const assets = ref<IAsset[]>([]);
   const currentAsset = ref<string>("");
   const isWalletPage = ref(false);
   const address = ref<string | null>();
@@ -268,11 +268,6 @@ export const useWalletStore = defineStore("walletStore", () => {
     }
   }
 
-  function getDecimals(code: string) {
-    const asset = assets.value?.find((x) => x.code === code)
-    return asset?.decimals;
-  }
-
   return {
     address,
     inBets,
@@ -291,6 +286,5 @@ export const useWalletStore = defineStore("walletStore", () => {
     withdrawAmount,
     setAsset,
     getWallet,
-    getDecimals
   };
 });
