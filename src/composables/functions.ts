@@ -19,10 +19,8 @@ export function checkData(seasons: ISeason[]) {
 }
 
 export const balanceTokenFormat = (number: string) => {
-  console.log(number);
-  const value = parseFloat(number);
-  const num = new Intl.NumberFormat("jp-JP").format(value);
-  return num.split(",")[0];
+  const num = number.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  return num.split(".")[0];
 };
 
 export const balanceEthFormat = (number: string) => {
