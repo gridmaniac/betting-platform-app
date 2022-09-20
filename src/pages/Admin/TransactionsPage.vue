@@ -57,7 +57,7 @@ onMounted(async () => {
           {{ moment(item.date).format("DD/MM/YYYY") }}
         </template>
         <template #amount="{ item }">
-          {{ item.amount / 1000000000 }}
+          {{ item.amount }}
         </template>
         <template #address="{ item }">
           <a :href="item.address" target="_blank"
