@@ -70,7 +70,7 @@ const copyValue = async (value: string) => {
         </div>
         <div class="shadow stats stats-vertical" style="min-width: 350px">
           <div class="stat">
-            <div class="stat-title">
+            <div class="stat-title flex items-center gap-1">
               Balance
               <div class="tooltip tooltip-right ml-1" :data-tip="tooltipText">
                 <button
