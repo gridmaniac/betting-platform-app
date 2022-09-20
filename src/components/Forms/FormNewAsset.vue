@@ -24,7 +24,7 @@ const asset = ref<IAsset>({
   minStake: "",
   minWithdrawal: "",
   type: "",
-  ethTax: "0"
+  ethTax: "0",
 });
 const listedOptions = [
   {

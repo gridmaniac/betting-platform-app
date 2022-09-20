@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onMounted, computed } from "vue";
+import { onMounted, computed, ref } from "vue";
+import { DocumentDuplicateIcon } from "@heroicons/vue/outline";
 import { ethers } from "ethers";
 // composables
 import { balanceEthFormat, balanceTokenFormat } from "@/composables/functions";
@@ -25,6 +26,17 @@ const currentAsset = computed({
     walletStore.setAsset(value);
   },
 });
+
+let timeout: NodeJS.Timeout;
+const tooltipText = ref("Copy Balance");
+const copyValue = async (value: string) => {
+  clearTimeout(timeout);
+  await navigator.clipboard.writeText(value);
+  tooltipText.value = "Copied";
+  timeout = setTimeout(() => {
+    tooltipText.value = "Copy Balance";
+  }, 3000);
+};
 </script>
 
 <template>
@@ -58,7 +70,17 @@ const currentAsset = computed({
         </div>
         <div class="shadow stats stats-vertical" style="min-width: 350px">
           <div class="stat">
-            <div class="stat-title">Balance</div>
+            <div class="stat-title flex items-center gap-1">
+              Balance
+              <div class="tooltip tooltip-right ml-1" :data-tip="tooltipText">
+                <button
+                  class="btn btn-xs btn-sqr"
+                  @click="copyValue(walletStore.balance)"
+                >
+                  <component :is="DocumentDuplicateIcon" class="w-4" />
+                </button>
+              </div>
+            </div>
             <div class="stat-value overflow-hidden flex gap-1">
               <span class="truncate" :title="walletStore.balance">
                 {{
