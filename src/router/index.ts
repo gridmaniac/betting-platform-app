@@ -1,8 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
+// sports
+
+import MMAPage from "../pages/sports/MMAPage.vue";
+import SoccerPage from "../pages/sports/SoccerPage.vue";
+import NFLPage from "../pages/sports/NFLPage.vue";
+import NCAAPage from "../pages/sports/NCAAPage.vue";
+// others
 import HomePage from "../pages/HomePage.vue";
-import MMAPage from "../pages/MMAPage.vue";
-import SoccerPage from "../pages/SoccerPage.vue";
-import NFLPage from "../pages/NFLPage.vue";
 import BetsPage from "../pages/BetsPage.vue";
 import WalletPage from "../pages/WalletPage.vue";
 import ProfilePage from "../pages/ProfilePage.vue";
@@ -58,6 +62,14 @@ const router = createRouter({
       component: SoccerPage,
       meta: {
         sportType: "Soccer",
+      },
+    },
+    {
+      path: "/ncaa",
+      name: "ncaa",
+      component: NCAAPage,
+      meta: {
+        sportType: "NCAA",
       },
     },
     {
