@@ -38,8 +38,10 @@ const placeholderUrl =
       </div>
     </div>
     <div class="text-left sm:text-center competitor-content">
-      <div class="font-bold competitor-name">
-        <p>{{ competitor.name }}</p>
+      <div class="font-bold">
+        <p class="truncate competitor-name">
+          {{ competitor.name }}
+        </p>
       </div>
       <div class="text-sm opacity-50">
         {{ competitor.abbreviation || competitor.qualifier }}
@@ -49,22 +51,14 @@ const placeholderUrl =
   </div>
 </template>
 
-<style scoped lang="scss">
-@media screen and (max-width: 640px) {
-  .competitor {
-    overflow: hidden;
-    max-width: 100%;
-    width: 100%;
-    &-name {
-      width: 100%;
-      max-width: 100px;
-      overflow: hidden;
-      p {
-        white-space: nowrap; /* Запрещаем перенос строк */
-        overflow: hidden; /* Обрезаем все, что не помещается в область */
-        text-overflow: ellipsis; /* Добавляем многоточие */
-      }
-    }
+<style>
+.competitor-name {
+  width: 200px;
+}
+
+@media screen and (max-width: 576px) {
+  .competitor-name {
+    width: 100px;
   }
 }
 </style>
