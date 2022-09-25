@@ -40,8 +40,12 @@ async function getEvents(season: ISeason) {
   if (isCollapseOpen.value) return;
   isResponse.value = true;
   const response: IEvent[] = await fetchEvents(season.id, props.isUpcoming);
+
   isResponse.value = false;
   events.value = response;
+  if (!props.isUpcoming) {
+    events.value = events.value.reverse();
+  }
 }
 </script>
 

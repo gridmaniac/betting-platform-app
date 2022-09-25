@@ -78,7 +78,7 @@ const items = computed(() =>
           <div class="whitespace-normal">
             <strong>{{ bet.season }}</strong>
             <p>{{ moment(bet.startTime).format("MMMM DD, YYYY") }}</p>
-            <p class="text-primary">Winner: {{ bet.winner }}</p>
+            <p class="text-primary">Picked: {{ bet.winner }}</p>
           </div>
         </td>
         <td class="text-center" data-name="amount:">

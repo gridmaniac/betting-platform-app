@@ -34,8 +34,15 @@ const walletStore = useWalletStore();
     </template>
     <template #txHash="{ item }">
       <div class="flex justify-center">
-        <button class="btn btn-ghost btn-sm" :disabled="!item.txHash">
-          <a target="_blank" :href="'https://etherscan.io/tx/' + item.txHash">
+        <button
+          class="relative btn btn-ghost btn-sm btn-square"
+          :disabled="!item.txHash"
+        >
+          <a
+            target="_blank"
+            :href="'https://etherscan.io/tx/' + item.txHash"
+            class="absolute w-full h-full flex items-center justify-center"
+          >
             <component
               :is="GlobeAltIcon"
               class="inline-block w-4 h-4 stroke-current"
