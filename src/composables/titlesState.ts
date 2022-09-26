@@ -10,7 +10,6 @@ import {
   CashIcon,
 } from "@heroicons/vue/outline";
 import IconNCAA from "@/components/Atoms/Icon/IconNCAA.vue";
-import IconSoccer from "@/components/Atoms/Icon/IconSoccer.vue";
 import IconNFL from "@/components/Atoms/Icon/IconNFL.vue";
 
 export const TitleMMA = {
@@ -19,7 +18,7 @@ export const TitleMMA = {
 };
 
 export const TitleSoccer = {
-  icon: IconSoccer,
+  icon: SupportIcon,
   name: "Soccer",
 };
 
