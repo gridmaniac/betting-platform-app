@@ -94,18 +94,24 @@ watch(modalStore, () => {
   <div class="form-control mt-3">
     <div class="input-group">
       <button
-        v-if="walletStore.currentAsset !== 'eth'"
         class="btn btn-ghost btn-lg hidden sm:block"
-        @click="setMoney('100000')"
+        @click="
+          walletStore.currentAsset === 'eth'
+            ? setMoney('0.005')
+            : setMoney('100000')
+        "
       >
-        100K
+        {{ walletStore.currentAsset === "eth" ? "0.005" : "100K" }}
       </button>
       <button
-        v-if="walletStore.currentAsset !== 'eth'"
         class="btn btn-ghost btn-lg hidden sm:block"
-        @click="setMoney('1000000')"
+        @click="
+          walletStore.currentAsset === 'eth'
+            ? setMoney('0.01')
+            : setMoney('1000000')
+        "
       >
-        1M
+        {{ walletStore.currentAsset === "eth" ? "0.01" : "1M" }}
       </button>
       <input
         type="number"
