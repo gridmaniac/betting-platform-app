@@ -2,7 +2,7 @@
 import { fetchSeasons } from "@/http/sportsApi";
 import { onMounted, ref, computed, provide } from "vue";
 // components
-import TitleMMA from "../components/Titles/TitleMMA.vue";
+import TitleMMA from "@/components/Titles/TitleMMA.vue";
 import CollapsesSeason from "@/components/Collapses/CollapsesSeason.vue";
 import TheSpinner from "@/components/TheSpinner.vue";
 // composables

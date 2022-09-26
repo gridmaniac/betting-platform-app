@@ -4,19 +4,23 @@ export const footerMenu = [
     links: [
       {
         name: "How to Deposit Tokens",
-        url: "#",
+        url: "/wallet",
+        target: false,
       },
       {
         name: "How to Place a Bid",
-        url: "#",
+        url: "/mma",
+        target: false,
       },
       {
         name: "How to Withdraw Tokens",
-        url: "#",
+        url: "/wallet",
+        target: false,
       },
       {
         name: "How to Make the World a Better Place",
-        url: "#",
+        url: "https://koacombat.com",
+        target: true,
       },
     ],
   },
@@ -26,22 +30,27 @@ export const footerMenu = [
       {
         name: "Facebook",
         url: "https://www.facebook.com/KNOCKOUTARTISTKOACOMBAT",
+        target: true,
       },
       {
         name: "Instagram",
         url: "https://www.instagram.com/Koacombat/",
+        target: true,
       },
       {
         name: "Twitter",
         url: "https://twitter.com/Koacombat",
+        target: true,
       },
       {
         name: "Telegram",
         url: "https://t.me/KoaCombatOfficial",
+        target: true,
       },
       {
         name: "Reddit",
         url: "https://www.reddit.com/user/koaCombat/",
+        target: true,
       },
     ],
   },
@@ -50,11 +59,13 @@ export const footerMenu = [
     links: [
       {
         name: "Terms",
-        url: "#",
+        url: "https://koacombat.com",
+        target: true,
       },
       {
         name: "Privacy",
-        url: "#",
+        url: "https://koacombat.com",
+        target: true,
       },
     ],
   },
@@ -63,19 +74,23 @@ export const footerMenu = [
     links: [
       {
         name: "Official Page",
-        url: "#",
+        url: "https://koacombat.com",
+        target: true,
       },
       {
         name: "Official Blog",
-        url: "#",
+        url: "https://koacombat.com",
+        target: true,
       },
       {
         name: "About Us",
-        url: "#",
+        url: "https://koacombat.com",
+        target: true,
       },
       {
         name: "Contact",
-        url: "#",
+        url: "https://koacombat.com",
+        target: true,
       },
     ],
   },

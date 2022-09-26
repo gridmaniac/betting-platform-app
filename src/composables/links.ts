@@ -2,7 +2,6 @@
 import {
   UserCircleIcon,
   LightningBoltIcon,
-  SupportIcon,
   TableIcon,
   CreditCardIcon,
   RssIcon,
@@ -12,7 +11,9 @@ import {
   TicketIcon,
   CollectionIcon,
   CashIcon,
+  SupportIcon,
 } from "@heroicons/vue/outline";
+// import IconNCAA from "@/components/Atoms/Icon/IconNCAA.vue";
 import IconNFL from "@/components/Atoms/Icon/IconNFL.vue";
 
 export const menu = [
@@ -22,6 +23,7 @@ export const menu = [
       { value: "mma", name: "MMA", icon: LightningBoltIcon, isAuth: false },
       { value: "soccer", name: "Soccer", icon: SupportIcon, isAuth: false },
       { value: "nfl", name: "NFL", icon: IconNFL, isAuth: false },
+      // { value: "ncaa", name: "NCAA", icon: IconNCAA, isAuth: false },
     ],
   },
   {

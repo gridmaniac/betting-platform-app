@@ -39,8 +39,12 @@ onMounted(async () => {
       >
         <template #txHash="{ item }">
           <div class="flex justify-center">
-            <button class="btn btn-ghost btn-sm" :disabled="!item.txHash">
+            <button
+              class="relative btn btn-ghost btn-sm btn-square"
+              :disabled="!item.txHash"
+            >
               <a
+                class="absolute w-full h-full flex items-center justify-center"
                 target="_blank"
                 :href="'https://etherscan.io/tx/' + item.txHash"
               >
