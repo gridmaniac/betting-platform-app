@@ -13,10 +13,7 @@ const active = computed({
 </script>
 
 <template>
-  <div
-    tabindex="0"
-    class="collapse shadow-xl bg-base-100 rounded-box collapse-arrow w-full"
-  >
+  <div class="collapse shadow-xl bg-base-100 rounded-box collapse-arrow w-full">
     <input type="checkbox" @click="$emit('openCollapse')" v-model="active" />
     <div class="collapse-title">
       <slot name="collapse-title"></slot>
