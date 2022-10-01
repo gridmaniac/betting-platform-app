@@ -44,3 +44,9 @@ export const getAssets = async () => {
   const { data } = await $host.get(ERoutes.Assets, getAuth());
   return data;
 };
+
+//
+export const lockWallet = async () => {
+  const { data } = await $host.post(ERoutes.LockWallet, null, getAuth());
+  return data;
+};

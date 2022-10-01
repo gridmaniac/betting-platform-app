@@ -15,6 +15,7 @@ export enum ERoutes {
   Wallet = "/api/v1/wallet",
   WalletWithdraw = "/api/v1/wallet/withdraw",
   WalletAddress = "/api/v1/wallet/address",
+  LockWallet = "/api/v1/wallet/lock",
 }
 
 export enum EAdminRoutes {

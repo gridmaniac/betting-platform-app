@@ -1,12 +1,14 @@
 import { defineStore, storeToRefs } from "pinia";
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import moment from "moment";
 // api
 import {
   fetchWallet,
   setUserAddress,
   withdrawForUser,
   getAssets,
+  lockWallet,
 } from "@/http/walletApi";
 // composables
 import {
@@ -32,7 +34,8 @@ import type { ITransaction } from "@/models/walletModels";
 import type { IAsset } from "@/models/admin/IAsset";
 
 export const useWalletStore = defineStore("walletStore", () => {
-  // var withdraws
+  // state
+  const isDisconnectLocked = ref(false);
   const router = useRouter();
   const contractAddress = ref();
   const hotAddress = ref();
@@ -118,6 +121,14 @@ export const useWalletStore = defineStore("walletStore", () => {
 
   async function getWallet(poll: boolean) {
     const response = await fetchWallet(currentAsset.value);
+    if (!response.walletLockTime) {
+      isDisconnectLocked.value = false;
+    } else if (moment.utc().diff(response.walletLockTime, "minutes") < 10) {
+      isDisconnectLocked.value = true;
+    } else {
+      isDisconnectLocked.value = false;
+    }
+
     if (!response.listed) {
       setAsset("koa");
     }
@@ -250,6 +261,9 @@ export const useWalletStore = defineStore("walletStore", () => {
 
       modalStore.modalNotificationContent = DepositSuccess;
       modalStore.isModalNotification = true;
+
+      await lockWallet();
+      await getWallet(false);
     } catch (error: any) {
       modalStore.modalNotificationContent = WalletConnectError;
       modalStore.isModalNotification = true;
@@ -278,6 +292,7 @@ export const useWalletStore = defineStore("walletStore", () => {
     assets,
     currentAsset,
     decimals,
+    isDisconnectLocked,
     // function
     deposit,
     disconnectWallet,
