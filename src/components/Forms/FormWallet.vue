@@ -71,9 +71,11 @@ watch(modalStore, () => {
     <div>
       <span class="font-bold">Connected:</span>
       <div class="flex items-center">
-        <span class="text-primary text-xs md:text-base">{{
-          walletStore.address
-        }}</span>
+        <div class="flex-1 truncate text-primary">
+          <span class="text-primary text-xs md:text-base">
+            {{ walletStore.address }}
+          </span>
+        </div>
         <div
           class="btn btn-xs btn-ghost ml-1"
           @click="modalStore.isModalConfirm = true"
