@@ -120,10 +120,10 @@ const currentAsset = computed({
       </p>
     </div>
     <div class="form-control">
-      <label class="input-group input-group-md justify-end">
+      <label class="input-group input-group-md sm:input-group-lg justify-end">
         <input
           type="number"
-          class="input input-bordered input-lg px-5"
+          class="input input-bordered input-md sm:input-lg px-5 w-full sm:w-auto"
           v-model="amount"
           ref="amountInput"
           placeholder="0"
@@ -131,7 +131,7 @@ const currentAsset = computed({
           oninput="this.value=this.value.slice(0,this.maxLength)"
         />
         <select
-          class="select select-lg select-warning uppercase"
+          class="select select-md sm:select-lg select-warning uppercase"
           v-model="currentAsset"
         >
           <option v-for="asset in walletStore.assets" :key="asset.code">

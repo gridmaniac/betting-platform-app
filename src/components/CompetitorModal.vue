@@ -41,10 +41,10 @@ const placeholderUrl = `https://koacombat.nyc3.cdn.digitaloceanspaces.com/compet
       </div>
     </div>
     <div :class="{ 'order-1 text-right': side === 'right' }">
-      <h2 class="card-title">
+      <h2 class="text-lg sm:text-xl font-semibold">
         {{ competitor.name }}
       </h2>
-      <p class="text-base-content text-opacity-40">
+      <p class="text-sm sm:text-md text-base-content text-opacity-40">
         {{ competitor.abbreviation }}
       </p>
     </div>
