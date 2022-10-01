@@ -37,6 +37,11 @@ export const TitleMyBets = {
   name: "My Bets",
 };
 
+export const TitlePlayResponsible = {
+  icon: CreditCardIcon,
+  name: "Know Your Limits & Play Responsibly",
+};
+
 export const TitleWallet = {
   icon: CreditCardIcon,
   name: "Wallet",

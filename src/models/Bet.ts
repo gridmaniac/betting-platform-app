@@ -16,7 +16,7 @@ export interface IBet {
   _id: string;
 }
 
-export interface IBetResponse {
+export interface IPlayResponse {
   data: IBet[];
 }
 

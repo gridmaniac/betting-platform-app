@@ -12,6 +12,8 @@ import WalletPage from "../pages/WalletPage.vue";
 import ProfilePage from "../pages/ProfilePage.vue";
 import ConnectPage from "../pages/ConnectPage.vue";
 import NewsPage from "../pages/NewsPage.vue";
+import PlayResponsiblePage from "../pages/PlayResponsiblePage.vue";
+import KnowYourLimitsPage from "../pages/KnowYourLimitsPage.vue";
 // admin
 import AdminAssetsPage from "@/pages/Admin/AssetsPage.vue";
 import AdminBalancesPage from "@/pages/Admin/BalancesPage.vue";
@@ -71,6 +73,16 @@ const router = createRouter({
       meta: {
         sportType: "NCAA",
       },
+    },
+    {
+      path: "/bet-responsible",
+      name: "PlayResponsible",
+      component: PlayResponsiblePage,
+    },
+    {
+      path: "/know-your-limits",
+      name: "KnowYourLimits",
+      component: KnowYourLimitsPage,
     },
     {
       path: "/bets",
