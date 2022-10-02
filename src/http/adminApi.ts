@@ -8,7 +8,7 @@ import type { IAsset, IAssetResponse } from "@/models/admin/IAsset";
 import type { IUserResponse } from "@/models/admin/IUser";
 import type { IBalanceResponse } from "@/models/admin/IBalance";
 import type { IDeposit, IDepositResponse } from "@/models/admin/IDeposit";
-import type { IBetResponse } from "@/models/Bet";
+import type { IPlayResponse } from "@/models/Bet";
 
 interface IGetSettings {
   data: ISetting[];
@@ -105,7 +105,7 @@ export default class AdminService {
   }
 
   // get all bets
-  static async getBets(): Promise<AxiosResponse<IBetResponse>> {
+  static async getBets(): Promise<AxiosResponse<IPlayResponse>> {
     return await $host.get(EAdminRoutes.Bets, getAuth()).catch((err) => {
       return err;
     });

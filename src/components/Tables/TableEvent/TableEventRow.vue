@@ -35,12 +35,14 @@ const openModal = (winner: ICompetitor) => {
     modalStore.isModalAuthVisible = true;
     return;
   }
-  modalStore.ModalBetContent = {
-    event: props.event,
-    season: props.season,
-    winner: winner,
-  };
-  modalStore.isModalBetVisible = true;
+  if (!eventStatus.value) {
+    modalStore.ModalBetContent = {
+      event: props.event,
+      season: props.season,
+      winner: winner,
+    };
+    modalStore.isModalBetVisible = true;
+  }
 };
 </script>
 

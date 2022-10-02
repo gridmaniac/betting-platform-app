@@ -1,4 +1,6 @@
 <script setup lang="ts">
+//icon
+import { LockClosedIcon } from "@heroicons/vue/outline";
 import { ref } from "vue";
 // valid
 import { useForm, useField } from "vee-validate";
@@ -71,15 +73,35 @@ watch(modalStore, () => {
     <div>
       <span class="font-bold">Connected:</span>
       <div class="flex items-center">
-        <span class="text-primary text-xs md:text-base">{{
-          walletStore.address
-        }}</span>
+        <div class="flex-1 truncate text-primary">
+          <span class="text-primary text-xs md:text-base">
+            {{ walletStore.address }}
+          </span>
+        </div>
         <div
+          v-if="walletStore.isDisconnectLocked"
+          class="tooltip"
+          data-tip="Temporarily locked."
+        >
+          <button
+            class="btn btn-xs btn-ghost ml-1 gap-2"
+            @click="modalStore.isModalConfirm = true"
+            disabled
+          >
+            <component
+              :is="LockClosedIcon"
+              class="inline-block w-4 h-4 stroke-cur rent"
+            />
+            Disconnect
+          </button>
+        </div>
+        <button
+          v-else
           class="btn btn-xs btn-ghost ml-1"
           @click="modalStore.isModalConfirm = true"
         >
           Disconnect
-        </div>
+        </button>
       </div>
     </div>
     <button

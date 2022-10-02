@@ -4,23 +4,18 @@ export const footerMenu = [
     links: [
       {
         name: "How to Deposit Tokens",
-        url: "/wallet",
+        url: "/how-to-deposit-tokens",
         target: false,
       },
       {
-        name: "How to Place a Bid",
-        url: "/mma",
+        name: "How to Place a Bet",
+        url: "/how-to-place-a-bet",
         target: false,
       },
       {
         name: "How to Withdraw Tokens",
-        url: "/wallet",
+        url: "/how-to-withdraw-tokens",
         target: false,
-      },
-      {
-        name: "How to Make the World a Better Place",
-        url: "https://koacombat.com",
-        target: true,
       },
     ],
   },
@@ -52,20 +47,25 @@ export const footerMenu = [
         url: "https://www.reddit.com/user/koaCombat/",
         target: true,
       },
+      {
+        name: "YouTube",
+        url: "https://www.youtube.com/channel/UCJGpyKDjJG8zmVvokJhfIcA",
+        target: true,
+      },
     ],
   },
   {
     name: "Legal",
     links: [
       {
-        name: "Terms",
-        url: "https://koacombat.com",
-        target: true,
+        name: "Bet Responsible",
+        url: "/bet-responsible",
+        target: false,
       },
       {
-        name: "Privacy",
-        url: "https://koacombat.com",
-        target: true,
+        name: "Know Your Limits",
+        url: "/know-your-limits",
+        target: false,
       },
     ],
   },
@@ -74,11 +74,6 @@ export const footerMenu = [
     links: [
       {
         name: "Official Page",
-        url: "https://koacombat.com",
-        target: true,
-      },
-      {
-        name: "Official Blog",
         url: "https://koacombat.com",
         target: true,
       },
