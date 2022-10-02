@@ -14,6 +14,9 @@ import ConnectPage from "../pages/ConnectPage.vue";
 import NewsPage from "../pages/NewsPage.vue";
 import PlayResponsiblePage from "../pages/PlayResponsiblePage.vue";
 import KnowYourLimitsPage from "../pages/KnowYourLimitsPage.vue";
+import HowToDepositTokens from "../pages/HowToDepositTokens.vue";
+import HowToWithdrawTokens from "../pages/HowToWithdrawTokens.vue";
+import HowToPlaceABet from "../pages/HowToPlaceABet.vue";
 // admin
 import AdminAssetsPage from "@/pages/Admin/AssetsPage.vue";
 import AdminBalancesPage from "@/pages/Admin/BalancesPage.vue";
@@ -83,6 +86,21 @@ const router = createRouter({
       path: "/know-your-limits",
       name: "KnowYourLimits",
       component: KnowYourLimitsPage,
+    },
+    {
+      path: "/how-to-deposit-tokens",
+      name: "HowToDepositTokens",
+      component: HowToDepositTokens,
+    },
+    {
+      path: "/how-to-withdraw-tokens",
+      name: "HowToWithdrawTokens",
+      component: HowToWithdrawTokens,
+    },
+    {
+      path: "/how-to-place-a-bet",
+      name: "HowToPlaceABet",
+      component: HowToPlaceABet,
     },
     {
       path: "/bets",

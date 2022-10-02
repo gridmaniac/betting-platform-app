@@ -4,17 +4,17 @@ export const footerMenu = [
     links: [
       {
         name: "How to Deposit Tokens",
-        url: "/wallet",
+        url: "/how-to-deposit-tokens",
         target: false,
       },
       {
-        name: "How to Place a Bid",
-        url: "/mma",
+        name: "How to Place a Bet",
+        url: "/how-to-place-a-bet",
         target: false,
       },
       {
         name: "How to Withdraw Tokens",
-        url: "/wallet",
+        url: "/how-to-withdraw-tokens",
         target: false,
       },
     ],

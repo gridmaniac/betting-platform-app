@@ -16,16 +16,20 @@ import { footerMenu } from "@/composables/footer";
       </div>
       <div v-for="item in footerMenu" :key="item.name">
         <span class="footer-title">{{ item.name }}</span>
-        <a
-          v-for="link in item.links"
-          :key="link.name"
-          :target=" link.target ? '_blank' : ''"
-          rel="noopener"
-          :href="link.url"
-          class="group link link-hover"
-        >
-          {{ link.name }}
-        </a>
+        <template v-for="link in item.links" :key="link.name">
+          <a
+            v-if="link.target"
+            :target="link.target ? '_blank' : ''"
+            rel="noopener"
+            :href="link.url"
+            class="group link link-hover"
+          >
+            {{ link.name }}
+          </a>
+          <router-link v-else :to="link.url" class="group link link-hover">
+            {{ link.name }}
+          </router-link>
+        </template>
       </div>
     </footer>
   </div>
